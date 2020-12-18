@@ -2,4 +2,4 @@
 
 A repo currently just to store exercises and work we've done in Redex.
 
-Will need actual structuring later.
+It will need actual structuring later.
