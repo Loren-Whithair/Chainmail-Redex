@@ -18,7 +18,7 @@
 ;semi-colons are replaced with // and extends is replaced with 'extends (it's a keyword)
 
 (define-language FJ
-  (e ::=    
+  (e ::=
      x
      e.f
      e.m(e ...) ;method
@@ -33,10 +33,29 @@
      this) ; varId
   (C ::= variable-not-otherwise-mentioned)) ; classId
 
+
+
+; P: full program that consists of class defn and ONE expression to be evaluated
+; E: the expr to be evaluated, referencing the class defns in P
+(define-extended-language
+  FJProg
+  FJ
+  (P ::= ((L ...) 'MAIN{E}))
+  (E ::= (e ...) 
+     hole))
+
+
+(define eval
+  (reduction-relation
+   FJProg
+   ;#:domain P?
+   
+   
+
 ; Problems to solve:
 ; - how to restrict the NAME of the constructor (i.e. we want the C in K to be the same as the class we are defining
 ; - - judgment declaration, or reduction?
-
+; - how to get the information of the class defns and use it to reduce E 
 ; - restrict the number of constructor params to the number of fields in the class (this requires subbing K for it's decl in the decl of L)
 
 
@@ -44,11 +63,6 @@
 ; define a program execution (define-extended-language prog FJ)
 ; give a judgment-form for subtypes
 
-
-;(define-language testing
-;  (te :=
-;      ((f ..._1) (ta. f = f) ..._1))
-;  (f ::= variable-not-otherwise-mentioned))
 
 
 

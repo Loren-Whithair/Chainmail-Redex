@@ -36,6 +36,34 @@
      number))
 
 
+
+
+(define red
+  (reduction-relation
+   Ev
+   #:domain p
+   (--> (in-hole P (if0 0 e_1 e_2)) ; take a P with the in-hole fill if0 0 e_1 e_2  ; THIS IS THE DEFINITION OF THE IF - it is syntax until we define it as a reduction
+        (in-hole P e_1) ;... and then change the fill with e_1 
+        "if0t")
+   (--> (in-hole P (if0 v e_1 e_2))
+        (in-hole P e_2)
+        (side-condition (not (equal? 0 (term v)))) ; side-condition: something that must also be true for this reduction to be valid
+        "if0f")
+   ; ALSO NOTE: 'not' and 'equal' are understood by Redex/Racket
+   (--> (in-hole P ((fix (λ (x t) e)) v))
+        (in-hole P (((λ (x t) e) (fix (λ (x t) e))) v))
+        "fix")
+   (--> (in-hole P ((λ (x t) e) v))
+        (in-hole P (subst x v e))
+        "βv")
+   (--> (in-hole P (+ number ...))
+        (in-hole P (Σ number ...))
+        "+")
+   (--> (e_1 ... (in-hole E (amb e_2 ...)) e_3 ...)
+        (e_1 ... (in-hole E e_2) ... e_3 ...)
+        "amb")))
+
+
 (define-judgment-form
   L+Γ
   #:mode (types I I O)
@@ -79,7 +107,6 @@
    --------------------------
    (types Γ (amb e ...) num)])
 
-
 (test-equal
    (judgment-holds
     (types · (λ (x num) x) t)
@@ -116,31 +143,6 @@
 
 
 (define x? (redex-match Ev x)) ; redex-match with only two args returns a function 
-
-(define red
-  (reduction-relation
-   Ev
-   #:domain p
-   (--> (in-hole P (if0 0 e_1 e_2)) ; take a P with the in-hole fill if0 0 e_1 e_2  ; THIS IS THE DEFINITION OF THE IF - it is syntax until we define it as a reduction
-        (in-hole P e_1) ;... and then change the fill with e_1 
-        "if0t")
-   (--> (in-hole P (if0 v e_1 e_2))
-        (in-hole P e_2)
-        (side-condition (not (equal? 0 (term v)))) ; side-condition: something that must also be true for this reduction to be valid
-        "if0f")
-   ; ALSO NOTE: 'not' and 'equal' are understood by Redex/Racket
-   (--> (in-hole P ((fix (λ (x t) e)) v))
-        (in-hole P (((λ (x t) e) (fix (λ (x t) e))) v))
-        "fix")
-   (--> (in-hole P ((λ (x t) e) v))
-        (in-hole P (subst x v e))
-        "βv")
-   (--> (in-hole P (+ number ...))
-        (in-hole P (Σ number ...))
-        "+")
-   (--> (e_1 ... (in-hole E (amb e_2 ...)) e_3 ...)
-        (e_1 ... (in-hole E e_2) ... e_3 ...)
-        "amb")))
 
 
 (define (progress-holds? e)
