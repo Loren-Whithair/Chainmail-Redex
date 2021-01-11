@@ -26,12 +26,13 @@
      ((C) e))
   (L ::= (class C 'extends C {(C f) ... K M ...})) 
   (K ::= (C ((C f) ..._1) {super (f ...) // (this. f = f) ..._1}))
-  (M ::= (C m (C x) ... (return e //)))
+  (M ::= (C m ((C x) ...) {return e}))
 
   (f ::= variable-not-otherwise-mentioned) ; fieldId
   (x ::= variable-not-otherwise-mentioned
      this) ; varId
-  (C ::= variable-not-otherwise-mentioned)) ; classId
+  (C ::= variable-not-otherwise-mentioned) ; classId
+  (m ::= variable-not-otherwise-mentioned))
 
 
 
@@ -45,9 +46,9 @@
      hole))
 
 
-(define eval
-  (reduction-relation
-   FJProg
+;(define eval
+ ; (reduction-relation
+  ; FJProg
    ;#:domain P?
    
    
