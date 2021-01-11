@@ -26,7 +26,7 @@
      ((C) e))
   (L ::= (class C 'extends C {(C f) ..._1 (C ((C f) ..._1) {super (f ...) // (this · f = f) ...}) M ...})) 
 ;  (L ::= (class C 'extends C {(C f) ..._1 K M ...}))
-  (K ::= (C ((C f) ..._1) {super (f ...) // (this · f = f) ...}))   ;NB: subbed into L in order to restrict the number of params to the number of fields
+  (K ::= (C ((C f) ..._1) {super (f ...) // (this · f = f) ...}))   ;NB: subbed into L (above) in order to restrict the number of params to the number of fields
   (M ::= (C m ((C x) ...) {return e}))
 
   (f ::= variable-not-otherwise-mentioned) ; fieldId
@@ -45,11 +45,11 @@
   (S ::=
      none
      (L S)) 
-  (P ::= (S 'MAIN{e})) ;TODO: change the e to an E, define it with a hole probably?  
+  (P ::= (S 'MAIN{e}))) ;TODO: change the e to an E, define it with a hole probably?  
 
-(define-judgment-form
-  FJProg
-  #:mode (
+;(define-judgment-form
+;  FJProg
+;  #:mode (
   
 
 
