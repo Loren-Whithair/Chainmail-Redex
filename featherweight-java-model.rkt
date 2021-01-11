@@ -20,12 +20,13 @@
 (define-language FJ
   (e ::=
      x
-     e.f
-     e.m(e ...) ;method
+     (e · f)
+     (e · m(e ...)) ;method
      ('new C(e ...))
      ((C) e))
-  (L ::= (class C 'extends C {(C f) ... K M ...})) 
-  (K ::= (C ((C f) ..._1) {super (f ...) // (this. f = f) ..._1}))
+  (L ::= (class C 'extends C {(C f) ..._1 (C ((C f) ..._1) {super (f ...) // (this · f = f) ...}) M ...})) 
+;  (L ::= (class C 'extends C {(C f) ..._1 K M ...}))
+  (K ::= (C ((C f) ..._1) {super (f ...) // (this · f = f) ...}))   ;NB: subbed into L in order to restrict the number of params to the number of fields
   (M ::= (C m ((C x) ...) {return e}))
 
   (f ::= variable-not-otherwise-mentioned) ; fieldId
@@ -36,17 +37,24 @@
 
 
 
+; S: class suite. All of the class definitions
 ; P: full program that consists of class defn and ONE expression to be evaluated
-; E: the expr to be evaluated, referencing the class defns in P
 
 (define-extended-language
+  FJProg   FJ
+  (S ::=
+     none
+     (L S)) 
+  (P ::= (S 'MAIN{e})) ;TODO: change the e to an E, define it with a hole probably?  
+
+(define-judgment-form
   FJProg
-  FJ
-  (P ::= ((L ...) 'MAIN{E}))
-  (E ::= (e ...) 
-     hole))
+  #:mode (
+  
 
 
+
+  
 ;(define eval
  ; (reduction-relation
   ; FJProg

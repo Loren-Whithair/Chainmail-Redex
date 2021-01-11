@@ -21,8 +21,20 @@ class Pair extends Object {
     
     
 In redex form:
+
 (term (class Pair 'extends Object {
                 (Object fst) (Object snd)
-                (Pair ((Object fst) (Object snd)) {super () // (this. fst = fst) (this. snd = snd)})
-                (Pair setfst ((Object newfst)) {return ('new Pair(newfst this.snd))})
+                (Pair ((Object fst) (Object snd)) {super () // (this · fst = fst) (this · snd = snd)})
+                (Pair setfst ((Object newfst)) {return ('new Pair(newfst (this · snd)))})
             })))
+
+            
+
+Say it continued with the following:
+
+'MAIN{ new Pair(new A(), new B()).setfst(new B())
+[Or as an 'e': (term (('new Pair(('new A()) ('new B()))) · setfst(('new B())))) ]
+
+To evaluate the above 'MAIN:
+
+ - refer to class definitions to 
