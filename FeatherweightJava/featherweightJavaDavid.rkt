@@ -4,7 +4,7 @@
 ; e: expression
 ; L: class declaration
 ; K: constructor declaration
-;    ([c_name] (([type] [field-name])
+; M: method declaration
 
 
 ; x: variable
