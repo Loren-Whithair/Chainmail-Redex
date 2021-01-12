@@ -24,7 +24,7 @@ git log: view your commit history
 
 git checkout [[commit] hash code]: changes active branch to [commit]
 
-git checout -b [chosen branch name] [[commit] hash code]: changes active branch to [commit] and saves [commit] to [chosen branch name]
+git checkout -b [chosen branch name] [[commit] hash code]: changes active branch to [commit] and saves [commit] to [chosen branch name]
 
 git commit -am “[message]”: adds and commits changes
 
