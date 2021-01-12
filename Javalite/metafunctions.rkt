@@ -44,7 +44,7 @@
 
 
 (define-metafunction Javalite
-  h-malloc-n : h number -> (loc ...)
+  h-malloc-n : h number -> (loc ...)  ;returns a list of new heap locations for n values
   [(h-malloc-n h number)
    (loc_0 ...)
    (where ((loc_0 ...)) (h-malloc-n* h number))])
@@ -190,13 +190,13 @@ class-name : CL -> C
     ( C_0 ... C_1 )])
 
 (define-metafunction Javalite
-   class-lookup : C -> CL
+   class-lookup : C -> CL   ;gets a class definition:  (CL ::= (class C extends C ([T f] ...) (M ...)))   - so that we can get methods from the class
    [( class-lookup ( CL_0 ... CL_1 CL_2 ...) C)
     CL_1
     ( side-condition ( equal ? ( term ( class-name CL_1 )) ( term C )))])
 
 (define-metafunction Javalite
-   class-list-from-object : object -> (C ...)
+   class-list-from-object : object -> (C ...)  ;gets the list of classes (all super classes + self), from a raw object
    [( class-list-from-object ( C_0 ( C_1 [ f_1 loc_1 ] ...) ...))
     ; Restrict out the current cast -- Object will be first class
     ( C_1 ...)])
@@ -243,7 +243,7 @@ class-name : CL -> C
     (x ...)])
 
 (define-metafunction Javalite
-   method-lookup : CL m -> any
+   method-lookup : CL m -> any  ;gets the spec of the method called 'm' from the class description 'CL'
    [( method-lookup ( class C_0 extends C_1 ([ T x ] ...) ( M_0 ... M_t M_1 ...)) m)
     ( C_0 ( method-args M_t ) ( method-expression M_t ))
     ( side-condition ( equal ? ( term ( method-name M_t )) ( term m )))]
@@ -252,10 +252,12 @@ class-name : CL -> C
     ( side-condition ( equal ? ( findf (? ( i) ( equal ? ( term ( method-name ,i )) ( term m )))
                                        ( term (M ...))) #f ))])
 
-( define (- > bool v)
+
+;TODO: check if the spaces (in - > and in ' true) are meant to be there
+( define (- > bool v) ; converts a Racket bool into a Javalite bool
    ( if v
-        ’ true
-        ’ false ))
+        ’ true  
+        ’ false))
 
 (define-metafunction Javalite
    cast : object C -> object   ; cast to a new type
