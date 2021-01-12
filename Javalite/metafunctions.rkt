@@ -260,7 +260,7 @@ class-name : CL -> C
         ’ false))
 
 (define-metafunction Javalite
-   cast : object C -> object   ; cast to a new type
+   cast : object C -> object   ; cast to a new type  ;FOR TYPES
    [( cast ( C_1 ( C_2 [ f_2 loc_2 ] ...) ...
                  ( C_3 [ f_3 loc_3 ] ...)
                  ( C_4 [ f_4 loc_4 ] ...) ...) C_3 )
@@ -268,16 +268,17 @@ class-name : CL -> C
           ( C_3 [ f_3 loc_3 ] ...)
           ( C_4 [ f_4 loc_4 ] ...) ...)])
 
-( define ( cast ? object C_t )
+;TODO: SPACES  (cast ?)
+( define ( cast ? object C_t ) ;checks if a cast can be done to that type, returns a Racket bool  ;FOR TYPES
 
-( define inner-cast ?
+( define inner-cast ?   ;FOR TYPES 
    ( term-match / single
                 Javalite
                 [( C_1 ( C_2 [ f_2 loc_2 ] ...) ...)
                  ( term ( C_1 C_2 ...))]))
    ( if ( member C_t ( inner-cast ? object )) #t #f ))
 
-( define ( cast ?/- > bool object C_t )
+( define ( cast ?/- > bool object C_t )  ;checks if the object can be cast to that type, returns a Javalite bool ;FOR TYPES
    (- > bool ( cast ? object C_t )))
 
 (define-metafunction Javalite
