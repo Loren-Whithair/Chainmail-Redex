@@ -1,6 +1,6 @@
 # Chainmail-Redex
 
-A repo to store our work with the Chainmail language, along with exercises and work we've done in Redex.
+A repo to store our work with the Chainmail language, along with exercises and other work we've done in Redex.
 
 Our focus is modelling the Chainmail language in Redex, which is written about in this paper: https://arxiv.org/abs/2002.08334
 
