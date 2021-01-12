@@ -47,7 +47,8 @@
      ....
      (raw v @ m (v ...)))
 
-  (object ::= ((C [f loc] ...) ...)) ; storage format for Objects in the heap ↓↓↓
+  (object ::= ((C [f loc] ...) ...)) ; a list of classes (super + self), tupled, with their list of field names and the locations of the fields in the heap
+  ;this ↑↑↑ is the  storage format for Objects in the heap ↓↓↓
   (hv ::= v object)
   
   (h ::=   ;heap

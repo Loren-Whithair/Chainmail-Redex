@@ -2,9 +2,10 @@
 (require redex)
 
 (define-metafunction Javalite
-  get-length : (any ...) -> number
+  get-length : (any ...) -> number   ;finds the length of the field list of a class
   [(get-length (any_0 ...))
    ,(length (term (any_0 ...)))])
+
 
 (define-metafunction Javalite
   default-value : T -> v
@@ -15,8 +16,9 @@
   [(default-value C)
    null ])
 
+
 (define-metafunction Javalite
-  default-value* : (T ...) -> (v ...)
+  default-value* : (T ...) -> (v ...)  ; generates list of default values (v ...) corresponding to given list of types (T ...)
   [(default-value* ())
    ()]
   [(default-value* (T_0 T_1 ...))
@@ -28,21 +30,25 @@
   [(h-max (h [loc -> hv]))
    ,(max (term loc) (term (h-max h)))])
 
+
 (define-metafunction Javalite
-  h-malloc : h -> number
+  h-malloc : h -> number   ; allocates location to object in heap 
   [(h-malloc h)
    ,(add1 (term (h-max h)))])
+
 
 (define-metafunction Javalite
   h-malloc-n-helper : number number -> (loc ...)
   [(h-malloc-n-helper number_b number_c)
    ,(let ([z (term number_b)]) (build-list (term number_c) (lambda (y) (+ y z))))])
 
+
 (define-metafunction Javalite
   h-malloc-n : h number -> (loc ...)
   [(h-malloc-n h number)
    (loc_0 ...)
    (where ((loc_0 ...)) (h-malloc-n* h number))])
+
 
 (define-metafunction Javalite
   internal-h-malloc-n* : number (number ...) -> (number (loc ...) ...)
@@ -61,11 +67,12 @@
    (where (number_t (loc_1 ...)
                     (internal-h-malloc-n* number_i (number_1 number_2 ...))))])
 
-(define-metafunction Javalite h-malloc-n* : h number ... -> ((loc ...) ...)
+
+(define-metafunction Javalite
+  h-malloc-n* : h number ... -> ((loc ...) ...)  ; allocates space in heap for n objects (in format ((loc ... ) ...) to correspond to heirarchy of class fields (([T f] ...) ...)
   [(h-malloc-n* h number_0 ...)
    (( loc_0 ...) ...)
    (where (number (loc_0 ...) ...) (internal-h-malloc-n* (h-malloc h) (number_0 ...)))])
-;   ...)
 
 
 
@@ -79,8 +86,10 @@ any_ans]
    (storelike-lookup any_0 any_t)
    (side-condition (not (equal? (term any_k) (term any_t))))])
 
+
 (define (id-<= a b)
 (string <=? (symbol- >string a) (symbol- >string b)))
+
 
 (define (storelike-extend <= storelike k hv)
   (match storelike
@@ -94,31 +103,37 @@ any_ans]
         [else
          ‘((,storelike [,ki -> ,hvi]) [,k -> ,hv])])]))
 
+
 (define (storelike-extend* <= storelike extend*)
   (match extend*
     [’() storelike]
     [‘([,k -> ,hv] . ,extend*)
       (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
 
+
 (define-metafunction Javalite
-  h-lookup : h loc -> hv
+  h-lookup : h loc -> hv     ;lookup the value stored in a location in the heap
   [(h-lookup h loc)
    (storelike-lookup h loc)])
 
+
 (define-metafunction Javalite
-  h-extend* : h [loc -> hv] ... -> h
+  h-extend* : h [loc -> hv] ... -> h   ; adds new location-value pairing to existing heap
   [(h-extend* h [loc -> hv] ...)
    ,(storelike-extend* <= (term h) (term ([loc -> hv] ...)))])
 
+
 (define-metafunction Javalite
-  ?-lookup : ? x -> loc
+  ?-lookup : ? x -> loc   ;gets location in heap of the variable locally named x  (η-lookup)
   [(?- lookup ? x)
    (storelike-lookup ? x)])
+
 
 (define-metafunction Javalite
   ?-extend* : ? [x -> loc] ... -> ?
   [(?-extend* ? [x -> loc] ...)
    ,(storelike-extend* id-<= (term ?) (term ([x -> loc] ...)))])
+
 
 (define-metafunction Javalite
   restricted-field-lookup : object f -> loc
@@ -136,12 +151,14 @@ any_ans]
      ( not ( member ( term f_target )
                     ( term ( f_t1 ... f_1 ... ...)))))])
 
+
 (define-metafunction Javalite
-  field-lookup : object f -> loc
+  field-lookup : object f -> loc   ;finds the location in heap of field f in the 'object'
   [(field-lookup object f_target)
    (restricted-field-lookup (restrict-object object) f_target)])
 
-( define-metafunction javalite
+
+(define-metafunction Javalite
 restrict-object : object -> object
    [( restrict-object ( C_c ( C_0 [ f_0 loc_0 ] ...) ...
                             ( C_c [ f_c loc_c ] ...)
@@ -149,42 +166,43 @@ restrict-object : object -> object
     ( C_c ( C_0 [ f_0 loc_0 ] ...) ...
           ( C_c [ f_c loc_c ] ...))])
 
-;;;;;;;;;NEW COPY PASTE
 
-( define-metafunction javalite
+;;;;;;;;; below: my copy paste (compared to David's, i.e. may be errors above)
+
+(define-metafunction Javalite
 class-name : CL -> C
    [( class-name ( class C_t extends C ([ T f] ...) (M ...)))
     C_t ])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    parent-name : CL - > C
    [( parent-name ( class C extends C_p ([ T f ] ...) (M ...)))
     C_p ])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    field-list : CL -> ([ T f] ...)
    [( field-list ( class C extends C_p ([ T f] ...) (M ...)))
     ([ T f ] ...)])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    class-list-extend : (C ...) C -> (C ...)
    [( class-list-extend ( C_0 ...) C_1 )
     ( C_0 ... C_1 )])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    class-lookup : C -> CL
    [( class-lookup ( CL_0 ... CL_1 CL_2 ...) C)
     CL_1
     ( side-condition ( equal ? ( term ( class-name CL_1 )) ( term C )))])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    class-list-from-object : object -> (C ...)
    [( class-list-from-object ( C_0 ( C_1 [ f_1 loc_1 ] ...) ...))
     ; Restrict out the current cast -- Object will be first class
     ( C_1 ...)])
 
-( define-metafunction javalite
-   class-parents + self : C -> (C ...)
+(define-metafunction Javalite
+   class-parents + self : C -> (C ...)   ;generates a list including the super classes of C and the class C
    [( class-parents + self Object )
     ( class-list-extend () Object )]
    ; id retricts out the base case above
@@ -193,13 +211,13 @@ class-name : CL -> C
     ( where CL ( class-lookup id ))
     ( where C_p ( parent-name CL ))])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    field-lists-extend : (([ T f] ...) ...) ([ T f] ...) -> (([ T f ] ...) ...)
    [( field-lists-extend (([ T_0 f_0 ] ...) ...) ([ T_1 f_1 ] ...))
     (([ T_0 f_0 ] ...) ... ([ T_1 f_1 ] ...))])
 
-( define-metafunction javalite
-   fields-parents + self : C -> (([ T f ] ...) ...)
+(define-metafunction Javalite   ;creates a list containing the fields of class C AND it's super-classes.
+   fields-parents + self : C -> (([ T f ] ...) ...)  ; returns a ([T f] ...) for every class in heirarchy
    [( fields-parents + self Object )
    ( field-lists-extend () ())]
    ; id restricts out the base case above
@@ -209,22 +227,22 @@ class-name : CL -> C
     ( where C_p ( parent-name CL ))
     ( where ([ T f] ...) ( field-list CL ))])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    method-name : M -> m
    [( method-name ( T_0 m ([ T_1 x] ...) e ))
     m ])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    method-expression : M - > e
    [( method-expression ( T_0 m ([ T_1 x] ...) e ))
     e ])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    method-args : M -> (x ...)
    [( method-args ( T_0 m ([ T_1 x] ...) e ))
     (x ...)])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    method-lookup : CL m -> any
    [( method-lookup ( class C_0 extends C_1 ([ T x ] ...) ( M_0 ... M_t M_1 ...)) m)
     ( C_0 ( method-args M_t ) ( method-expression M_t ))
@@ -239,8 +257,8 @@ class-name : CL -> C
         ’ true
         ’ false ))
 
-( define-metafunction javalite
-   cast : object C -> object
+(define-metafunction Javalite
+   cast : object C -> object   ; cast to a new type
    [( cast ( C_1 ( C_2 [ f_2 loc_2 ] ...) ...
                  ( C_3 [ f_3 loc_3 ] ...)
                  ( C_4 [ f_4 loc_4 ] ...) ...) C_3 )
@@ -252,7 +270,7 @@ class-name : CL -> C
 
 ( define inner-cast ?
    ( term-match / single
-                javalite
+                Javalite
                 [( C_1 ( C_2 [ f_2 loc_2 ] ...) ...)
                  ( term ( C_1 C_2 ...))]))
    ( if ( member C_t ( inner-cast ? object )) #t #f ))
@@ -260,17 +278,17 @@ class-name : CL -> C
 ( define ( cast ?/- > bool object C_t )
    (- > bool ( cast ? object C_t )))
 
-( define-metafunction javalite
+(define-metafunction Javalite
    instanceof * : object C -> v
    [( instanceof * ( C_1 ( C_2 [ f_2 loc_2 ] ...) ...) C_t )
     ,(- > bool ( member ( term C_t ) ( term ( C_2 ...))))])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    inject : P - > state
    [( inject ( (C m )))
     ( mt mt (( new C) @ m ()) ret )])
 
-( define-metafunction javalite
+(define-metafunction Javalite
    inject / with-state : state m -> state
    [( inject / with-state ( h ? e k ) m)
     ( h ? (e @ m ()) ret )])
