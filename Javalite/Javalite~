@@ -1,0 +1,41 @@
+#lang racket
+(require redex)
+
+(define-language Javalite
+  (P ::= (μ (C m)))
+  (μ ::= (CL ...))
+  (T ::=
+     bool
+     unit
+     C)
+  (CL ::= (class C 'extends C ([T f] ...) (M ...)))
+  (M ::= (T m ([T x] ...) e))
+
+  (e ::=
+     x
+     v
+     (new C)
+     (e $ f)
+     (e @ m (e ...))
+     (C e)
+     (e instanceof C)
+     (x := e)
+     (x $ f := e)
+     (if e e else e)
+     (var T x := e in e)
+     (begin e ...))
+
+  (x ::= this id)
+  (f ::= id)
+  (m ::= id)
+  (C ::= Object id)
+
+  (id ::= variable-not-otherwise-mentioned)
+  (pointer ::= (addr loc C) null)
+  (v ::=
+     pointer
+     true
+     false
+     unit
+     error)
+  (loc ::= number))
