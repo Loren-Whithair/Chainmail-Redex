@@ -1,0 +1,33 @@
+git commands:
+
+git clone [github link]: create directory for code stored at [github link]
+
+git status: see staging area
+
+git add [file]: adds file to staging area (use git add * for all files in directory)
+
+git commit -m “[message]“: commits file in staging area to repository with [message]
+
+git push orign [branch name]: commits file stored in local repository to remote repository
+
+git branch: see all branches
+
+git checkout [branch name]: move to [branch name] branch
+
+git merge [branch]: merge test branch into [current branch]
+
+git branch -d [branch]: deletes [branch] in local repository
+
+git push origin --delete [branch]: deletes [branch] in remote repository
+
+git log: view your commit history
+
+git checkout [[commit] hash code]: changes active branch to [commit]
+
+git checout -b [chosen branch name] [[commit] hash code]: changes active branch to [commit] and saves [commit] to [chosen branch name]
+
+git commit -am “[message]”: adds and commits changes
+
+git pull origin: gets the latest code from the remote repository to your local repository
+
+git restore --staged [file]: unstage [file]

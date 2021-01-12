@@ -22,7 +22,7 @@
      (new C(e ...)) ;; new class
      ((C) e)
      x)
-  (L (class C 'extends C {(C f) ..._1 (C ((C f) ..._1) {super (f ...) '\0' (this @ f = f) ...}) M ...}))
+  (L (class C 'extends C {(C f) ..._1 (C ((C f) ..._1) {super (f ...) \\ (this @ f = f) ...}) M ...}))
   ;(L (class C 'extends C {(C f) ..._1 K M...}))
   (K (C ((C f) ..._1) {super (f ...) // (this @ f = f) ...}))
   (M (C m ((C x) ...) {return e}))
