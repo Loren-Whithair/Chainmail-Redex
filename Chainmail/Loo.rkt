@@ -1,0 +1,26 @@
+#lang racket
+(require redex)
+
+(define-language Loo
+  (ClassDesc ::= (class ClassID(x...) { (FieldDecl)... (CDecl)? (MethDecl)... (GhosDecl)... }))
+  (FieldDecl ::= (field f))
+  (CDecl ::= (constructor(x...) { Stmts }))
+  (MethDecl ::= (method m(x...) { Stmts }))
+  (Stmts ::= Stmt
+             (Stmt $ Stmts))
+  (Stmt ::= (x @ f := x)
+            (x := x @ f)
+            (x := x @ m(x...))
+            (x := new C(x...))
+            (return x))
+  (GhostDecl ::= ghost f(x...) { e })
+  (e ::= (true)
+         (false)
+         (null)
+         (x)
+         (e = e)
+         (if e then e else e)
+         (e @ f(e...)))
+  (x ::= variable-otherwise-not-mentioned)
+  (f ::= variable-otherwise-not-mentioned)
+  (m ::= variable-otherwise-not-mentioned))

@@ -3,10 +3,8 @@
 
 ; e: expression
 ; L: class declaration
-;    (class [c_name] extends [c_super] {(list of field decls) // [Constructor] [Method decl...])
-
 ; K: constructor declaration
-;    ([c_name] (([type] [field-name])
+; M: method declaration
 
 
 ; x: variable
@@ -14,7 +12,7 @@
 ; M: method declaration
 ; C: class name
 
-;semi-colons are replaced with // and extends is replaced with 'extends (it's a keyword)
+; semi-colons are replaced with \\ and extends is replaced with 'extends (because it's a keyword)
 
 (define-language FJ
   (e (e @ f) ;; field access
@@ -31,10 +29,3 @@
   (f variable-not-otherwise-mentioned)         ;; fieldID
   (m variable-not-otherwise-mentioned)         ;; methodID
   (C variable-not-otherwise-mentioned))        ;; classID
-
-
-
-
-
-
-

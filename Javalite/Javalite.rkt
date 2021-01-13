@@ -12,12 +12,14 @@
      bool
      unit
      C)
+
   (CL ::= (class C extends C ([T f] ...) (M ...)))  ;; class declaration
   (M ::= (T m ([T x] ...) e))   ;; method declaration
   (e ::=
      x
      v
      (new C)
+
      (e $ f) ; ---------- ;; field access
      (e @ m (e ...)) ; -- ;; method invocation, with first e as the object the method is being invoked on and (e ...) the args
      (e == e)
@@ -50,12 +52,14 @@
 (define-extended-language
   JL-Machine Javalite
   
+
   (e ::=  ;; expression, (i.e. control string)
      ....
      (raw v @ m (v ...)))   ;; a method call once all of the expressions (both the subject and the args) have been swapped out for their evaluated values from the heap
 
   
   (object ::= ((C [f loc] ...) ...)) ;; a list of classes (super + self), tupled, with their list of field names and the locations of the fields in the heap
+
 
   (hv ::= v object) ;; objects that can be stored in the heap
   
@@ -84,4 +88,3 @@
      (var T x := * in e -> k)        ;; reducing an expression for assignment to a local variable
      (begin * (e ...) -> k)          ;; reducing an expression in a list of expression to be reduced
      (pop η k)))                     ;; restoring the local environment η before continuing with k
-
