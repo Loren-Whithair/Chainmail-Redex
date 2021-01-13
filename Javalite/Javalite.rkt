@@ -215,23 +215,75 @@
         (μ h_0 η v k)  ; ------  ;; alters the value that x points to in the heap:
         "assign"
         (where loc (η-lookup η x))  ; -------- ;; finds the location number in the heap of the local variable x
-        (where h_0 (h-extend* h [loc -> v])))  ;; sets the value at 'loc' in the heap to the new value
+        (where h_0 (h-extend* h [loc -> v])))  ;; sets the value at position 'loc' in the heap to the value being assigned
    
 
    ; assign Field
-   (--> (μ h η (x $ f := e) k)
-        (μ h η e (x $ f := * -> k))
+   (--> (μ h η (x $ f := e) k)       ;; in preparation
+        (μ h η e (x $ f := * -> k))  ;; sets the thing being assigned as the expression to be evaluated, updates continuation
         "assign field -- object eval")
    
-   (--> (μ h η v (x $ f := * -> k))
-        (μ h_0 η v k)
+   (--> (μ h η v (x $ f := * -> k))   ;;
+        (μ h_0 η v k) ; ------------- ;; alters the value that x $ f points to in the heap:
         "assign field"
-        (where loc_0 (η-lookup η x))
-        (where (addr loc_1 C) (h-lookup h loc_0))
-        (where object (cast (h-lookup h loc_1) C))
-        (where loc_2 (field-lookup object f C))
-        (where h_0 (h-extend* h [loc_2 -> v])))
+        (where loc_0 (η-lookup η x))  ; ----------- ;; finds the location in the heap of the variable x
+        (where (addr loc_1 C) (h-lookup h loc_0))   ;; uses the location to get the pointer to x
+        (where object (cast (h-lookup h loc_1) C))  ;; uses the pointer to get the object assigned to x
+        (where loc_2 (field-lookup object f C))     ;; uses the object to get the field's location 
+        (where h_0 (h-extend* h [loc_2 -> v])))     ;; sets the value at position 'loc' in the heap to the field value being assigned
+
+
+   ; if-then-else
+   (--> (μ h η (if e_p e_t else e_f) k)  ; -- ;; in preparation
+        (μ h η e_p (if * e_t else e_f -> k))  ;; sets the predicate 'e' as the next expression to be evaluated
+        "if-then-else -- object eval")
    
+   (--> (μ h η v (if * e_t else e_f -> k))
+        (μ h η ,(if (equal? (term v) (term true)) (term e_t) (term e_f)) k)
+        "if-then-else")  ;; uses Racket's 'if-then-else' function to set either e_t or e_f as the next expression to be evaluated
+
+   
+   ; variable declaration
+   (--> (μ h η (var T x := e_0 in e_1) k)       ;; in preparation
+        (μ h η e_0 (var T x := * in e_1 -> k))  ;; sets the expression we are assigning to the new variable as the expression to next be evaluated
+        "variable declaration -- object eval")
+   
+   (--> (μ h η v (var T x := * in e_1 -> k))
+        (μ h_0 η_0 e_1 (pop η k))  ; ----------- ;; updates the heap to contain the new var, the local scope to contain the new var, and the continuation to be prepared to remove the local var
+        "variable declaration"
+        (where loc_x (h-malloc h))  ; ---------- ;; allocates a new location value for the variable 'x'
+        (where h_0 (h-extend* h [loc_x -> v]))   ;; sets the value of said location to the desired value 'v'
+        (where η_0 (η-extend* η [x -> loc_x])))  ;; updates the local scope with 'x' having the specified location
+
+   
+   ; begin
+   (--> (μ h η (begin) k)
+        (μ h η unit k)
+        "begin -- empty expression list")  ;; an empty set of commands just evaluates to the default 'unit'
+
+   (--> (μ h η (begin e_0 e_1 ...) k)        
+        (μ h η e_0 (begin * (e_1 ...) -> k)) ;; sets the first expression in the 'begin' sequence as the expression to be evaluated, updates continuation 
+        "begin -- e_0 evaluation")
+
+   (--> (μ h η v (begin * (e_i e_i+1 ...) -> k))  ;; once the previous expression has been reduced to a value 'v'... 
+        (μ h η e_i (begin * (e_i+1 ...) -> k))    ;; ... sets the next expression in the 'begin' sequence as the expression to be evaluated, updates continuation
+        "begin -- e_i evaluation")
+
+   #;(--> (μ h η v (begin * (e_n) -> k))   ;; once all but the last expression have been reduced to some values...
+        (μ h η e_n (begin * () -> k))  ; - ;; ... sets the last expression in the 'begin' sequence as the expression to be evaluated, updates continuation 
+        "begin -- e_n evaluation")
+
+   (--> (μ h η v (begin * () -> k))  ;; once all the expressions have been reduced to values (which also means that the heap and local vars have been altered)...
+        (μ h η v k)  ; ------------- ;; ... remove the 'begin' sequence from the continuation 
+        "begin -- complete")
+   
+
+   ; Pop η (close scope)
+   (--> (μ h η v (pop η_0 k)) 
+        (μ h η_0 v k)   ;; replaces the local scope with the previous one from one level out (meaning the most local variables are removed)
+        "pop η")
+   ))
+
 ; -----------------------------------------------------
 ; ------------------ HELPER FUNCTIONS -----------------
 ; -----------------------------------------------------
