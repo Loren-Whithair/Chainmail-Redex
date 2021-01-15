@@ -456,8 +456,8 @@
   [(class-name (class C_t extends C ([T f] ...) (M ...))) ;; just works on the head of the list
    C_t])
 
-; returns the parent (ie: the class the input class extends from)
-; (recall- every class extends from something in Javalite)
+; returns the name of the parent of a class (ie: the class the input class extends from)
+; (recall- every class extends from something in Javalite so this is a well defined operation)
 ; ex: (parent-name (class A extends B {...})) will return 'B'
 (define-metafunction JL-Machine
   parent-name : CL -> C
@@ -501,6 +501,7 @@
    (where CL (class-lookup μ id))
    (where C_p (parent-name CL))])
 
+; extends a list of fields by appending another list of fields to the end
 (define-metafunction JL-Machine
   field-lists-extend : (([T f] ...) ...) ([T f] ...) -> (([T f] ...) ...)
   [(field-lists-extend  (([T_0 f_0] ...) ...) ([T_1 f_1] ...))
