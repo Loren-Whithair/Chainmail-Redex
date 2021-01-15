@@ -3,6 +3,8 @@
 
 (define-language Loo
 
+;  (Mod ::= (C
+  
   (ClassDesc ::= (class C(x ...) { (FieldDecl) ... (CDecl)? (MethDecl) ... (GhostDecl) ... }))
   (FieldDecl ::= (field f))
   (CDecl ::= (constructor(x ...) { Stmts }))
@@ -39,15 +41,10 @@
      null
      addr
      (addr ...))
-  (Object ::= (ClassID (f -> v) ...))
+  (Object ::= (C (f -> v) ...))
 
-  (Continuation ::=   ;;Continuation ;;TODO: may need more continuation definitions
-     Stmts
-     (x := * $ Stmts))
-  (ϕ ::= (CodeStub ((ident -> v) ...)))  ;; Frame   (TODO: idenfitiers?)
-  (ψ ::=  ϕ  (ϕ · ψ))  ; --------------- ;; Stack
-  (χ ::= ((addr -> Object) ...)) ; ----- ;; heap
-  (σ ::= (ψ · χ)))  ; ------------------ ;; runtime config
-
-
-
+  (Continuation ::=  Stmts (x := * $ Stmts)) ;;Continuation ;;TODO: may need more continuation definitions
+  (ϕ ::= (CodeStub ((ident -> v) ...))) ; ---- ;; Frame   (TODO: idenfitiers?)
+  (ψ ::=  ϕ  (ϕ · ψ))  ; --------------------- ;; Stack
+  (χ ::= ((addr -> Object) ...)) ; ----------- ;; Heap
+  (σ ::= (ψ · χ)))  ; ------------------------ ;; Runtime Config
