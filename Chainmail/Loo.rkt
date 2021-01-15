@@ -24,3 +24,22 @@
   (x ::= variable-otherwise-not-mentioned)
   (f ::= variable-otherwise-not-mentioned)
   (m ::= variable-otherwise-not-mentioned))
+
+
+
+
+(define-extended-language Loo-Machine Loo
+  (addr ::= natural)  ;;addresses
+  (v ::=    ;;values
+     null
+     addr
+     (addr ...))
+  (Object ::= (ClassID (f -> v) ...))
+
+  (Continuation ::=   ;;Continuation ;;TODO: may need more continuation definitions
+     Stmts
+     (x := * $ Stmts))
+  (ϕ ::= (CodeStub ((ident -> v) ...)))  ;; Frame   (TODO: idenfitiers?)
+  (ψ ::=  ϕ  (ϕ · ψ))  ; --------------- ;; Stack
+  (χ ::= ((addr -> Object) ...)) ; ----- ;; heap
+  (σ ::= (ψ · χ)))  ; ------------------ ;; runtime config

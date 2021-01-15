@@ -1,0 +1,111 @@
+Loo vs Javalite: notes, comparisons
+
+
+
+Question and notes regarding Loo:
+
+- we only need expression for ghost functions, nothing else (...?)
+  
+  ------------------------------------
+  ----------------Loo-----------------
+  ------------------------------------
+
+
+(define-language Loo
+  (ClassDesc ::= (class ClassID(x ...) { (FieldDecl) ... (CDecl)? (MethDecl) ... (GhosDecl) ... }))    
+  (FieldDecl ::= (field f))
+  (CDecl ::= (constructor(x ...) { Stmts }))
+  (MethDecl ::= (method m(x ...) { Stmts }))
+  (Stmts ::= Stmt
+             (Stmt $ Stmts))
+  (Stmt ::= (x @ f := x)   ;field assgn
+            (x := x @ f)   ; field access
+            (x := x @ m(x ...))
+            (x := new C(x ...))
+            (return x))
+  (GhostDecl ::= ghost f(x ...) { e })   ;; ???MISSING FROM JAVALITE???
+  (e ::= (true)
+         (false)
+         (null)
+         (x)
+         (e = e)
+         (if e then e else e)
+         (e @ f(e ...)))
+  (x ::= variable-otherwise-not-mentioned)
+  (f ::= variable-otherwise-not-mentioned)
+  (m ::= variable-otherwise-not-mentioned))
+  
+  
+  ;;;;;;;;;;;;
+  
+  Loo has a method, ghostfield, and constructor lookup
+  
+  
+  The method lookup is defined if the class is given - do we want a similar system to Javalite where all the classes are grouped together in global scope?
+       Or, because internal/external modules are important, do we want to incorporate these into there?
+       
+  
+  OPERATIONAL SEMANTICS, comparison
+elem      | Loo          | Javalite
+----------|--------------|----------
+frame     | ϕ            | part of state (similar): (η + e)
+stack     | ψ            | (managed by state, not explicitly an element)
+heap      | χ            | h
+contin.   | Continuation | k (but defn. in Loo paper is much less detailed than Javalite) 
+class list| !not there!  | μ
+  
+  
+  
+  ------------------------------------
+  --------------JAVALITE--------------
+  ------------------------------------
+  
+  (define-language Javalite
+  (P ::= (μ (C m)))
+  (μ ::= (CL ...))   ;; class list   ;;Loo modules? Would need the concept of multiple separate modules
+  (T ::=  ;; types   ;; NOT IN LOO
+     bool   
+     unit
+     C)
+
+  (CL ::= (class C extends C ([T f] ...) (M ...)))  ;; class declaration == Loo ClassDesc. very similar, ?no extensions in Loo?
+  (M ::= (T m ([T x] ...) e))   ; ----------------- ;; method decl == Loo MethDecl. very similar
+ 
+ (e ::=      ;; ~~ Loo (Stmt + e)
+     x       ;; in Loo e
+     v       ;; in Loo e (true false null)
+     (new C) ;; in Loo Stmt (x := new C(x ...))
+
+     (e $ f) ; ---------- ;; field access ~~ Loo Stmt (x := x @ f)
+     (e @ m (e ...)) ; -- ;; method invocation ~~ Loo Stmt (x := x @ m(x...))
+     (e == e)  ; -------- ;; equality == Loo e (e = e)
+     (C e)  ; ----------- ;; typecast ;; TYPES NOT IN LOO
+     (e instanceof C) ; - ;; TYPES NOT IN LOO
+     (x := e)  ; -------- ;; ~~ Loo Stmt
+     (x $ f := e) ; ----- ;; field setting
+     (if e e else e)  ; - ;; == e (if e then e else e)
+     (var T x := e in e)  ;; var declaration
+     (begin e ...)) ; --- ;; a block of code
+
+  
+  (x ::= this id) ; ----- ;; in Loo (x)
+  (f ::= id)  ; --------- ;; in Loo (f)
+  (m ::= id)  ; --------- ;; in Loo (m)
+  (C ::= Object id)  ; -- ;;
+  
+  (id ::= variable-not-otherwise-mentioned)
+  
+  (pointer ::= (addr loc C) null)
+  
+  (v ::= ;; part of Loo e
+     pointer
+     true
+     false
+     unit
+     error)  ;; variable
+  (loc ::= number))   ;; numeric location in heap  ;;not in basic Loo, but will be needed
+  
+  
+  
+  
+  
