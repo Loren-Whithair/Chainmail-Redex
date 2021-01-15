@@ -1,11 +1,15 @@
 Loo vs Javalite: notes, comparisons
 
 
+NOTES, NEXT STEPS, QUESTIONS
 
-Question and notes regarding Loo:
+Do we only need expression (e) for ghost functions, nothing else (...?)
 
-- we only need expression for ghost functions, nothing else (...?)
-  
+In the paper, Loo has a definition of field and class lookup, but it is not grammatically defined.
+We will need to add a gramatical definition so that we can use it in reductions
+
+Reductions of a state of Loo will be over the domain #:domain σ    (runtime config.)
+
   ------------------------------------
   ----------------Loo-----------------
   ------------------------------------

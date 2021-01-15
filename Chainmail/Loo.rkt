@@ -2,7 +2,8 @@
 (require redex)
 
 (define-language Loo
-  (ClassDesc ::= (class ClassID(x ...) { (FieldDecl) ... (CDecl)? (MethDecl) ... (GhosDecl) ... }))
+
+  (ClassDesc ::= (class C(x ...) { (FieldDecl) ... (CDecl)? (MethDecl) ... (GhostDecl) ... }))
   (FieldDecl ::= (field f))
   (CDecl ::= (constructor(x ...) { Stmts }))
   (MethDecl ::= (method m(x ...) { Stmts }))
@@ -14,18 +15,22 @@
             (x := new C(x ...))
             (return x))
   (GhostDecl ::= ghost f(x ...) { e })
-  (e ::= (true)
-         (false)
-         (null)
-         (x)
+  (e ::= true
+         false
+         null
+         x
          (e = e)
          (if e then e else e)
          (e @ f(e ...)))
-  (x ::= variable-otherwise-not-mentioned)
-  (f ::= variable-otherwise-not-mentioned)
-  (m ::= variable-otherwise-not-mentioned))
 
+  (x ::=      ;; VarID  (variable name)
+     this
+     id)
+  (C ::= id)  ;; ClassID (class name)
+  (f ::= id)  ;; FieldID (field name)
+  (m ::= id)  ;; MethID  (method name)
 
+  (id ::= variable-not-otherwise-mentioned))
 
 
 (define-extended-language Loo-Machine Loo
@@ -43,3 +48,6 @@
   (ψ ::=  ϕ  (ϕ · ψ))  ; --------------- ;; Stack
   (χ ::= ((addr -> Object) ...)) ; ----- ;; heap
   (σ ::= (ψ · χ)))  ; ------------------ ;; runtime config
+
+
+
