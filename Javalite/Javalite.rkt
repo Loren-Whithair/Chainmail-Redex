@@ -85,7 +85,7 @@
      (* instanceof C -> k)           ;; reducing current expression to an object on which to check membership in the class heirarchy of C
      (x := * -> k)                   ;; evaluating an expression for assignment to a variable
      (x $ f := * -> k)               ;; reducing the expression for assignment to a field
-     (if * e else e -> k)            ;; reducing thhe expresion to a value, which is the predicate of an if statement
+     (if * e else e -> k)            ;; reducing the expresion to a value, which is the predicate of an if statement
      (var T x := * in e -> k)        ;; reducing an expression for assignment to a local variable
      (begin * (e ...) -> k)          ;; reducing an expression in a list of expression to be reduced
      (pop η k)))                     ;; restoring the local environment η before continuing with k
@@ -112,14 +112,14 @@
         "new"
 
         (where (([T_0 f_0] ...) ...) (fields-parents+self μ C))  ;; (([T_0 f_0] ...) ...) list of fields in super classes and this class
-        (where (C_0 ...) (class-parents+self μ C))  ; ---------- ;; (C_0 ...) list of class identifiers containing super classes and this class
+        (where (C_0 ...) (class-parents+self μ C))               ;; (C_0 ...) list of class identifiers containing super classes and this class
         (where ((v_0 ...) ...) ((default-value* (T_0 ...)) ...)) ;; ((v_0 ...) ...) list of default values for each field, in corresponding order to (([T_0 f_0] ...) ...)
-        (where (number_0 ...) ((get-length (T_0 ...)) ...))  ; - ;; (number_0) the number of fields for each class
+        (where (number_0 ...) ((get-length (T_0 ...)) ...))      ;; (number_0) the number of fields for each class
         (where ((loc_0 ...) ...) (h-malloc-n* h number_0 ...))   ;; allocates [number_0] heap locations, one for each field
-        (where object ((C_0 [f_0 loc_0] ...) ...))  ; ---------- ;; creates 'object' with the found classID, field names and locations for the fields
-        (where h_0 (h-extend* h [loc_0 -> v_0] ... ...))  ; ---- ;; adds the mappings from locations ((loc_0 ...) ...) to the default values ((v_0 ...) ...) in the heap
-        (where loc_1 (h-malloc h_0))   ; ----------------------- ;; allocates one more location number loc_1
-        (where h_1 (h-extend* h_0 [loc_1 -> object])))  ; ------ ;; adds the mapping in the current heap from loc_1 to the object we just created
+        (where object ((C_0 [f_0 loc_0] ...) ...))               ;; creates 'object' with the found classID, field names and locations for the fields
+        (where h_0 (h-extend* h [loc_0 -> v_0] ... ...))         ;; adds the mappings from locations ((loc_0 ...) ...) to the default values ((v_0 ...) ...) in the heap
+        (where loc_1 (h-malloc h_0))                             ;; allocates one more location number loc_1
+        (where h_1 (h-extend* h_0 [loc_1 -> object])))           ;; adds the mapping in the current heap from loc_1 to the object we just created
 
    
    ; field access
