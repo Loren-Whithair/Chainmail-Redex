@@ -138,7 +138,7 @@
         (μ h η e_0 (* @ m (e_1 ...) -> k))  ;;object that the method is being called on becomes the expr to be evaluated
         "method invocation - object eval")
 
-   (--> (μ h η v (* @ m (e_0 e_1 ...) -> k))
+   (--> (μ h η v (* @ m (e_0 e_1 ...) -> k)) 
         (μ h η e_0 (v @ m () * (e_1 ...) -> k))  ;;the first argument becomes the expr to be evaluated
         "method invocation - arg0 eval")
 
@@ -181,7 +181,6 @@
         (where v_res ,(->bool (equal? (term v_0) (term v_1)))))  ;;finds the answer using Racket equal?, converts to Javalite bool
 
    
-
    ;FOR TYPES
       ; typecast
    (--> (μ h η (C e) k)
