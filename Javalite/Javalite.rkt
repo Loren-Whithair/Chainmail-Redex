@@ -109,15 +109,15 @@
    (--> (μ h η (new C) k)
         (μ h_1 η (addr loc_1 C) k)   ;; new heap, (new C) becomes a pointer to the created obj
         "new"
-        (where (([T_0 f_0] ...) ...) (fields-parents+self μ C))  ;; list of fields in super classes and this class
-        (where (C_0 ...) (class-parents+self μ C))  ; ---------- ;; 
-        (where ((v_0 ...) ...) ((default-value* (T_0 ...)) ...)) ;;
-        (where (number_0 ...) ((get-length (T_0 ...)) ...))  ; - ;; finds the number of fields for each class...
-        (where ((loc_0 ...) ...) (h-malloc-n* h number_0 ...))   ;; allocates heap locations for all of said fields...
-        (where object ((C_0 [f_0 loc_0] ...) ...))  ; ---------- ;;  
-        (where h_0 (h-extend* h [loc_0 -> v_0] ... ...))  ; ---- ;;
-        (where loc_1 (h-malloc h_0))   ; ----------------------- ;;
-        (where h_1 (h-extend* h_0 [loc_1 -> object])))  ; ------ ;;
+        (where (([T_0 f_0] ...) ...) (fields-parents+self μ C))  ;; (([T_0 f_0] ...) ...) list of fields in super classes and this class
+        (where (C_0 ...) (class-parents+self μ C))  ; ---------- ;; (C_0 ...) list of class identifiers containing super classes and this class
+        (where ((v_0 ...) ...) ((default-value* (T_0 ...)) ...)) ;; ((v_0 ...) ...) list of default values for each field, in corresponding order to (([T_0 f_0] ...) ...)
+        (where (number_0 ...) ((get-length (T_0 ...)) ...))  ; - ;; (number_0) the number of fields for each class
+        (where ((loc_0 ...) ...) (h-malloc-n* h number_0 ...))   ;; allocates [number_0] heap locations, one for each field
+        (where object ((C_0 [f_0 loc_0] ...) ...))  ; ---------- ;; creates 'object' with the found classID, field names and locations for the fields
+        (where h_0 (h-extend* h [loc_0 -> v_0] ... ...))  ; ---- ;; adds the mappings from locations ((loc_0 ...) ...) to the default values ((v_0 ...) ...) in the heap
+        (where loc_1 (h-malloc h_0))   ; ----------------------- ;; allocates one more location number loc_1
+        (where h_1 (h-extend* h_0 [loc_1 -> object])))  ; ------ ;; adds the mapping in the current heap from loc_1 to the object we just created
 
    
    ; field access

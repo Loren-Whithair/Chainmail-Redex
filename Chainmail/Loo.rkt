@@ -3,8 +3,7 @@
 
 (define-language Loo
 
-;  (Mod ::= (C
-  
+
   (ClassDesc ::= (class C(x ...) { (FieldDecl) ... (CDecl)? (MethDecl) ... (GhostDecl) ... }))
   (FieldDecl ::= (field f))
   (CDecl ::= (constructor(x ...) { Stmts }))
@@ -48,3 +47,5 @@
   (ψ ::=  ϕ  (ϕ · ψ))  ; --------------------- ;; Stack
   (χ ::= ((addr -> Object) ...)) ; ----------- ;; Heap
   (σ ::= (ψ · χ)))  ; ------------------------ ;; Runtime Config
+
+
