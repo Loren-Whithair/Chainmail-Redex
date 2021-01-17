@@ -3,7 +3,10 @@
 
 (define-language Loo
 
-
+  (M ::= ((C -> ClassDesc) ...))  ;;MODULE
+  ;;TODO: could it be (ClassDesc ...) ?
+  ;;TODO: is this the appropriate place to define a Module, or should this be in Loo-Machine, or separate?
+     
   (ClassDesc ::= (class C(x ...) { (FieldDecl) ... (CDecl)? (MethDecl) ... (GhostDecl) ... }))
   (FieldDecl ::= (field f))
   (CDecl ::= (constructor(x ...) { Stmts }))
@@ -47,5 +50,3 @@
   (ψ ::=  ϕ  (ϕ · ψ))  ; --------------------- ;; Stack
   (χ ::= ((addr -> Object) ...)) ; ----------- ;; Heap
   (σ ::= (ψ · χ)))  ; ------------------------ ;; Runtime Config
-
-

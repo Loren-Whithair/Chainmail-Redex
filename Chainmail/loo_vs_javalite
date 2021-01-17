@@ -4,12 +4,17 @@ Loo vs Javalite: notes, comparisons
 NOTES, NEXT STEPS, QUESTIONS
 --------------------------------
 
-Modules need defining in the grammar (potentially can be similar in structure to Javalite in some regards)
+An attempt to define Modules is in the grammar, within the grammar for Loo.
+TODO: should it be 
+
+
 
 In the paper, Loo has a definition of field and class lookup, but it is not grammatically defined.
 We will need to add a gramatical definition so that we can use it in reductions.
 
 Loo has a method, ghostfield, and constructor lookup.
+
+!!!GhostDecl exist in Loo but not in Javalite!!!
 
 Reductions of a state of Loo will be over #:domain σ    (runtime configs)
 
@@ -19,15 +24,37 @@ when we begin execution of a new method call, expr etc.
 Do we only need expression (e) for ghost functions, nothing else (...?)
 
 
+
+    GRAMMAR COMPARISON
+ Loo       | Javalite
+-----------|-------------
+ M         | μ
+ ClassDesc | CL
+ FieldDecl | !no equivalent! -- used for ClassDesc, declaring class fields
+ CDecl     | !no equivalent! -- constructor, not used in Javalite
+ MethDecl  | M
+ Stmts     | ~~ (begin e ...)
+ Stmt      | ~~ e (Javalite e == Loo (Stmt + e))
+ GhostDecl | !no equivalent!
+ e         | ~~ e (Javalite e == Loo (Stmt + e))
+ x         | x
+ C, f, m   | ~~C, f, m
+ id        | id
+
+ 
+
+ 
+ 
   
     OPERATIONAL SEMANTICS COMPARISON
-elem      | Loo          | Javalite
-----------|--------------|----------
-frame     | ϕ            | part of state (similar): (η + e)
-stack     | ψ            | (managed by state, not explicitly an element)
-heap      | χ            | h
-contin.   | Continuation | k (but defn. in Loo paper is much less detailed than Javalite) 
-class list| (!MODULE! + σ)     | μ   
+elem      | Loo                | Javalite
+----------|--------------------|-----------------------------------------------------------------
+frame     | ϕ                  | part of state (similar): (η + e)
+stack     | ψ                  | (managed by state, not explicitly an element)
+heap      | χ                  | h
+contin.   | Continuation       | k (but defn. in Loo paper is much less detailed than Javalite) 
+class list| (MODULE + σ)       | μ   
+address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 
     REDUCTIONS COMPARISON ~~roughly
@@ -41,65 +68,6 @@ class list| (!MODULE! + σ)     | μ
 
 
  
-
-------------------------------------
-  ----------------Loo-----------------
-  ------------------------------------
-
-
-(define-language Loo
-
-  (ClassDesc ::= (class C(x ...) { (FieldDecl) ... (CDecl)? (MethDecl) ... (GhostDecl) ... }))
-  (FieldDecl ::= (field f))
-  (CDecl ::= (constructor(x ...) { Stmts }))
-  (MethDecl ::= (method m(x ...) { Stmts }))
-  (Stmts ::= Stmt
-             (Stmt $ Stmts))
-  (Stmt ::= (x @ f := x)
-            (x := x @ f)
-            (x := x @ m(x ...))
-            (x := new C(x ...))
-            (return x))
-  (GhostDecl ::= ghost f(x ...) { e })    ;; MISSING FROM JAVALITE
-  (e ::= true
-         false
-         null
-         x
-         (e = e)
-         (if e then e else e)
-         (e @ f(e ...)))
-
-  (x ::=      ;; VarID  (variable name)
-     this
-     id)
-  (C ::= id)  ;; ClassID (class name)
-  (f ::= id)  ;; FieldID (field name)
-  (m ::= id)  ;; MethID  (method name)
-
-  (id ::= variable-not-otherwise-mentioned))
-
-  
-  
-(define-extended-language Loo-Machine Loo
-  (addr ::= natural)  ;;addresses
-  (v ::=    ;;values
-     null
-     addr
-     (addr ...))
-  (Object ::= (ClassID (f -> v) ...))
-
-  (Continuation ::=   ;;Continuation ;;TODO: may need more continuation definitions
-     Stmts
-     (x := * $ Stmts))
-  (ϕ ::= (CodeStub ((ident -> v) ...)))  ;; Frame   (TODO: idenfitiers?)
-  (ψ ::=  ϕ  (ϕ · ψ))  ; --------------- ;; Stack
-  (χ ::= ((addr -> Object) ...)) ; ----- ;; heap
-  (σ ::= (ψ · χ)))  ; ------------------ ;; runtime config
-  
-  
-
-  ;;;;;;;;;;;;
-  
        
 
   ------------------------------------

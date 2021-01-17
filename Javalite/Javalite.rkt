@@ -6,7 +6,7 @@
 ; -----------------------------------------------------
 
 (define-language Javalite
-  (P ::= (μ (C m)))
+  (P ::= (μ (C m)))   ;;bound occurrence is metafunction: inject, which turns P into a state
   (μ ::= (CL ...))   ;; class list
   (T ::=  ;; types
      bool
