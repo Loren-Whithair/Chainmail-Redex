@@ -78,6 +78,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 (define-language Loo
 
+  (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier) ;; this is for random testing
 
   (M ::=  ;;MODULE
      mt
@@ -106,6 +107,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
          (e = e)
          (if e then e else e)
          (e @ f(e ...)))
+  
+  (identifier ::= x C f m)
   
   (x ::= this id) ;; VarID  (variable name)
   (C ::= id)      ;; ClassID (class name)
