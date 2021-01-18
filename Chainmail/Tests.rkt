@@ -81,15 +81,116 @@
   (test-equal (Loo_Stmts? (term (() $ (() $ ())))) #true)
 )
 
-; Ghost Field Tests
+; Ghost fields
 (module+ test
-  (define Loo_GhostField? (redex-match? Loo GhostDecl))
+  (define Loo_GhostDecl? (redex-match? Loo GhostDecl))
 
-  ; (test-equal (redex-match? Loo GhostDecl (term (ghost f(x y) { x }))) #true) ; I have no idea why this isn't passing
+  (define true_Ghosts (list
+                          ((term (ghost f(x y) { x }))
+                           (term (ghost f_1(x_1 x_2 x_3) { true}))
+                           (term (ghost f_1() {x_1}))
+                           (term (ghost x_1() {x_2})))
+                          ))
+
+  (define false_Ghosts (list
+                        ((term (ghost f_1(true) {x_1}))
+                         (term (ghost1 f_1(x_1) {x_1})))
+                        ))
+
+  (for ([ghost_declarations true_Ghosts])
+    (test-equal (Loo_GhostDecl? ghost_declarations) #true))
   
-  ;(for ([expression true_expressions])
-  ;  (test-equal (Loo_GhostField? expression) #true))
+  (for ([ghost_declarations false_Ghosts])
+    (test-equal (Loo_GhostDecl? ghost_declarations) #false))
   )
+
+; Method Declarations
+(module+ test
+  (define Loo_MethDecl? (redex-match? Loo MethDecl))
+
+  (define true_Meths (list
+                      (;terms here
+                      )
+                      ))
+
+  (define false_Meths (list
+                       (;terms here
+                        ))
+    )
+
+  (for ([method_declarations true_Meths])
+    (test-equal (Loo_MethDecl? method_declarations) #true))
+  
+  (for ([method_declarations false_Meths])
+    (test-equal (Loo_MethDecl? method_declarations) #false))
+  )
+
+
+;Constructor Declarations
+(module+ test
+  (define Loo_CDecl? (redex-match? Loo CDecl))
+
+  (define true_Const (list
+                      (;terms here
+                      )
+                      ))
+
+  (define false_Const (list
+                       (;terms here
+                        ))
+    )
+
+  (for ([constructor_declarations true_Const])
+    (test-equal (Loo_CDecl? constructor_declarations) #true))
+  
+  (for ([constructor_declarations false_Const])
+    (test-equal (Loo_CDecl? constructor_declarations) #false))
+  )
+
+ 
+;Class Description Declarations
+(module+ test
+  (define Loo_ClassDesc? (redex-match? Loo ClassDesc))
+
+  (define true_Class (list
+                      (;terms here
+                      )
+                      ))
+
+  (define false_Class (list
+                       (;terms here
+                        ))
+    )
+
+  (for ([class_descriptions true_Class])
+    (test-equal (Loo_ClassDesc? class_descriptions) #true))
+  
+  (for ([class_descriptions false_Class])
+    (test-equal (Loo_ClassDesc? class_descriptions) #false))
+  )
+
+
+;Modules
+(module+ test
+  (define Loo_MethDecl? (redex-match? Loo MethDecl))
+
+  (define true_Meths (list
+                      (;terms here
+                      )
+                      ))
+
+  (define false_Meths (list
+                       (;terms here
+                        ))
+    )
+
+  (for ([method_declarations true_Meths])
+    (test-equal (Loo_GhostField? method_declarations) #true))
+  
+  (for ([method_declarations false_Meths])
+    (test-equal (Loo_GhostField? method_declarations) #false))
+  )
+
 
 (module+ test
   (test-results))

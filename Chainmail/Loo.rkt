@@ -92,7 +92,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
             (x := new C(x ...))
             (return x))
   
-  (GhostDecl ::= ghost f(x ...) { e })
+  (GhostDecl ::= (ghost f(x ...) { e }))  ;; missing the outermost brackets →(ghost ... e } ))←
+
   (e ::= true
          false
          null
