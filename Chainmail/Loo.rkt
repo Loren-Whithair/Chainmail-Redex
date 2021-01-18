@@ -85,7 +85,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (MethDecl ::= (method m(x ...) { Stmts }))
   (Stmts ::= Stmt
              (Stmt $ Stmts))
-  (Stmt ::= () ;; empty statement
+  (Stmt ::= () ;; empty statement- possbily delete later
             (x @ f := x)
             (x := x @ f)
             (x := x @ m(x ...))
