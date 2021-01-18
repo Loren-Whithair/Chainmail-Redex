@@ -1,6 +1,10 @@
 #lang racket
 (require redex)
 
+(provide (all-defined-out))
+
+
+
 #| 
  Loo vs Javalite: notes, comparisons
 
@@ -81,7 +85,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (MethDecl ::= (method m(x ...) { Stmts }))
   (Stmts ::= Stmt
              (Stmt $ Stmts))
-  (Stmt ::= (x @ f := x)
+  (Stmt ::= () ;; empty statement
+            (x @ f := x)
             (x := x @ f)
             (x := x @ m(x ...))
             (x := new C(x ...))
@@ -221,6 +226,10 @@ add-to-local-vars(η [x_1 -> v]): assigns value of x to x_1 and then adds to η
 ;(define-metafunction Loo-Machine
 ;  heap-change : χ [f -> y] -> χ
 ;  [[]])
+
+; (MethDecl ::= (method m(x ...) { Stmts }))
+
+
 
 
 
