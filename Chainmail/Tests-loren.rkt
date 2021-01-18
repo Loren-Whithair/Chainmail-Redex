@@ -3,6 +3,9 @@
 (require "Loo.rkt")
 
 (module+ test
+
+  (define e1 (term ((x_1 = x_4)))
+  
   (test-equal (redex-match? Loo e (term (x_1 = x_4))) #true)
   (test-equal (redex-match? Loo e (term (true = false))) #true)
   (test-equal (redex-match? Loo e (term ((true = false) = true))) #true)

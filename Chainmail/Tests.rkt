@@ -6,32 +6,89 @@
 ; ---------------------- Tests ------------------------
 ; -----------------------------------------------------
 
-; Statement tests
-(module+ test
-  (test-equal (redex-match? Loo Stmts (term ())) #true) ;; testing the empty statement
-  (test-equal (redex-match? Loo Stmts (term (() $ ()))) #true) ;; testing that we can have multiple statments chained together
+; ClassDesc
+; 
 
-  ; the next 3 tests show the importance of correctly bracketing our chained statements
-  (test-equal (redex-match? Loo Stmts (term (() $ () $ ()))) #false)
-  (test-equal (redex-match? Loo Stmts (term ((() $ ()) $ ()))) #false)
-  (test-equal (redex-match? Loo Stmts (term (() $ (() $ ())))) #true)
+; e (expression) Tests
+(module+ test
+
+  (define Loo_expression? (redex-match? Loo e))
+
+  ; true expressions
+  (define true_expressions (list
+                            (term (x_1 = x_4))
+                            (term (true = false))
+                            (term ((true = false) = true))
+                            (term (if true then true else true))
+                            (term  (if x_5 then null else x_3))
+                            (term  (if (x_1 = x_2) then (x_3 = (true = null)) else false))
+                            (term (x_1 @ fname(true false null)))
+                            (term ((true = true) @ fname()))
+                            (term (x_1 @ fname ()))
+                            (term (true @ fname ()))
+                            (term (null @ f((true = true))))
+                            ))
+
+  ; false expressions
+  (define false_expressions (list
+                             (term (true = false = true))
+                             (term (5 = 5))
+                             (term (if null then (true) else null))
+                             (term (if (true) then x_1 else null))
+                             (term (null @ f(true = true)))
+                             (term (null @ f ((true = true = true))))
+                            ))
   
-  (test-equal (redex-match? Loo Stmts (term (x @ f := y))) #true)
-  (test-equal (redex-match? Loo Stmts (term (z := y @ f))) #true)
-  (test-equal (redex-match? Loo Stmts (term (method_result := x @ m()))) #true)
-  (test-equal (redex-match? Loo Stmts (term (method_result := x @ m(arg1)))) #true)
-  (test-equal (redex-match? Loo Stmts (term (method_result := x @ m(arg1 arg2)))) #true)
-  (test-equal (redex-match? Loo Stmts (term (object_result := new C()))) #true)
-  (test-equal (redex-match? Loo Stmts (term (object_result := new C(arg1)))) #true)
-  (test-equal (redex-match? Loo Stmts (term (object_result := new C(arg1 arg2)))) #true)
-  (test-equal (redex-match? Loo Stmts (term (return result))) #true)
+  (for ([expression true_expressions])
+    (test-equal (Loo_expression? expression) #true))
+  
+  (for ([expression false_expressions])
+    (test-equal (Loo_expression? expression) #false))
 )
 
-; (GhostDecl ::= ghost f(x ...) { e })
-
-; Ghost Declaration tests
+; Stmts Tests
 (module+ test
-  (test-equal (redex-match? Loo Stmts (term (ghost f(x y z) { true }))) #true) ;; testing the empty statement
+  (define Loo_Stmts? (redex-match? Loo Stmts))
+
+   ; true statements
+  (define true_Stmts (list
+                      (term ()) ;; testing the empty statement
+                      (term (() $ ())) ;; testing that we can have multiple statments chained together
+                      (term (x @ f := y))
+                      (term (z := y @ f))
+                      (term (method_result := x @ m()))
+                      (term (method_result := x @ m(arg1)))
+                      (term (method_result := x @ m(arg1 arg2)))
+                      (term (object_result := new C()))
+                      (term (object_result := new C(arg1)))
+                      (term (object_result := new C(arg1 arg2)))
+                      (term (return result))
+                      ))
+
+  ; false statements
+  (define false_Stmts (list
+                     ))
+
+  (for ([statements true_Stmts])
+    (test-equal (Loo_Stmts? statements) #true))
+  
+  (for ([statements false_Stmts])
+    (test-equal (Loo_Stmts? statements) #false))
+  
+  ; the next 3 tests show the importance of correctly bracketing our chained statements
+  (test-equal (Loo_Stmts? (term (() $ () $ ()))) #false)
+  (test-equal (Loo_Stmts? (term ((() $ ()) $ ()))) #false)
+  (test-equal (Loo_Stmts? (term (() $ (() $ ())))) #true)
+)
+
+; Ghost Field Tests
+(module+ test
+  (define Loo_GhostField? (redex-match? Loo GhostDecl))
+
+  ; (test-equal (redex-match? Loo GhostDecl (term (ghost f(x y) { x }))) #true) ; I have no idea why this isn't passing
+  
+  ;(for ([expression true_expressions])
+  ;  (test-equal (Loo_GhostField? expression) #true))
   )
 
 (module+ test

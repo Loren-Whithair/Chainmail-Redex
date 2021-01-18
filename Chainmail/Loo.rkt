@@ -91,6 +91,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
             (x := x @ m(x ...))
             (x := new C(x ...))
             (return x))
+  
   (GhostDecl ::= ghost f(x ...) { e })
   (e ::= true
          false
