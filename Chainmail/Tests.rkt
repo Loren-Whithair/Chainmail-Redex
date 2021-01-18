@@ -94,7 +94,7 @@
 
   (define false_Ghosts (list
                         (term (ghost f_1(true) {x_1}))
-                         (term (ghost1 f_1(x_1) {x_1})))
+                        (term (ghost1 f_1(x_1) {x_1})))
                         )
 
   (for ([ghost_declarations true_Ghosts])
@@ -112,15 +112,11 @@
                       (term (method m() {()}))
                       (term (method m(arg1) {()}))
                       (term (method m(arg1 arg2) {()}))
-                      (term (method methName(a1 a2) {()})) ;new
-                      (term (method m(arg1 arg2) {((x @ f := x) $ ())})) ;new
-                      (term (method m1(arg1 arg2) {((x1 @ f1 := x1) $ ((x2 := new C1()) $ ()))})) ;new
                       ))
 
   (define false_Meths (list
                        (term (method_1 m(arg1 arg2) {()}))
                        (term (method m(1 2) {()}))
-                       (term (method m1(x_1 x_2) { ((x1 @ f1 := x1) $ (x2 @ f2 := x2) $ ())})) ;new
                        ))
 
   (for ([method_declarations true_Meths])
@@ -139,14 +135,11 @@
                       (term (constructor() {()}))
                       (term (constructor(arg1) {()}))
                       (term (constructor(arg1 arg2) {()}))
-                      (term (constructor(arg1 arg2) {(x2 @ f1 := x1)}))  ;new
-                      (term (constructor() {((x1 @ f1 := x2) $ (x2 @ f2 := x3))}))  ;new
                       ))
 
   (define false_Const (list
                        (term (constructor_1(arg1 arg2) {()}))
                        (term (constructor(1 2) {()}))
-                       (term (constructor(x1 x2) {((x1 @ f1 := x2) $ (x2 @ f2 := x3) $ (x3 @ f3 := x4))})) ;new
                        ))
     
 
@@ -206,18 +199,12 @@
   (define Loo_M? (redex-match? Loo M))
 
   (define true_Modules (list
-                        (term mt)
-                        (term (mt [C1 -> ('class C1() {})]))
-                        (term ((mt [C1 -> ('class C1() {})]) [C2 -> ('class C2() {})]))
-                        (term (mt [C1 -> ('class C1(x1) {})]))
-                        (term (mt [C1 -> ('class C(arg1 arg2) { ('field f_1) ('field f_2) (constructor(arg1 arg2) { () }) (method m() { () }) (ghost f(x y) { x }) })]))
-                     ))
+
+                      ))
 
   (define false_Modules (list
-                       (term (mt))
-                       (term ([C1 -> ('class C1() {})]))
-                       (term (([C1 -> ('class C1() {})]) [C2 -> ('class C2() {})]))
-                        ))
+                       
+                       ))
 
   (for ([Modules true_Modules])
     (test-equal (Loo_M? Modules) #true))
@@ -228,4 +215,24 @@
 
 
 (module+ test
+  (display "First we show the results of our hand written tests: \n")
   (test-results))
+
+; -----------------------------------------------------
+; ------------------ Random Testing -------------------
+; -----------------------------------------------------
+
+;; random testing of syntax
+(module+ test
+  (display "\nThen we do random testing of Loo syntax: \n")
+  (define syntax_correct? (redex-match Loo language))
+  (redex-check Loo language (syntax_correct? (term e)))
+  )
+
+(module+ test
+  (display "\nThen random testing of Loo reduction rules: ")
+  (define (reduces? e)
+    (not (null? (apply-reduction-relation expr-reductions (term (e))))))
+  
+  (redex-check Loo-Machine language (reduces? (term e)))
+  )
