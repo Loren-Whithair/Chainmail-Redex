@@ -219,9 +219,10 @@
 ; ------------------ Random Testing -------------------
 ; -----------------------------------------------------
 
+;; random testing of syntax
 (module+ test
-  ;(define syntax_correct? (redex-match Loo language))
-  ;(redex-check Loo language (syntax_correct? (term e)))
+  (define syntax_correct? (redex-match Loo language))
+  (redex-check Loo language (syntax_correct? (term e)))
   )
 
 
