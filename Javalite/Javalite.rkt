@@ -182,7 +182,10 @@
 
    
    ;FOR TYPES
-   ; typecast
+   ; typecast(define-metafunction JL-Machine
+  η-lookup : η x -> loc
+  [(η-lookup η x)
+   (storelike-lookup η x)]) ;; uses the storelike-lookup metafunction
    (--> (μ h η (C e) k)
         (μ h η e (C * -> k))
         "typecast - object eval")

@@ -120,9 +120,14 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (Object ::= ((C [f -> v]) ...))
 
   (Φ ::= ;; Frame
-         (Stmts ([identifier -> v] ...))) ;; pairs consisting of a continuation, and a mapping from identifiers to values
+         (Stmts η)) ;; pairs consisting of a continuation, and a mapping from identifiers to values
           ;; possiby change Stmts to something else here
-  
+
+  (η ::= ;; local vars
+     mt
+     (η [x -> v]))
+     
+
   (ψ ::= ;; Stack
           Φ
          (Φ · ψ)) ;; sequences of frames
@@ -146,25 +151,29 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    #:domain state
 
    ; methCall_OS
-   (--> (M ((Φ · ψ) χ))
+   ;(--> (M ((Φ · ψ) χ))
         
-    )
+    ;)
 
    ; varAssgn_OS
-   (-->
+   (--> (M ((((((x := this @ f) $ Stmts) η) · ψ) χ)))
+        (M (((Stmts η_0) · ψ) χ))
+        "varAssgn_OS"
+        ;;where η_0 is the updated local vars, based on the assignment
+
     )
 
    ; fieldAssgn_OS
-   (-->
-    )
+   ;(--> (M ((Φ · ψ) χ))
+   ; )
 
    ; objCreate_OS
-   (-->
-    )
+   ;(--> (M ((Φ · ψ) χ))
+   ; )
 
    ; return_OS
-   (-->
-    )
+   ;(--> (M ((Φ · ψ) χ))
+   ; )
    
    ))
 
