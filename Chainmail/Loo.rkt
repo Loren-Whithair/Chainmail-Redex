@@ -153,7 +153,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    ; methCall_OS
    (--> (M (((((x := x_0 @ m(x ...)) $ Stmts) η) · ψ) χ))
         (M ((Φ_1 · (((x := * $ Stmts) η_0) · ψ)) χ))
-        "metCall_OS"
+        "methCall_OS"
         ;; where Φ_1 is the new frame, based on the method we have called
         ;; where η_0 is the new local variable set for the method we called
         
@@ -163,7 +163,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (--> (M ((((((x := this @ f) $ Stmts) η) · ψ) χ)))
         (M (((Stmts η_0) · ψ) χ))
         "fieldAssgn_OS"
-        ;;where η_0 is the updated local vars, based on the assignment
+        ;; where η_0 is the updated local vars, based on the assignment
 
     )
    
@@ -190,24 +190,38 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (--> (M ((((return x $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
         (M ((Stmts_1 η_2) · ψ) χ)
         "return_OS"
-        ;; where η_2 is add-to-local-vars(η_1 x_1 x)
+        ;; where η_2 is add-to-local-vars(η_1 [x_1 -> x])
+        ;; x gets dereferenced with another metafunction (maybe)
         )
    
-   ))
-
    ; return_OS
    (--> (M ((((return x) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
         (M ((Stmts_1 η_2) · ψ) χ)
         "return_OS - no args"
-        ;; where η_2 is add-to-local-vars(η_1 x_1 x)
+        ;; where η_2 is add-to-local-vars(η_1 [x_1 -> x])
+        ;; x gets dereferenced with another metafunction (maybe)
         )
-
-   
    ))
 
 ; -----------------------------------------------------
 ; ------------------ HELPER FUNCTIONS -----------------
 ; -----------------------------------------------------
+
+
+#|
+
+what we need:
+
+heap-change(χ [f -> y]): changes field 'f' to value y
+
+add-to-heap(χ [addr -> (C, F)]): where F is all fields of class C
+
+add-to-local-vars(η [x_1 -> v]): assigns value of x to x_1 and then adds to η
+
+|#
+
+(define-metafunction Loo-Machine
+  heap-change
 
 
 
