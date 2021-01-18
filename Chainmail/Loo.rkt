@@ -126,6 +126,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 (define Stmt? (redex-match? Loo Stmt))
 (define GhostDecl? (redex-match? Loo GhostDecl))
 (define e? (redex-match? Loo e))
+
 ; -----------------------------------------------------
 ; ---------------- MACHINE SYNTAX ---------------------
 ; -----------------------------------------------------
@@ -160,7 +161,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (state := (M σ))
 
   (Continuation ::= ;; represents the code to be executed next
-                Stmts (x := * $ Stmts))) ;; Continuation ;;TODO: may need more continuation definitions
+                Stmts (x := * $ Stmts))) ;; Continuation
 
 ; -----------------------------------------------------
 ; ---------------- REDUCTION RULES --------------------
