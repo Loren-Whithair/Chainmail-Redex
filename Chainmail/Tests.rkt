@@ -112,11 +112,15 @@
                       (term (method m() {()}))
                       (term (method m(arg1) {()}))
                       (term (method m(arg1 arg2) {()}))
+                      (term (method methName(a1 a2) {()})) ;new
+                      (term (method m(arg1 arg2) {((x @ f := x) $ ())})) ;new
+                      (term (method m1(arg1 arg2) {((x1 @ f1 := x1) $ ((x2 := new C1()) $ ()))})) ;new
                       ))
 
   (define false_Meths (list
                        (term (method_1 m(arg1 arg2) {()}))
                        (term (method m(1 2) {()}))
+                       (term (method m1(x_1 x_2) { ((x1 @ f1 := x1) $ (x2 @ f2 := x2) $ ())})) ;new
                        ))
 
   (for ([method_declarations true_Meths])
@@ -135,11 +139,14 @@
                       (term (constructor() {()}))
                       (term (constructor(arg1) {()}))
                       (term (constructor(arg1 arg2) {()}))
+                      (term (constructor(arg1 arg2) {(x2 @ f1 := x1)}))  ;new
+                      (term (constructor() {((x1 @ f1 := x2) $ (x2 @ f2 := x3))}))  ;new
                       ))
 
   (define false_Const (list
                        (term (constructor_1(arg1 arg2) {()}))
                        (term (constructor(1 2) {()}))
+                       (term (constructor(x1 x2) {((x1 @ f1 := x2) $ (x2 @ f2 := x3) $ (x3 @ f3 := x4))})) ;new
                        ))
     
 
