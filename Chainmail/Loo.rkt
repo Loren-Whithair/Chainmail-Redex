@@ -65,6 +65,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 |#
 
+; -----------------------------------------------------
+; -------------------- SYNTAX -------------------------
+; -----------------------------------------------------
+
 (define-language Loo
 
   (M ::= ([C -> ClassDesc] ...))  ;;MODULE
@@ -91,6 +95,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
          (if e then e else e)
          (e @ f(e ...)))
 
+  (identifier ::= x C f m)
+  
   (x ::= this id) ;; VarID  (variable name)
   (C ::= id)      ;; ClassID (class name)
   (f ::= id)      ;; FieldID (field name)
@@ -98,17 +104,23 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   
   (id ::= variable-not-otherwise-mentioned))
 
+; -----------------------------------------------------
+; ---------------- MACHINE SYNTAX ---------------------
+; -----------------------------------------------------
 
 (define-extended-language Loo-Machine Loo
+
   (addr ::= natural) ;;addresses
+
   (v ::= ;;values
      null
      addr
     (addr ...))
+
   (Object ::= ((C [f -> v]) ...))
 
   (Φ ::= ;; Frame
-         (CodeStub ([ident -> v] ...))) ;; pairs consisting of a continuation, and a mapping from identifiers to values  (TODO: idenfitiers, CodeStub?)
+         (CodeStub ([identifier -> v] ...))) ;; pairs consisting of a continuation, and a mapping from identifiers to values  (TODO: idenfitiers, CodeStub?)
   (ψ ::= ;; Stack
           Φ
          (Φ · ψ)) ;; sequences of frames
@@ -119,3 +131,40 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
   (Continuation ::= ;; represents the code to be executed next
                 (Stmts (x := * $ Stmts)))) ;; Continuation ;;TODO: may need more continuation definitions
+
+; -----------------------------------------------------
+; ---------------- REDUCTION RULES --------------------
+; -----------------------------------------------------
+
+(define expr-reductions
+  (reduction-relation
+   Loo-Machine
+   #:domain σ
+
+   ; methCall_OS
+   (-->
+    )
+
+   ; varAssgn_OS
+   (-->
+    )
+
+   ; fieldAssgn_OS
+   (-->
+    )
+
+   ; objCreate_OS
+   (-->
+    )
+
+   ; return_OS
+   (-->
+    )
+   
+   ))
+
+; -----------------------------------------------------
+; ------------------ HELPER FUNCTIONS -----------------
+; -----------------------------------------------------
+
+
