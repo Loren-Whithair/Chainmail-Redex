@@ -78,8 +78,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 (define-language Loo
 
-  (M ::= ([C -> ClassDesc] ...))  ;;MODULE
-  ;;TODO: could it be (ClassDesc ...) ?
+
+  (M ::=  ;;MODULE
+     mt
+     (M [C -> ClassDesc]))
   ;;TODO: is this the appropriate place to define a Module, or should this be in Loo-Machine, or separate?
      
   (ClassDesc ::= (class C(x ...) { FieldDecl ... CDecl ... MethDecl ... GhostDecl ... }))
