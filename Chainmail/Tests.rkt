@@ -115,7 +115,7 @@
                       ))
 
   (define false_Meths (list
-                       (term (method_1 m(x_1 x_2) {()}))
+                       (term (method_1 m(arg1 arg2) {()}))
                        (term (method m(1 2) {()}))
                        ))
 
@@ -127,7 +127,7 @@
   )
 
 
-;Constructor Declarations
+; Constructor Declarations
 (module+ test
   (define Loo_CDecl? (redex-match? Loo CDecl))
 
@@ -138,7 +138,7 @@
                       ))
 
   (define false_Const (list
-                       (term (constructor_1(x_1 x_2) {()}))
+                       (term (constructor_1(arg1 arg2) {()}))
                        (term (constructor(1 2) {()}))
                        ))
     
@@ -156,7 +156,7 @@
   (define Loo_ClassDesc? (redex-match? Loo ClassDesc))
 
   (define true_Class (list
-                      ; (term ())
+                      (term (class C() { (field f) (constructor() { () }) (method m() { () }) (ghost f(x y) { x }) }))
                       ))
 
   (define false_Class (list
@@ -170,9 +170,6 @@
   (for ([class_descriptions false_Class])
     (test-equal (Loo_ClassDesc? class_descriptions) #false))
   )
-
-
-; a random comment
 
 ;Modules
 (module+ test
