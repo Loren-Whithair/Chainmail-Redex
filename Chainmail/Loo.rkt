@@ -151,7 +151,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    #:domain state
 
    ; methCall_OS
-   (--> (M (((((x := x_0 $ @ m(x ...)) $ Stmts) η) · ψ) χ))
+   (--> (M (((((x := x_0 @ m(x ...)) $ Stmts) η) · ψ) χ))
         (M ((Φ_1 · (((x := * $ Stmts) η_0) · ψ)) χ))
         "metCall_OS"
         ;; where Φ_1 is the new frame, based on the method we have called
@@ -187,8 +187,20 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; return_OS
-   (--> (M ((Φ · ψ) χ))
-    )
+   (--> (M ((((return x $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
+        (M ((Stmts_1 η_2) · ψ) χ)
+        "return_OS"
+        ;; where η_2 is add-to-local-vars(η_1 x_1 x)
+        )
+   
+   ))
+
+   ; return_OS
+   (--> (M ((((return x) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
+        ()
+        "return_OS - no args"
+        )
+
    
    ))
 
