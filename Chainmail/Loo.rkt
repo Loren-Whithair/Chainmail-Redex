@@ -120,7 +120,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (Object ::= ((C [f -> v]) ...))
 
   (Φ ::= ;; Frame
-         (CodeStub ([identifier -> v] ...))) ;; pairs consisting of a continuation, and a mapping from identifiers to values  (TODO: idenfitiers, CodeStub?)
+         (Stmts ([identifier -> v] ...))) ;; pairs consisting of a continuation, and a mapping from identifiers to values
+          ;; possiby change Stmts to something else here
+  
   (ψ ::= ;; Stack
           Φ
          (Φ · ψ)) ;; sequences of frames
@@ -128,6 +130,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
          ([addr -> Object] ...))
   (σ ::= ;; Runtime Configurations
          (ψ χ)) ;; consist of heaps and stacks of frames
+
+  (state := (M σ))
 
   (Continuation ::= ;; represents the code to be executed next
                 (Stmts (x := * $ Stmts)))) ;; Continuation ;;TODO: may need more continuation definitions
@@ -139,10 +143,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 (define expr-reductions
   (reduction-relation
    Loo-Machine
-   #:domain σ
+   #:domain state
 
    ; methCall_OS
-   (-->
+   (--> (M ((Φ · ψ) χ))
+        
     )
 
    ; varAssgn_OS
@@ -166,5 +171,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; -----------------------------------------------------
 ; ------------------ HELPER FUNCTIONS -----------------
 ; -----------------------------------------------------
+
 
 
