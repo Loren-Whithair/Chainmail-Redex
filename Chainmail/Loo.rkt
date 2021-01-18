@@ -84,8 +84,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      (M [C -> ClassDesc]))
   ;;TODO: is this the appropriate place to define a Module, or should this be in Loo-Machine, or separate?
      
-  (ClassDesc ::= (class C(x ...) { FieldDecl ... CDecl ... MethDecl ... GhostDecl ... }))
-  (FieldDecl ::= (field f))
+  (ClassDesc ::= ('class C(x ...) { FieldDecl ... CDecl ... MethDecl ... GhostDecl ... }))
+  (FieldDecl ::= ('field f))
   (CDecl ::= (constructor(x ...) { Stmts }))
   (MethDecl ::= (method m(x ...) { Stmts }))
   (Stmts ::= Stmt

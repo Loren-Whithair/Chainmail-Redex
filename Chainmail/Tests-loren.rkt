@@ -89,13 +89,13 @@
                           (term (ghost f(x y) { x }))
                           (term (ghost f_1(x_1 x_2 x_3) { true}))
                           (term (ghost f_1() {x_1}))
-                          (term (ghost x_1() {x_2}))
-                          ))
+                          (term (ghost x_1() {x_2})))
+                          )
 
   (define false_Ghosts (list
                         (term (ghost f_1(true) {x_1}))
-                         (term (ghost1 f_1(x_1) {x_1}))
-                         ))
+                         (term (ghost1 f_1(x_1) {x_1})))
+                        )
 
   (for ([ghost_declarations true_Ghosts])
     (test-equal (Loo_GhostDecl? ghost_declarations) #true))
@@ -118,9 +118,9 @@
                       ))
 
   (define false_Meths (list
-                       (term (method_1 m(x_1 x_2) {()}))
+                       (term (method_1 m(arg1 arg2) {()}))
                        (term (method m(1 2) {()}))
-                       (term (method m1(x_1 x_2) { ((x1 @ f1 := x1) $ (x2 @ f2 := x2) $ ())}))
+                       (term (method m1(x_1 x_2) { ((x1 @ f1 := x1) $ (x2 @ f2 := x2) $ ())})) ;new
                        ))
 
   (for ([method_declarations true_Meths])
@@ -131,7 +131,7 @@
   )
 
 
-;Constructor Declarations
+; Constructor Declarations
 (module+ test
   (define Loo_CDecl? (redex-match? Loo CDecl))
 
@@ -144,7 +144,7 @@
                       ))
 
   (define false_Const (list
-                       (term (constructor_1(x_1 x_2) {()}))
+                       (term (constructor_1(arg1 arg2) {()}))
                        (term (constructor(1 2) {()}))
                        (term (constructor(x1 x2) {((x1 @ f1 := x2) $ (x2 @ f2 := x3) $ (x3 @ f3 := x4))})) ;new
                        ))
@@ -163,11 +163,34 @@
   (define Loo_ClassDesc? (redex-match? Loo ClassDesc))
 
   (define true_Class (list
-                      
+                      (term ('class C() {}))
+                      (term ('class C() { ('field f) }))
+                      (term ('class C() { ('field f_1) ('field f_2) }))
+                      (term ('class C() { (constructor() { () }) }))
+                      (term ('class C() { (constructor(arg1) { () }) }))
+                      (term ('class C() { (constructor(arg1 arg2) { () }) }))
+                      (term ('class C() { (method m() { () }) }))
+                      (term ('class C() { (method m(arg1) { () }) }))
+                      (term ('class C() { (method m(arg1 arg2) { () }) }))
+                      (term ('class C() { (ghost f(x y) { x }) }))
+                      (term ('class C() { ('field f) (constructor() { () }) }))
+                      (term ('class C() { ('field f) (method m() { () }) }))
+                      (term ('class C() { ('field f) (ghost f(x y) { x }) }))
+                      (term ('class C() { ('field f) (constructor() { () }) (method m() { () }) }))
+                      (term ('class C() { (constructor() { () }) (method m() { () }) }))
+                      (term ('class C() { (constructor() { () }) (ghost f(x y) { x }) }))
+                      (term ('class C() { (constructor() { () }) (method m() { () }) (ghost f(x y) { x }) }))
+                      (term ('class C() { ('field f) (constructor() { () }) (method m() { () }) (ghost f(x y) { x }) }))
+                      (term ('class C() { ('field f_1) ('field f_2) (constructor() { () }) (method m() { () }) (ghost f(x y) { x }) }))
+                      (term ('class C(arg1 arg2) { ('field f_1) ('field f_2) (constructor(arg1 arg2) { () }) (method m() { () }) (ghost f(x y) { x }) }))
+                      (term ('class C(arg1 arg2) { ('field f_1) ('field f_2) (constructor(arg1 arg2) { () }) (method m(arg1 arg2) { () }) (ghost f(x y) { x }) }))
                       ))
 
-  (define false_Class (list
-                      
+  (define false_class (list
+                       (term ('class C() { (constructor1() { () }) (constructor2() { () })}))
+                       (term ('class C() { (constructor() { () }) ('field f)  (method m() { () }) (ghost f(x y) { x }) }))
+                       (term ('class C() { ('field f) (method m() { () }) (constructor() { () }) (ghost f(x y) { x }) }))
+                       (term ('class C() { ('field f) (constructor() { () }) (ghost f(x y) { x }) (method m() { () }) }))
                         ))
     
 
@@ -178,16 +201,12 @@
     (test-equal (Loo_ClassDesc? class_descriptions) #false))
   )
 
-
-; a random comment
-
 ;Modules
 (module+ test
   (define Loo_M? (redex-match? Loo M))
 
   (define true_Modules (list
-
-                      ))
+                     ))
 
   (define false_Modules (list
                        
