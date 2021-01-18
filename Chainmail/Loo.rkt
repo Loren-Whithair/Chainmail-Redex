@@ -113,7 +113,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 (define-extended-language Loo-Machine Loo
 
-  (addr ::= natural) ;;addresses
+  (addr ::= natural) ;; addresses
 
   (v ::= ;;values
      null
@@ -124,8 +124,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
   (Φ ::= ;; Frame
          (Continuation η)) ;; pairs consisting of a continuation, and a mapping from identifiers to values
-          ;; possiby change Stmts to something else here
-
+  
   (η ::= ;; local vars
      mt
      (η [x -> v]))

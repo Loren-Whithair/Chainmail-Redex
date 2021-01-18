@@ -31,7 +31,7 @@
 
 ; Ghost Declaration tests
 (module+ test
-  (test-equal (redex-match? Loo Stmts (term ())) #true) ;; testing the empty statement
+  (test-equal (redex-match? Loo Stmts (term (ghost f(x y z) { true }))) #true) ;; testing the empty statement
   )
 
 (module+ test
