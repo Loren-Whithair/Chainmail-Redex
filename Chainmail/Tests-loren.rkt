@@ -112,13 +112,15 @@
                       (term (method m() {()}))
                       (term (method m(arg1) {()}))
                       (term (method m(arg1 arg2) {()}))
-                      (term (method methName(a1 a2) {()}))
-                      (term (method m(arg1 arg2) {((x @ f := x) $ ())}))
+                      (term (method methName(a1 a2) {()})) ;new
+                      (term (method m(arg1 arg2) {((x @ f := x) $ ())})) ;new
+                      (term (method m1(arg1 arg2) {((x1 @ f1 := x1) $ ((x2 := new C1()) $ ()))})) ;new
                       ))
 
   (define false_Meths (list
                        (term (method_1 m(x_1 x_2) {()}))
                        (term (method m(1 2) {()}))
+
                        ))
 
   (for ([method_declarations true_Meths])
