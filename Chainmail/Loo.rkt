@@ -139,7 +139,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (state := (M σ))
 
   (Continuation ::= ;; represents the code to be executed next
-                (Stmts (x := * $ Stmts)))) ;; Continuation ;;TODO: may need more continuation definitions
+                Stmts (x := * $ Stmts))) ;; Continuation ;;TODO: may need more continuation definitions
 
 ; -----------------------------------------------------
 ; ---------------- REDUCTION RULES --------------------
@@ -151,8 +151,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    #:domain state
 
    ; methCall_OS
-   (--> (M (((((x := x_0 @ m(x ...)) $ Stmts) η) · ψ) χ))
-        (M ((Φ_1 · (((x := * $ Stmts) η_0) · ψ)) χ))
+   (--> (M (((((x_0 := x_0 @ m(x ...)) $ Stmts) η) · ψ) χ))
+        (M ((Φ_1 · (((x ... := * $ Stmts) η_0) · ψ)) χ))
         "methCall_OS"
         ;; where Φ_1 is the new frame, based on the method we have called
         ;; where η_0 is the new local variable set for the method we called
@@ -176,14 +176,12 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; objCreate_OS
-   (--> (M (((((x := new C(x ...) $ Stmts) η) · ψ) χ))) ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
-        (M ((Φ_1 · (((x := * $ Stmts) η_0) · ψ)) add-to-heap(χ [addr_1 -> (C, ∅)])))   ;; we might need to change (C, ∅) based on the metafunction ↓
+   (--> (M (((((x_0 := new C(x ...) $ Stmts) η) · ψ) χ))) ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
+        (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) add-to-heap(χ [addr_1 -> (C, empty)])))   ;; we might need to change (C, empty) based on the metafunction ↓
         ;; where addr_1 is a newly allocated address on the heap, for the new object
         ;; where Φ'' is the new frame, based on the constructor
         ;; where (C, ∅) is an object created of that class, and none of the fields are assigned values
         ;; where η_0 is the new local variable set for the constructor
-              
-        
     )
 
    ; return_OS
@@ -220,8 +218,14 @@ add-to-local-vars(η [x_1 -> v]): assigns value of x to x_1 and then adds to η
 
 |#
 
-(define-metafunction Loo-Machine
-  heap-change
+;(define-metafunction Loo-Machine
+;  heap-change : χ [f -> y] -> χ
+;  [[]])
+
+
+
+
+
 
 
 
