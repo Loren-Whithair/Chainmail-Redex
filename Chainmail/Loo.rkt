@@ -73,13 +73,16 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; -------------------- SYNTAX -------------------------
 ; -----------------------------------------------------
 
+
+
+
 (define-language Loo
 
   (M ::= ([C -> ClassDesc] ...))  ;;MODULE
   ;;TODO: could it be (ClassDesc ...) ?
   ;;TODO: is this the appropriate place to define a Module, or should this be in Loo-Machine, or separate?
      
-  (ClassDesc ::= (class C(x ...) { (FieldDecl) ... (CDecl)? (MethDecl) ... (GhostDecl) ... }))
+  (ClassDesc ::= (class C(x ...) { FieldDecl ... (CDecl)? MethDecl ... GhostDecl ... }))
   (FieldDecl ::= (field f))
   (CDecl ::= (constructor(x ...) { Stmts }))
   (MethDecl ::= (method m(x ...) { Stmts }))
@@ -109,6 +112,18 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   
   (id ::= variable-not-otherwise-mentioned))
 
+
+
+
+(define M? (redex-match? Loo M))
+(define ClassDesc? (redex-match? Loo ClassDesc))
+(define FieldDecl? (redex-match? Loo FieldDecl))
+(define CDecl? (redex-match? Loo CDecl))
+(define MethDecl? (redex-match? Loo MethDecl))
+(define Stmts? (redex-match? Loo Stmts))
+(define Stmt? (redex-match? Loo Stmt))
+(define GhostDecl? (redex-match? Loo GhostDecl))
+(define e? (redex-match? Loo e))
 ; -----------------------------------------------------
 ; ---------------- MACHINE SYNTAX ---------------------
 ; -----------------------------------------------------

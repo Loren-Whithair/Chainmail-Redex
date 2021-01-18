@@ -109,12 +109,12 @@
   (define Loo_MethDecl? (redex-match? Loo MethDecl))
 
   (define true_Meths (list
-                      (;terms here
+                      ((term (method m(x_1 x_2) {()}))
                       )
                       ))
 
   (define false_Meths (list
-                       (;terms here
+                       ((term (method_1 m(x_1 x_2) {()}))
                         ))
     )
 
@@ -131,12 +131,13 @@
   (define Loo_CDecl? (redex-match? Loo CDecl))
 
   (define true_Const (list
-                      (;terms here
+                      ((term (constructor(x_1 x_2) {()}))
+                              
                       )
                       ))
 
   (define false_Const (list
-                       (;terms here
+                       ((term (constructor_1(x_1 x_2) {()}))
                         ))
     )
 
@@ -153,12 +154,12 @@
   (define Loo_ClassDesc? (redex-match? Loo ClassDesc))
 
   (define true_Class (list
-                      (;terms here
+                      (;true terms here
                       )
                       ))
 
   (define false_Class (list
-                       (;terms here
+                       (;false terms here
                         ))
     )
 
@@ -172,23 +173,23 @@
 
 ;Modules
 (module+ test
-  (define Loo_MethDecl? (redex-match? Loo MethDecl))
+  (define Loo_M? (redex-match? Loo M))
 
-  (define true_Meths (list
-                      (;terms here
+  (define true_Modules (list
+                      (;true terms here
                       )
                       ))
 
-  (define false_Meths (list
-                       (;terms here
+  (define false_Modules (list
+                       (;false terms here
                         ))
     )
 
-  (for ([method_declarations true_Meths])
-    (test-equal (Loo_GhostField? method_declarations) #true))
+  (for ([Modules true_Modules])
+    (test-equal (Loo_M? Modules) #true))
   
-  (for ([method_declarations false_Meths])
-    (test-equal (Loo_GhostField? method_declarations) #false))
+  (for ([Modules false_Modules])
+    (test-equal (Loo_M? Modules) #false))
   )
 
 
