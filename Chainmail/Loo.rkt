@@ -120,7 +120,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (Object ::= ((C [f -> v]) ...))
 
   (Φ ::= ;; Frame
-         (Stmts η)) ;; pairs consisting of a continuation, and a mapping from identifiers to values
+         (Continuation η)) ;; pairs consisting of a continuation, and a mapping from identifiers to values
           ;; possiby change Stmts to something else here
 
   (η ::= ;; local vars
@@ -158,18 +158,26 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    ; varAssgn_OS
    (--> (M ((((((x := this @ f) $ Stmts) η) · ψ) χ)))
         (M (((Stmts η_0) · ψ) χ))
-        "varAssgn_OS"
+        "fieldAssgn_OS"
         ;;where η_0 is the updated local vars, based on the assignment
 
     )
-
+   
    ; fieldAssgn_OS
-   ;(--> (M ((Φ · ψ) χ))
-   ; )
+   (--> (M ((((((this @ f := y) $ Stmts) η) · ψ) χ)))
+        (M (((Stmts η) · ψ) heap-change(χ [f -> y]))
+        "varAssgn_OS"
+        ;; where heap-change is defined appropriately
+
+    )
 
    ; objCreate_OS
-   ;(--> (M ((Φ · ψ) χ))
-   ; )
+   (--> (M (((((x := new C(x ...) $ Stmts) η) · ψ) χ))) ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
+        (M ((Φ'') · ((((x := * $ Stmts) η) · ψ)) add-to-heap(χ [addr_1 -> (C, ∅)])
+        ;; where addr_1 is ...
+        ;; where Φ'' is something...
+        
+    )
 
    ; return_OS
    ;(--> (M ((Φ · ψ) χ))
