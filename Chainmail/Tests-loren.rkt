@@ -2,37 +2,199 @@
 (require redex)
 (require "Loo.rkt")
 
+; -----------------------------------------------------
+; ---------------------- Tests ------------------------
+; -----------------------------------------------------
+
+; ClassDesc
+; 
+
+; e (expression) Tests
 (module+ test
 
-  (define e1 (term ((x_1 = x_4)))
-  
-  (test-equal (redex-match? Loo e (term (x_1 = x_4))) #true)
-  (test-equal (redex-match? Loo e (term (true = false))) #true)
-  (test-equal (redex-match? Loo e (term ((true = false) = true))) #true)
-  (test-equal (redex-match? Loo e (term (true = false = true))) #false)
-  (test-equal (redex-match? Loo e (term (5 = 5))) #false)
+  (define Loo_expression? (redex-match? Loo e))
 
-  (test-equal (redex-match? Loo e (term (if true then true else true))) #true)
-  (test-equal (redex-match? Loo e (term  (if x_5 then null else x_3))) #true)
-  (test-equal (redex-match? Loo e (term  (if (x_1 = x_2) then (x_3 = (true = null)) else false))) #true)
-  (test-equal (redex-match? Loo e (term (if null then (true) else null))) #false)
-  (test-equal (redex-match? Loo e (term (if (true) then x_1 else null))) #false)
-  
-  (test-equal (redex-match? Loo e (term (x_1 @ fname(true false null)))) #true)
-  (test-equal (redex-match? Loo e (term ((true = true) @ fname()))) #true)
-  (test-equal (redex-match? Loo e (term (x_1 @ fname ()))) #true)
-  (test-equal (redex-match? Loo e (term (true @ fname ()))) #true)
-  (test-equal (redex-match? Loo e (term (null @ f(true = true)))) #false)
-  (test-equal (redex-match? Loo e (term (null @ f((true = true))))) #true)
-  (test-equal (redex-match? Loo e (term (null @ f ((true = true = true))))) #false))
+  ; true expressions
+  (define true_expressions (list
+                            (term (x_1 = x_4))
+                            (term (true = false))
+                            (term ((true = false) = true))
+                            (term (if true then true else true))
+                            (term  (if x_5 then null else x_3))
+                            (term  (if (x_1 = x_2) then (x_3 = (true = null)) else false))
+                            (term (x_1 @ fname(true false null)))
+                            (term ((true = true) @ fname()))
+                            (term (x_1 @ fname ()))
+                            (term (true @ fname ()))
+                            (term (null @ f((true = true))))
+                            ))
 
+  ; false expressions
+  (define false_expressions (list
+                             (term (true = false = true))
+                             (term (5 = 5))
+                             (term (if null then (true) else null))
+                             (term (if (true) then x_1 else null))
+                             (term (null @ f(true = true)))
+                             (term (null @ f ((true = true = true))))
+                            ))
+  
+  (for ([expression true_expressions])
+    (test-equal (Loo_expression? expression) #true))
+  
+  (for ([expression false_expressions])
+    (test-equal (Loo_expression? expression) #false))
+)
+
+; Stmts Tests
 (module+ test
-  (test-equal (redex-match? Loo MethDecl (term (method m1(x_1) {()}))) #true)
+  (define Loo_Stmts? (redex-match? Loo Stmts))
+
+   ; true statements
+  (define true_Stmts (list
+                      (term ()) ;; testing the empty statement
+                      (term (() $ ())) ;; testing that we can have multiple statments chained together
+                      (term (x @ f := y))
+                      (term (z := y @ f))
+                      (term (method_result := x @ m()))
+                      (term (method_result := x @ m(arg1)))
+                      (term (method_result := x @ m(arg1 arg2)))
+                      (term (object_result := new C()))
+                      (term (object_result := new C(arg1)))
+                      (term (object_result := new C(arg1 arg2)))
+                      (term (return result))
+                      ))
+
+  ; false statements
+  (define false_Stmts (list
+                     ))
+
+  (for ([statements true_Stmts])
+    (test-equal (Loo_Stmts? statements) #true))
   
+  (for ([statements false_Stmts])
+    (test-equal (Loo_Stmts? statements) #false))
+  
+  ; the next 3 tests show the importance of correctly bracketing our chained statements
+  (test-equal (Loo_Stmts? (term (() $ () $ ()))) #false)
+  (test-equal (Loo_Stmts? (term ((() $ ()) $ ()))) #false)
+  (test-equal (Loo_Stmts? (term (() $ (() $ ())))) #true)
+)
+
+; Ghost fields
+(module+ test
+  (define Loo_GhostDecl? (redex-match? Loo GhostDecl))
+
+  (define true_Ghosts (list
+                          (term (ghost f(x y) { x }))
+                          (term (ghost f_1(x_1 x_2 x_3) { true}))
+                          (term (ghost f_1() {x_1}))
+                          (term (ghost x_1() {x_2}))
+                          ))
+
+  (define false_Ghosts (list
+                        (term (ghost f_1(true) {x_1}))
+                         (term (ghost1 f_1(x_1) {x_1}))
+                         ))
+
+  (for ([ghost_declarations true_Ghosts])
+    (test-equal (Loo_GhostDecl? ghost_declarations) #true))
+  
+  (for ([ghost_declarations false_Ghosts])
+    (test-equal (Loo_GhostDecl? ghost_declarations) #false))
   )
+
+; Method Declarations
+(module+ test
+  (define Loo_MethDecl? (redex-match? Loo MethDecl))
+
+  (define true_Meths (list
+                      (term (method m() {()}))
+                      (term (method m(arg1) {()}))
+                      (term (method m(arg1 arg2) {()}))
+                      (term (method methName(a1 a2) {()}))
+                      (term (method m(arg1 arg2) {((x @ f := x) $ ())}))
+                      ))
+
+  (define false_Meths (list
+                       (term (method_1 m(x_1 x_2) {()}))
+                       (term (method m(1 2) {()}))
+                       ))
+
+  (for ([method_declarations true_Meths])
+    (test-equal (Loo_MethDecl? method_declarations) #true))
+  
+  (for ([method_declarations false_Meths])
+    (test-equal (Loo_MethDecl? method_declarations) #false))
+  )
+
+
+;Constructor Declarations
+(module+ test
+  (define Loo_CDecl? (redex-match? Loo CDecl))
+
+  (define true_Const (list
+                      (term (constructor() {()}))
+                      (term (constructor(arg1) {()}))
+                      (term (constructor(arg1 arg2) {()}))
+                      ))
+
+  (define false_Const (list
+                       (term (constructor_1(x_1 x_2) {()}))
+                       (term (constructor(1 2) {()}))
+                       ))
+    
+
+  (for ([constructor_declarations true_Const])
+    (test-equal (Loo_CDecl? constructor_declarations) #true))
+  
+  (for ([constructor_declarations false_Const])
+    (test-equal (Loo_CDecl? constructor_declarations) #false))
+  )
+
+ 
+;Class Description Declarations
+(module+ test
+  (define Loo_ClassDesc? (redex-match? Loo ClassDesc))
+
+  (define true_Class (list
+                      
+                      ))
+
+  (define false_Class (list
+                      
+                        ))
+    
+
+  (for ([class_descriptions true_Class])
+    (test-equal (Loo_ClassDesc? class_descriptions) #true))
+  
+  (for ([class_descriptions false_Class])
+    (test-equal (Loo_ClassDesc? class_descriptions) #false))
+  )
+
+
+; a random comment
+
+;Modules
+(module+ test
+  (define Loo_M? (redex-match? Loo M))
+
+  (define true_Modules (list
+
+                      ))
+
+  (define false_Modules (list
+                       
+                        ))
+
+  (for ([Modules true_Modules])
+    (test-equal (Loo_M? Modules) #true))
+  
+  (for ([Modules false_Modules])
+    (test-equal (Loo_M? Modules) #false))
+  )
+
 
 (module+ test
   (test-results))
-              
-                            
-                            ;;testing out GIT
