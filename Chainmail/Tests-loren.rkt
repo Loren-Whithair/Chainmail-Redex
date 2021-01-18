@@ -120,7 +120,7 @@
   (define false_Meths (list
                        (term (method_1 m(x_1 x_2) {()}))
                        (term (method m(1 2) {()}))
-
+                       (term (method m1(x_1 x_2) { ((x1 @ f1 := x1) $ (x2 @ f2 := x2) $ ())}))
                        ))
 
   (for ([method_declarations true_Meths])
@@ -139,11 +139,14 @@
                       (term (constructor() {()}))
                       (term (constructor(arg1) {()}))
                       (term (constructor(arg1 arg2) {()}))
+                      (term (constructor(arg1 arg2) {(x2 @ f1 := x1)}))  ;new
+                      (term (constructor() {((x1 @ f1 := x2) $ (x2 @ f2 := x3))}))  ;new
                       ))
 
   (define false_Const (list
                        (term (constructor_1(x_1 x_2) {()}))
                        (term (constructor(1 2) {()}))
+                       (term (constructor(x1 x2) {((x1 @ f1 := x2) $ (x2 @ f2 := x3) $ (x3 @ f3 := x4))})) ;new
                        ))
     
 
