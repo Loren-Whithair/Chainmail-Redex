@@ -86,16 +86,16 @@
   (define Loo_GhostDecl? (redex-match? Loo GhostDecl))
 
   (define true_Ghosts (list
-                          ((term (ghost f(x y) { x }))
-                           (term (ghost f_1(x_1 x_2 x_3) { true}))
-                           (term (ghost f_1() {x_1}))
-                           (term (ghost x_1() {x_2})))
-                          ))
+                          (term (ghost f(x y) { x }))
+                          (term (ghost f_1(x_1 x_2 x_3) { true}))
+                          (term (ghost f_1() {x_1}))
+                          (term (ghost x_1() {x_2})))
+                          )
 
   (define false_Ghosts (list
-                        ((term (ghost f_1(true) {x_1}))
+                        (term (ghost f_1(true) {x_1}))
                          (term (ghost1 f_1(x_1) {x_1})))
-                        ))
+                        )
 
   (for ([ghost_declarations true_Ghosts])
     (test-equal (Loo_GhostDecl? ghost_declarations) #true))
@@ -109,14 +109,15 @@
   (define Loo_MethDecl? (redex-match? Loo MethDecl))
 
   (define true_Meths (list
-                      ((term (method m(x_1 x_2) {()}))
-                      )
+                      (term (method m() {()}))
+                      (term (method m(arg1) {()}))
+                      (term (method m(arg1 arg2) {()}))
                       ))
 
   (define false_Meths (list
-                       ((term (method_1 m(x_1 x_2) {()}))
-                        ))
-    )
+                       (term (method_1 m(x_1 x_2) {()}))
+                       (term (method m(1 2) {()}))
+                       ))
 
   (for ([method_declarations true_Meths])
     (test-equal (Loo_MethDecl? method_declarations) #true))
@@ -131,15 +132,16 @@
   (define Loo_CDecl? (redex-match? Loo CDecl))
 
   (define true_Const (list
-                      ((term (constructor(x_1 x_2) {()}))
-                              
-                      )
+                      (term (constructor() {()}))
+                      (term (constructor(arg1) {()}))
+                      (term (constructor(arg1 arg2) {()}))
                       ))
 
   (define false_Const (list
-                       ((term (constructor_1(x_1 x_2) {()}))
-                        ))
-    )
+                       (term (constructor_1(x_1 x_2) {()}))
+                       (term (constructor(1 2) {()}))
+                       ))
+    
 
   (for ([constructor_declarations true_Const])
     (test-equal (Loo_CDecl? constructor_declarations) #true))
@@ -154,14 +156,13 @@
   (define Loo_ClassDesc? (redex-match? Loo ClassDesc))
 
   (define true_Class (list
-                      (;true terms here
-                      )
+                      ; (term ())
                       ))
 
   (define false_Class (list
-                       (;false terms here
+                       
                         ))
-    )
+    
 
   (for ([class_descriptions true_Class])
     (test-equal (Loo_ClassDesc? class_descriptions) #true))
@@ -178,14 +179,12 @@
   (define Loo_M? (redex-match? Loo M))
 
   (define true_Modules (list
-                      (;true terms here
-                      )
+
                       ))
 
   (define false_Modules (list
-                       (;false terms here
+                       
                         ))
-    )
 
   (for ([Modules true_Modules])
     (test-equal (Loo_M? Modules) #true))
