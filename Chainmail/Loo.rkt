@@ -151,9 +151,13 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    #:domain state
 
    ; methCall_OS
-   ;(--> (M ((Φ · ψ) χ))
+   (--> (M (((((x := x_0 $ @ m(x ...)) $ Stmts) η) · ψ) χ))
+        (M ((Φ_1 · (((x := * $ Stmts) η_0) · ψ)) χ))
+        "metCall_OS"
+        ;; where Φ_1 is the new frame, based on the method we have called
+        ;; where η_0 is the new local variable set for the method we called
         
-    ;)
+    )
 
    ; varAssgn_OS
    (--> (M ((((((x := this @ f) $ Stmts) η) · ψ) χ)))
@@ -165,7 +169,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    
    ; fieldAssgn_OS
    (--> (M ((((((this @ f := y) $ Stmts) η) · ψ) χ)))
-        (M (((Stmts η) · ψ) heap-change(χ [f -> y]))
+        (M (((Stmts η) · ψ) heap-change(χ [f -> y])))
         "varAssgn_OS"
         ;; where heap-change is defined appropriately
 
@@ -173,15 +177,18 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
    ; objCreate_OS
    (--> (M (((((x := new C(x ...) $ Stmts) η) · ψ) χ))) ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
-        (M ((Φ'') · ((((x := * $ Stmts) η) · ψ)) add-to-heap(χ [addr_1 -> (C, ∅)])
-        ;; where addr_1 is ...
-        ;; where Φ'' is something...
+        (M ((Φ_1 · (((x := * $ Stmts) η_0) · ψ)) add-to-heap(χ [addr_1 -> (C, ∅)])))   ;; we might need to change (C, ∅) based on the metafunction ↓
+        ;; where addr_1 is a newly allocated address on the heap, for the new object
+        ;; where Φ'' is the new frame, based on the constructor
+        ;; where (C, ∅) is an object created of that class, and none of the fields are assigned values
+        ;; where η_0 is the new local variable set for the constructor
+              
         
     )
 
    ; return_OS
-   ;(--> (M ((Φ · ψ) χ))
-   ; )
+   (--> (M ((Φ · ψ) χ))
+    )
    
    ))
 
