@@ -137,16 +137,22 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   
   (η ::= ;; local vars
      mt
-     (η [x -> v]))
-     
+     (η [x -> v]))   
 
   (ψ ::= ;; Stack
           Φ ;; might want an mt here
          (Φ · ψ)) ;; sequences of frames
+<<<<<<< HEAD
   
   (χ ::= ;; Heap
          mt
          ([addr -> Object] ...))
+=======
+
+  (χ ::= ;; Heap
+     mt
+     (χ [addr -> Object]))
+>>>>>>> 697f16adf01ad4d718346e663cb18fdef66ac493
   
   (σ ::= ;; Runtime Configurations
          (ψ χ)) ;; consist of heaps and stacks of frames
@@ -157,6 +163,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
                 Stmts (x := * $ Stmts))
 
   (machine-language ::= addr v Object Φ η ψ χ σ state Continuation)) ;; used for random testing of reduction rules
+
 
 ; -----------------------------------------------------
 ; ---------------- REDUCTION RULES --------------------
