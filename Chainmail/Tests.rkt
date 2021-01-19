@@ -48,7 +48,7 @@
 
 ; Stmts Tests
 (module+ test
-  (define Loo_Stmts? (redex-match? Loo Stmts))
+  (define Loo_Stmts? (redex-match? Loo Stmts)) ;
 
    ; true statements
   (define true_Stmts (list
