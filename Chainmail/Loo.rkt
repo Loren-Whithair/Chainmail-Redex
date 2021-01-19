@@ -142,17 +142,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (ψ ::= ;; Stack
           Φ ;; might want an mt here
          (Φ · ψ)) ;; sequences of frames
-<<<<<<< HEAD
-  
-  (χ ::= ;; Heap
-         mt
-         ([addr -> Object] ...))
-=======
 
   (χ ::= ;; Heap
      mt
      (χ [addr -> Object]))
->>>>>>> 697f16adf01ad4d718346e663cb18fdef66ac493
   
   (σ ::= ;; Runtime Configurations
          (ψ χ)) ;; consist of heaps and stacks of frames
