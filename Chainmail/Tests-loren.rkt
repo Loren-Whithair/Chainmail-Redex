@@ -277,11 +277,17 @@
   (define Machine_Frame? (redex-match? Loo-Machine Φ))
 
   (define true_Frames (list
-                        ;terms here
+                       (term (() mt))
+                       (term ((x := * $ ()) mt))
+                       (term ((x1 @ f1 := x2) mt))
+                       (term (() ((mt [x1 -> 10]) [x2 -> 20])))
+                       (term ((x := * $ (x2 := x4 @ mtd())) ((mt [x1 -> 10]) [x2 -> 20]))) 
                         ))
 
   (define false_Frames (list
-                         ;terms here
+                         (term (() (mt)))
+                         (term (() (mt [x1 -> 10] [x2 -> 20])))
+                         (term (((x1 @ f1 := x2) $ (x := * $ ())) mt))
                          ))
 
   (for ([frames true_Frames])
@@ -408,13 +414,14 @@
                         (term (x1 @ f1 := x2))
                         (term ((x1 @ f1 := x2) $ (x2 := x4 @ mtd())))
                         (term (x := * $ (x2 := x4 @ mtd())))
-                        
                         ))
 
   (define false_Conts (list
+                       (term (x := * $))
                        (term ((x1 @ f1 := x2) $ (x := * $ ())))
-                        
-                         ))
+                       (term ((x1 := * $ (x2 := * $ ()))))
+                       (term (* := * $ ()))
+                       ))
 
   (for ([conts true_Conts])
     (test-equal (Machine_Continuation? conts) #true))
