@@ -251,11 +251,17 @@
   (define Machine_Object? (redex-match? Loo-Machine Object))
 
   (define true_Objects (list
-                        (term (
+                        (term (C [f -> 5]))
+                        (term (C [f1 -> 2] [f2 -> 10]))
+                        (term (C [f1 -> 1] [f2 -> 2] [f3 -> 3]))
+                        (term (C))
+                        (term (Cname))
                         ))
 
   (define false_Objects (list
-                         ;terms here
+                         (term (C [f1 -> addr]))
+                         (term (C [f1 -> 2 -> 5]))
+                         (term (C1 [10 -> 35]))
                          ))
 
   (for ([Objects true_Objects])
@@ -291,11 +297,16 @@
   (define Machine_local-var? (redex-match? Loo-Machine η ))
 
   (define true_locals (list
-                        ;terms here
+                        (term mt)
+                        (term (mt [x1 -> 10]))
+                        (term ((mt [x1 -> 10]) [x2 -> 20]))
                         ))
 
   (define false_locals (list
-                         ;terms here
+                        (term ma)
+                        (term (mt))
+                        (term (mt [x1 -> 10] [x2 -> 20]))
+                        (term (mt [x1 -> a]))
                          ))
 
   (for ([local-vars true_locals])
@@ -330,11 +341,14 @@
   (define Machine_heap? (redex-match? Loo-Machine χ))
 
   (define true_heaps (list
-                        ;terms here
+                        (term ())
+                        (term ([1 -> (C1 [f1 -> 10])]))
+                        (term ([1 -> (C1 [f1 -> 10])] [2 -> (C1 [f1 -> 30])]))
                         ))
 
   (define false_heaps (list
-                         ;terms here
+                         (term ([a -> (C1 [f1 -> 10])]))
+                         (term ([1 -> (C1 [f1 -> v])]))
                          ))
 
   (for ([heaps true_heaps])
