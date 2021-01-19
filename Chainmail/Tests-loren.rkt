@@ -341,14 +341,15 @@
   (define Machine_heap? (redex-match? Loo-Machine χ))
 
   (define true_heaps (list
-                        (term ())
-                        (term ([1 -> (C1 [f1 -> 10])]))
-                        (term ([1 -> (C1 [f1 -> 10])] [2 -> (C1 [f1 -> 30])]))
+                        (term mt)
+                        (term (mt [1 -> (C1 [f1 -> 10])]))
+                        (term ((mt [1 -> (C1 [f1 -> 10])]) [2 -> (C2 [f2 -> 100])]))
                         ))
 
   (define false_heaps (list
                          (term ([a -> (C1 [f1 -> 10])]))
                          (term ([1 -> (C1 [f1 -> v])]))
+                         (term ([1 -> (C1 [f1 -> 10])] [2 -> (C1 [f1 -> 30])]))
                          ))
 
   (for ([heaps true_heaps])
@@ -402,11 +403,17 @@
   (define Machine_Continuation? (redex-match? Loo-Machine Continuation))
 
   (define true_Conts (list
-                        ;terms here
+                        (term ())
+                        (term (x := * $ ()))
+                        (term (x1 @ f1 := x2))
+                        (term ((x1 @ f1 := x2) $ (x2 := x4 @ mtd())))
+                        (term (x := * $ (x2 := x4 @ mtd())))
+                        
                         ))
 
   (define false_Conts (list
-                         ;terms here
+                       (term ((x1 @ f1 := x2) $ (x := * $ ())))
+                        
                          ))
 
   (for ([conts true_Conts])
