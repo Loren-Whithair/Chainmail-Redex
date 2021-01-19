@@ -220,6 +220,197 @@
   )
 
 
+;-------------------------
+;-----MACHINE TESTING-----
+;-------------------------
+
+;Values
+(module+ test
+  (define Machine_V? (redex-match? Loo-Machine v))
+
+  (define true_values (list
+                        (term null)
+                        (term 5)
+                        (term (2 5 5))
+                        ))
+
+  (define false_values (list
+                        (term 3.5)
+                        (term -2)
+                        (term (1 4 6 3.5))
+                         ))
+
+  (for ([values true_values])
+    (test-equal (Machine_V? values) #true))
+  
+  (for ([values false_values])
+    (test-equal (Machine_V? values) #false))
+  )
+
+
+;Objects
+(module+ test
+  (define Machine_Object? (redex-match? Loo-Machine Object))
+
+  (define true_Objects (list
+                        (term (
+                        ))
+
+  (define false_Objects (list
+                         ;terms here
+                         ))
+
+  (for ([Objects true_Objects])
+    (test-equal (Machine_Object? Objects) #true))
+  
+  (for ([Objects false_Objects])
+    (test-equal (Machine_Object? Objects) #false))
+  )
+
+
+;Frame
+(module+ test
+  (define Machine_Frame? (redex-match? Loo-Machine Φ))
+
+  (define true_Frames (list
+                        ;terms here
+                        ))
+
+  (define false_Frames (list
+                         ;terms here
+                         ))
+
+  (for ([frames true_Frames])
+    (test-equal (Machine_Frame? frames) #true))
+  
+  (for ([frames false_Frames])
+    (test-equal (Machine_Frame? frames) #false))
+  )
+
+
+;Local vars
+(module+ test
+  (define Machine_local-var? (redex-match? Loo-Machine η ))
+
+  (define true_locals (list
+                        ;terms here
+                        ))
+
+  (define false_locals (list
+                         ;terms here
+                         ))
+
+  (for ([local-vars true_locals])
+    (test-equal (Machine_local-var? local-vars) #true))
+  
+  (for ([local-vars false_locals])
+    (test-equal (Machine_local-var? local-vars) #false))
+  )
+
+
+;Stack
+(module+ test
+  (define Machine_stack? (redex-match? Loo-Machine ψ))
+
+  (define true_stacks (list
+                        ;terms here
+                        ))
+
+  (define false_stacks (list
+                         ;terms here
+                         ))
+
+  (for ([stacks true_stacks])
+    (test-equal (Machine_stack? stacks) #true))
+  
+  (for ([stacks false_stacks])
+    (test-equal (Machine_stack? stacks) #false))
+  )
+
+;Heap
+(module+ test
+  (define Machine_heap? (redex-match? Loo-Machine χ))
+
+  (define true_heaps (list
+                        ;terms here
+                        ))
+
+  (define false_heaps (list
+                         ;terms here
+                         ))
+
+  (for ([heaps true_heaps])
+    (test-equal (Machine_heap? heaps) #true))
+  
+  (for ([heaps false_heaps])
+    (test-equal (Machine_heap? heaps) #false))
+  )
+
+;Runtime configs
+(module+ test
+  (define Machine_runtime-config? (redex-match? Loo-Machine σ))
+
+  (define true_runtime-configs (list
+                        ;terms here
+                        ))
+
+  (define false_runtime-configs (list
+                         ;terms here
+                         ))
+
+  (for ([runtime-configs true_runtime-configs])
+    (test-equal (Machine_runtime-config? runtime-configs) #true))
+  
+  (for ([runtime-configs false_runtime-configs])
+    (test-equal (Machine_runtime-config? runtime-configs) #false))
+  )
+
+; States
+(module+ test
+  (define Machine_state? (redex-match? Loo-Machine state))
+
+  (define true_states (list
+                        ;terms here
+                        ))
+
+  (define false_states (list
+                         ;terms here
+                         ))
+
+  (for ([states true_states])
+    (test-equal (Machine_state? states) #true))
+  
+  (for ([states false_states])
+    (test-equal (Machine_state? states) #false))
+  )
+
+
+;Continuation
+(module+ test
+  (define Machine_Continuation? (redex-match? Loo-Machine Continuation))
+
+  (define true_Conts (list
+                        ;terms here
+                        ))
+
+  (define false_Conts (list
+                         ;terms here
+                         ))
+
+  (for ([conts true_Conts])
+    (test-equal (Machine_Continuation? conts) #true))
+  
+  (for ([conts false_Conts])
+    (test-equal (Machine_Continuation? conts) #false))
+  )
+
+(module+ test
+  (display "Hand written test results:\n")
+  (test-results))
+
+
+
+
 (module+ test
   (display "\nFirst we show the results of our hand written tests:\n")
   (test-results))
