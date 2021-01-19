@@ -128,7 +128,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      addr
     (addr ...))
 
-  (Object ::= (C [f -> v] ...))
+  (Object ::=
+          mt ;; added for now, maybe remove later (depending on how we use Object
+          ((C [f -> v]) ...))
 
   (Φ ::= ;; Frame
          (Continuation η)) ;; pairs consisting of a continuation, and a mapping from identifiers to values
@@ -138,20 +140,28 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      (η [x -> v]))   
 
   (ψ ::= ;; Stack
-          Φ
+          Φ ;; might want an mt here
          (Φ · ψ)) ;; sequences of frames
+<<<<<<< HEAD
 
   (χ ::= ;; Heap
      mt
      (χ [addr -> Object]))
 
+=======
+  
+  (χ ::= ;; Heap
+         mt
+         ([addr -> Object] ...))
+  
+>>>>>>> machine tests
   (σ ::= ;; Runtime Configurations
          (ψ χ)) ;; consist of heaps and stacks of frames
 
   (state := (M σ))
 
-  (Continuation ::= ;; represents the code to be executed next
-                Stmts (x := * $ Stmts)) ;; Continuation
+  (Continuation ::= ;; Continuation: represents the code to be executed next
+                Stmts (x := * $ Stmts))
 
   (machine-language ::= addr v Object Φ η ψ χ σ state Continuation)) ;; used for random testing of reduction rules
 
