@@ -142,19 +142,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (ψ ::= ;; Stack
           Φ ;; might want an mt here
          (Φ · ψ)) ;; sequences of frames
-<<<<<<< HEAD
 
   (χ ::= ;; Heap
      mt
      (χ [addr -> Object]))
-
-=======
   
-  (χ ::= ;; Heap
-         mt
-         ([addr -> Object] ...))
-  
->>>>>>> machine tests
   (σ ::= ;; Runtime Configurations
          (ψ χ)) ;; consist of heaps and stacks of frames
 
