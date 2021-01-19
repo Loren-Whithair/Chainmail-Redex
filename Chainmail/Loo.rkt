@@ -73,12 +73,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; -------------------- SYNTAX -------------------------
 ; -----------------------------------------------------
 
-
-
-
 (define-language Loo
-
-  (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier) ;; this is for random testing
 
   (M ::=  ;;MODULE
      mt
@@ -115,20 +110,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (f ::= id)      ;; FieldID (field name)
   (m ::= id)      ;; MethID  (method name)
   
-  (id ::= variable-not-otherwise-mentioned))
+  (id ::= variable-not-otherwise-mentioned)
 
+  (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier)) ;; this is for random testing
 
-
-
-(define M? (redex-match? Loo M))
-(define ClassDesc? (redex-match? Loo ClassDesc))
-(define FieldDecl? (redex-match? Loo FieldDecl))
-(define CDecl? (redex-match? Loo CDecl))
-(define MethDecl? (redex-match? Loo MethDecl))
-(define Stmts? (redex-match? Loo Stmts))
-(define Stmt? (redex-match? Loo Stmt))
-(define GhostDecl? (redex-match? Loo GhostDecl))
-(define e? (redex-match? Loo e))
 
 ; -----------------------------------------------------
 ; ---------------- MACHINE SYNTAX ---------------------
@@ -164,7 +149,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (state := (M σ))
 
   (Continuation ::= ;; represents the code to be executed next
-                Stmts (x := * $ Stmts))) ;; Continuation
+                Stmts (x := * $ Stmts)) ;; Continuation
+
+  (machine-language ::= addr v Object Φ η ψ χ σ state Continuation)) ;; used for random testing of reduction rules
 
 ; -----------------------------------------------------
 ; ---------------- REDUCTION RULES --------------------

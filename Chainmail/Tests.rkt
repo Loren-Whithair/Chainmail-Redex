@@ -215,7 +215,7 @@
 
 
 (module+ test
-  (display "First we show the results of our hand written tests: \n")
+  (display "\nFirst we show the results of our hand written tests:\n")
   (test-results))
 
 ; -----------------------------------------------------
@@ -224,15 +224,15 @@
 
 ;; random testing of syntax
 (module+ test
-  (display "\nThen we do random testing of Loo syntax: \n")
+  (display "\nThen we do random testing of Loo syntax:\n")
   (define syntax_correct? (redex-match Loo language))
   (redex-check Loo language (syntax_correct? (term e)))
   )
 
+;; random testing of reduction rules
+;; none will work at this stage because no reduction rules are full defined
 (module+ test
-  (display "\nThen random testing of Loo reduction rules: ")
-  (define (reduces? e)
-    (not (null? (apply-reduction-relation expr-reductions (term (e))))))
-  
-  (redex-check Loo-Machine language (reduces? (term e)))
+  (display "\nThen random testing of Loo reduction rules:\n")
+  (define (reduces? e) (not (null? (apply-reduction-relation expr-reductions (term (e))))))
+  (redex-check Loo-Machine machine-language (reduces? (term e)))
   )
