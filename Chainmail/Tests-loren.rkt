@@ -253,11 +253,7 @@
   (define Machine_Object? (redex-match? Loo-Machine Object))
 
   (define true_Objects (list
-                        (term (C [f -> 5]))
-                        (term (C [f1 -> 2] [f2 -> 10]))
-                        (term (C [f1 -> 1] [f2 -> 2] [f3 -> 3]))
-                        (term (C))
-                        (term (Cname))
+
                         ))
 
   (define false_Objects (list
@@ -279,18 +275,11 @@
   (define Machine_Frame? (redex-match? Loo-Machine Φ))
 
   (define true_Frames (list
-                       (term (() mt))
-                       (term ((x := * $ ()) mt))
-                       (term ((x1 @ f1 := x2) mt))
-                       (term (() ((mt [x1 -> 10]) [x2 -> 20])))
-                       (term ((x := * $ (x2 := x4 @ mtd())) ((mt [x1 -> 10]) [x2 -> 20]))) 
+
                         ))
 
   (define false_Frames (list
-                         (term (() (mt)))
-                         (term (() (mt [x1 -> 10] [x2 -> 20])))
-                         (term (((x1 @ f1 := x2) $ (x := * $ ())) mt))
-                         ))
+                          ))
 
   (for ([frames true_Frames])
     (test-equal (Machine_Frame? frames) #true))
@@ -305,16 +294,10 @@
   (define Machine_local-var? (redex-match? Loo-Machine η ))
 
   (define true_locals (list
-                        (term mt)
-                        (term (mt [x1 -> 10]))
-                        (term ((mt [x1 -> 10]) [x2 -> 20]))
+
                         ))
 
   (define false_locals (list
-                        (term ma)
-                        (term (mt))
-                        (term (mt [x1 -> 10] [x2 -> 20]))
-                        (term (mt [x1 -> a]))
                          ))
 
   (for ([local-vars true_locals])
