@@ -126,8 +126,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (v ::= ;;values
      null
      addr
-    (addr ...))
-
+     true  ;; not in paper 
+     false ;; not in paper
+;    (addr ...))
+)
+  
   (Object ::=
           mt ;; added for now, maybe remove later (depending on how we use Object
           ((C [f -> v]) ...))
