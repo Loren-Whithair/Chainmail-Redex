@@ -132,8 +132,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 )
   
   (Object ::=
-          mt ;; added for now, maybe remove later (depending on how we use Object
-          ((C [f -> v]) ...))
+          mt ;; added for now, maybe remove later (depending on how we use Object)
+          (C [f -> v] ...))
 
   (Φ ::= ;; Frame
          (Continuation η)) ;; pairs consisting of a continuation, and a mapping from identifiers to values

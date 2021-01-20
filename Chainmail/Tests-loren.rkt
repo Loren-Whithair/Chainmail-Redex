@@ -229,13 +229,15 @@
   (define true_values (list
                         (term null)
                         (term 5)
-                        (term (2 5 5))
+                        (term true)
+                        (term false)
                         ))
 
   (define false_values (list
                         (term 3.5)
                         (term -2)
                         (term (1 4 6 3.5))
+                        (term (1 3 4))
                          ))
 
   (for ([values true_values])
@@ -377,12 +379,19 @@
   (define Machine_runtime-config? (redex-match? Loo-Machine σ))
 
   (define true_runtime-configs (list
-                        ;terms here
-                        ))
+                                (term ((() mt) mt))
+                                (term ((() mt) (mt [1 -> (C1 [f1 -> 10])])))
+                                (term ((((x1 @ f1 := x2) mt) · (() mt)) mt))
+                                (term (((() ((mt [x1 -> 10]) [x2 -> 20])) · ((x := * $ (x2 := x4 @ mtd())) ((mt [x1 -> 10]) [x2 -> 20]))) ((mt [1 -> (C1 [f1 -> 10])]) [2 -> (C2 [f2 -> 100])]))) 
+                                ))
 
   (define false_runtime-configs (list
-                         ;terms here
-                         ))
+                                 (term ((() (mt)) mt))
+                                 (term ((() mt) (mt)))
+                                 (term ((((x1 @ f1 := x2) (mt)) · (() mt)) mt))
+                                 (term ((() mt) ([1 -> (C1 [f1 -> 10])] [2 -> (C1 [f1 -> 30])])))
+                                 (term ((() mt) (() mt) mt))
+                                 ))
 
   (for ([runtime-configs true_runtime-configs])
     (test-equal (Machine_runtime-config? runtime-configs) #true))
@@ -391,16 +400,21 @@
     (test-equal (Machine_runtime-config? runtime-configs) #false))
   )
 
-; States
+; States   ( := (M σ))
 (module+ test
   (define Machine_state? (redex-match? Loo-Machine state))
 
   (define true_states (list
-                        ;terms here
+                       (term (mt ((() mt) mt)))
+                       (term (((mt [C1 -> ('class C1() {})]) [C2 -> ('class C2() {})]) ((() mt) mt)))
+                       (term (mt ((((x1 @ f1 := x2) mt) · (() mt)) mt)))
                         ))
 
   (define false_states (list
-                         ;terms here
+                         (term ((mt) ((() mt) mt)))
+                         (term (mt ((() (mt)) mt)))
+                         (term (([C1 -> ('class C1() {})]) ((() mt) (mt [1 -> (C1 [f1 -> 10])]))))
+                         (term (mt ((((x1 @ f1 := x2) (mt)) · (() mt)) mt))) 
                          ))
 
   (for ([states true_states])
@@ -440,8 +454,6 @@
 (module+ test
   (display "Hand written test results:\n")
   (test-results))
-
-;end copy paste 
 
 ; -----------------------------------------------------
 ; ------------------ Random Testing -------------------
