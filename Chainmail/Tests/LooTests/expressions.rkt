@@ -3,7 +3,7 @@
 (require "../../Loo.rkt")
 
 ; e (expression) Tests
-
+(display "-------------------------------------")
 (display "\nRunning expression Tests:\n")
 
 (define Loo_expression? (redex-match? Loo e))
@@ -40,3 +40,4 @@
   (test-equal (Loo_expression? expression) #false))
 
 (test-results)
+(display "-------------------------------------")

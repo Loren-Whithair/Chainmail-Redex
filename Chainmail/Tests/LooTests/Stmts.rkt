@@ -3,6 +3,7 @@
 (require "../../Loo.rkt")
 
 ; Stmts Tests
+(display "-------------------------------------")
 (display "\nRunning Stmts Tests:\n")
 
 (define Loo_Stmts? (redex-match? Loo Stmts)) ;
@@ -38,3 +39,4 @@
 (test-equal (Loo_Stmts? (term (() $ (() $ ())))) #true)
 
 (test-results)
+(display "-------------------------------------")

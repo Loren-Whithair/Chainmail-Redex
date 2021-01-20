@@ -12,6 +12,15 @@
 (require "LooTests/Stmts.rkt")
 (require "LooTests/expressions.rkt")
 
-; machine syntax tests:
+(display "-------------------------------------")
 
-;
+; machine syntax tests:
+(require "Loo-Machine_tests/v.rkt")
+(require "Loo-Machine_tests/states.rkt")
+(require "Loo-Machine_tests/stack.rkt")
+(require "Loo-Machine_tests/runtime-config.rkt")
+(require "Loo-Machine_tests/local-vars.rkt")
+(require "Loo-Machine_tests/heap.rkt")
+(require "Loo-Machine_tests/frame.rkt")
+(require "Loo-Machine_tests/Object.rkt")
+(require "Loo-Machine_tests/Continuation.rkt")

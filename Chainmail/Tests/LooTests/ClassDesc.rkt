@@ -4,6 +4,7 @@
 
 ;Class Description Declarations
 
+(display "-------------------------------------")
 (display "\nRunning Class Declarations Tests:\n")
 
 (define Loo_ClassDesc? (redex-match? Loo ClassDesc))
@@ -47,3 +48,4 @@
   (test-equal (Loo_ClassDesc? class_descriptions) #false))
 
 (test-results)
+(display "-------------------------------------")

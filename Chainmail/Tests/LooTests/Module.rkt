@@ -2,6 +2,7 @@
 (require redex)
 (require "../../Loo.rkt")
 
+(display "-------------------------------------")
 (display "\nRunning Modules Tests:\n")
 
 (define Loo_M? (redex-match? Loo M))
@@ -27,3 +28,4 @@
   (test-equal (Loo_M? Modules) #false))
 
 (test-results)
+(display "-------------------------------------")

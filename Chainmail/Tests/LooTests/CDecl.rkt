@@ -4,6 +4,7 @@
 
 ; Constructor Declarations
 
+(display "-------------------------------------")
 (display "\nRunning Constructor Declaration Tests:\n")
 
 (define Loo_CDecl? (redex-match? Loo CDecl))
@@ -27,3 +28,4 @@
   (test-equal (Loo_CDecl? constructor_declarations) #false))
 
 (test-results)
+(display "-------------------------------------")

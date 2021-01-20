@@ -3,6 +3,7 @@
 (require "../../Loo.rkt")
 
 ; Ghost fields
+(display "-------------------------------------")
 (display "\nRunning Ghost Field Tests:\n")
 
 (define Loo_GhostDecl? (redex-match? Loo GhostDecl))
@@ -26,3 +27,4 @@
   (test-equal (Loo_GhostDecl? ghost_declarations) #false))
 
 (test-results)
+(display "-------------------------------------")

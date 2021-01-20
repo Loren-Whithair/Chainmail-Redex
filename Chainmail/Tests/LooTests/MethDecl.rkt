@@ -3,6 +3,7 @@
 (require "../../Loo.rkt")
 
 ; Method Declarations
+(display "-------------------------------------")
 (display "\nRunning Method Declaration Tests:\n")
 
 (define Loo_MethDecl? (redex-match? Loo MethDecl))
@@ -25,3 +26,4 @@
   (test-equal (Loo_MethDecl? method_declarations) #false))
 
 (test-results)
+(display "-------------------------------------")
