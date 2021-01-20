@@ -362,18 +362,9 @@
   (define Machine_runtime-config? (redex-match? Loo-Machine σ))
 
   (define true_runtime-configs (list
-                                (term ((() mt) mt))
-                                (term ((() mt) (mt [1 -> (C1 [f1 -> 10])])))
-                                (term ((((x1 @ f1 := x2) mt) · (() mt)) mt))
-                                (term (((() ((mt [x1 -> 10]) [x2 -> 20])) · ((x := * $ (x2 := x4 @ mtd())) ((mt [x1 -> 10]) [x2 -> 20]))) ((mt [1 -> (C1 [f1 -> 10])]) [2 -> (C2 [f2 -> 100])]))) 
                                 ))
 
   (define false_runtime-configs (list
-                                 (term ((() (mt)) mt))
-                                 (term ((() mt) (mt)))
-                                 (term ((((x1 @ f1 := x2) (mt)) · (() mt)) mt))
-                                 (term ((() mt) ([1 -> (C1 [f1 -> 10])] [2 -> (C1 [f1 -> 30])])))
-                                 (term ((() mt) (() mt) mt))
                                  ))
 
   (for ([runtime-configs true_runtime-configs])
@@ -413,8 +404,6 @@
   (define Machine_Continuation? (redex-match? Loo-Machine Continuation))
 
   (define true_Conts (list
-                        (term ())
-                        (term (x := * $ ()))
                         (term (x1 @ f1 := x2))
                         (term ((x1 @ f1 := x2) $ (x2 := x4 @ mtd())))
                         (term (x := * $ (x2 := x4 @ mtd())))
