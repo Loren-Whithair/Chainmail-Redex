@@ -1,9 +1,6 @@
 #lang racket
 (require redex)
 
-; Tests in files get run automatically with each call to require
-
-; syntax tests:
 (require "LooTests/Module.rkt")
 (require "LooTests/ClassDesc.rkt")
 (require "LooTests/CDecl.rkt")
@@ -11,10 +8,6 @@
 (require "LooTests/GhostFields.rkt")
 (require "LooTests/Stmts.rkt")
 (require "LooTests/expressions.rkt")
-
-(display "-------------------------------------")
-
-; machine syntax tests:
 (require "Loo-Machine_tests/v.rkt")
 (require "Loo-Machine_tests/states.rkt")
 (require "Loo-Machine_tests/stack.rkt")
@@ -24,3 +17,33 @@
 (require "Loo-Machine_tests/frame.rkt")
 (require "Loo-Machine_tests/Object.rkt")
 (require "Loo-Machine_tests/Continuation.rkt")
+
+
+; syntax tests:
+
+(display "\n--------------------------\n")
+(display "----- Syntax Tests -------\n")
+(display "--------------------------\n")
+
+(test-modules)
+(test-ClassDesc)
+(test-CDecl)
+(test-MethDecl)
+(test-GhostFields)
+(test-Stmts)
+(test-expressions)
+
+(display "\n--------------------------\n")
+(display "-- Machine Syntax Tests---\n")
+(display "--------------------------\n")
+
+; machine syntax tests:
+(test-states)
+(test-runtimeConfig)
+(test-continuation)
+(test-v)
+(test-stack)
+(test-localVars)
+(test-heap)
+(test-frame)
+(test-object)
