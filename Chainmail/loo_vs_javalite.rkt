@@ -4,24 +4,22 @@ Loo vs Javalite: notes, comparisons
 NOTES, NEXT STEPS, QUESTIONS
 --------------------------------
 
-An attempt to define Modules is in the grammar, within the grammar for Loo.
-TODO: should it be 
+OPERATIONAL SEMANTICS NOTES
+
+Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment
+This is because for the sake of <access> and <authority> of information with respect to Chainmail, being able to create new fields doesn't matter.
+
+Issues:
+
+(where clauses) allow us to create information e.g. where object_1 = myfunc(x)
+How do we do this for (side-condition)? We need to lookup a piece of information in a map and check what type it is
+
+If we have a non-terminal in the grammar that may or may not be a certain other non-terminal, how do we check this in a (side-condition)
+
+We need to create a function (Class x σ) that finds out what ClassID is attributed to the object stored in local var x in the current runtime config σ
 
 
 
-In the paper, Loo has a definition of field and class lookup, but it is not grammatically defined.
-We will need to add a gramatical definition so that we can use it in reductions.
-
-Loo has a method, ghostfield, and constructor lookup.
-
-!!!GhostDecl exist in Loo but not in Javalite!!!
-
-Reductions of a state of Loo will be over #:domain σ    (runtime configs)
-
-In Loo, the local scope is managed by ϕ (Frame). Instead of having a list of local vars that needs mutating, the vars are assosciated with the frame, new frames are added to the stack
-when we begin execution of a new method call, expr etc.
-
-Do we only need expression (e) for ghost functions, nothing else (...?)
 
 
 
