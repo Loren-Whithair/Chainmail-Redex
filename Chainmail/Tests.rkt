@@ -8,7 +8,7 @@
 
 ; ClassDesc
 ; 
-
+#|
 ; e (expression) Tests
 (module+ test
 
@@ -444,6 +444,7 @@
   (display "Hand written test results:\n")
   (test-results))
 
+|#
 ; -----------------------------------------------------
 ; ------------------ Random Testing -------------------
 ; -----------------------------------------------------

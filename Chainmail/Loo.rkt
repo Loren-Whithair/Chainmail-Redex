@@ -133,7 +133,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   
   (Object ::=
           mt ;; added for now, maybe remove later (depending on how we use Object)
-          (C [f -> v] ...))
+          (C fieldMap))
+
+  (fieldMap ::=
+            mt
+            (fieldMap [f -> v]))
 
   (Φ ::= ;; Frame
          (Continuation η)) ;; pairs consisting of a continuation, and a mapping from identifiers to values
@@ -180,19 +184,25 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; varAssgn_OS
-   (--> (M ((((((x := this @ f) $ Stmts) η) · ψ) χ)))
+   (--> (M ((((((x_0 := x_1 @ f) $ Stmts) η) · ψ) χ)))
         (M (((Stmts η_0) · ψ) χ))
-        "fieldAssgn_OS"
-        ;; where η_0 is the updated local vars, based on the assignment
-
-    )
-   
-   ; fieldAssgn_OS
-   (--> (M ((((((this @ f := y) $ Stmts) η) · ψ) χ)))
-        (M (((Stmts η) · ψ) heap-change(χ [f -> y])))
+        ;; side condition: x_1 points to an address
+        ;; side condition: x_1 is same classtype as 'this' in the current runtime config
         "varAssgn_OS"
-        ;; where heap-change is defined appropriately
+        (where addr_0 (η-lookup η x_1))
+;;      (side-condition (redex-match? Loo-Machine addr (η-lookup η x_1))) ;;term??
+ 
+        (where Object_0 (h-lookup χ addr_0))
+        (where v_0 (field-lookup Object_0 f)) 
+        (where η_0 (η-extend* η [x_0 -> v_0]))
+    )
 
+               
+   ; fieldAssgn_OS
+   (--> (M ((((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)))
+        (M (((Stmts η) · ψ) insert-hextend(χ [f -> y]))) ;;insert hextend
+        "fieldAssgn_OS"
+        ;(where
     )
 
    ; objCreate_OS
@@ -201,8 +211,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         ;(side-condition 
         ;"objCreate_OS"
         
-
-
         ;; where addr_1 is a newly allocated address on the heap, for the new object
         ;; where Φ'' is the new frame, based on the constructor
         ;; where (C, ∅) is an object created of that class, and none of the fields are assigned values
@@ -242,9 +250,13 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (storelike-lookup η x)])
 
 
-;(define testM
-;  (M-match (mt [C1 -> ('class C1(x1) {})]) C1))
-  
+;;NEEDS TESTING
+(define-metafunction Loo-Machine
+  field-lookup : Object f -> v
+  [(field-lookup (C fieldMap) f)
+   (storelike-lookup fieldMap f)])
+
+
 (define-metafunction Loo-Machine
   M-match : M C -> 'bool
   [(M-match M C)
@@ -303,6 +315,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   [(η-extend* η [x -> addr] ...)
    ,(storelike-extend* id-<= (term η) (term ([x -> addr] ...)))])
 
+;(define-metafunction
 
 #|
 
