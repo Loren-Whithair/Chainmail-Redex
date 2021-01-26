@@ -297,6 +297,8 @@
   [(get-length (any_0 ...))
    ,(length (term (any_0 ...)))]) ;; evaluates with built in racket function
 
+
+
 ; generates the default value corresponding to the given type
 (define-metafunction JL-Machine
   default-value : T -> v
@@ -307,6 +309,8 @@
   [(default-value C)
    null]) ;; if a value isn't assigned to a class variable, it's default value is null (like java)
 
+
+
 ; generates list of default values (v ...) corresponding to the given list of types (T ...)
 (define-metafunction JL-Machine
   default-value* : (T ...) -> (v ...)
@@ -315,6 +319,8 @@
   [(default-value* (T_0 T_1 ...))
    ((default-value T_0) (default-value T_1) ...)]) ;; otherwise we apply the default-value function defined above to each term in the list
 
+
+
 ; returns the max location address used in the heap
 (define-metafunction JL-Machine
   h-max : h -> number
@@ -322,11 +328,15 @@
   [(h-max (h [loc -> hv]))
    ,(max (term loc) (term (h-max h)))]) ;; otherwise we use the built in racket function max
 
+
+
 ; returns a heap address for a new object to be added to the heap
 (define-metafunction JL-Machine
   h-malloc : h -> number
   [(h-malloc h)
    ,(add1 (term (h-max h)))]) ;; uses the h-max function defined above to find the max heap value in use, then uses racket's built in add1 function
+
+
 
 ; helper function for the h-malloc-n function defined below
 (define-metafunction JL-Machine
@@ -334,12 +344,16 @@
   [(h-malloc-n-helper number_b number_c)
    ,(let ([z (term number_b)]) (build-list (term number_c) (lambda (y) (+ y z))))])
 
+
+
 ; returns a list of new heap locations for n values
 (define-metafunction JL-Machine
   h-malloc-n : h number -> (loc ...)
   [(h-malloc-n h number)
    (loc_0 ...)
    (where ((loc_0 ...)) (h-malloc-n* h number))])
+
+
 
 ; takes in number (corresponding to the next heap value) and an n, converts it into list (of size n) of heap locations
 (define-metafunction JL-Machine
@@ -354,12 +368,16 @@
    (where number_i ,(if (empty? (term (loc_0 ...))) (term number_b) (add1 (apply max (term (loc_0 ...))))))
    (where (number_t (loc_1 ...) ...) (internal-h-malloc-n* number_i (number_1 number_2 ...)))])
 
+
+
 ; allocates space in the heap for n objects (in format ((loc ...) ...) to correspond to heirarchy of class fields (([T f] ...) ...)
 (define-metafunction JL-Machine
   h-malloc-n* : h number ... -> ((loc ...) ...) ;; takes in heap (h) as argument parameter
   [(h-malloc-n* h number_0 ...)
    ((loc_0 ...) ...)
    (where (number (loc_0 ...) ...) (internal-h-malloc-n* (h-malloc h) (number_0 ...)))]) ;; uses h-malloc to get next heap value
+
+
 
 ; used for looking up something inside something else (very general because of the functions use of 'any')
 ; ex: if A is a set, (storelike-lookup A x) will test if x ∈ A and return the value associated with x
@@ -373,8 +391,12 @@
    (storelike-lookup any_0 any_t)
    (side-condition (not (equal? (term any_k) (term any_t))))]) ;; ensures any_k != any_t (otherwise we would match the previous condition)
 
+
+
 (define (id-<= a b)
   (string<=? (symbol->string a) (symbol->string b)))
+
+
 
 (define (storelike-extend <= storelike k hv)
   (match storelike
@@ -388,6 +410,8 @@
        [else
         `((,storelike [,ki -> ,hvi]) [,k -> ,hv])])]))     
 
+
+
 ; extends the storelike
 ; for example, adding a new variable to the heap or η
 (define (storelike-extend* <= storelike extend*)
@@ -396,11 +420,15 @@
     [`([,k -> ,hv] . ,extend*)
      (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
 
+
+
 ; lookup the value stored in the location 'loc' in the heap
 (define-metafunction JL-Machine
   h-lookup : h loc -> hv
   [(h-lookup h loc)
    (storelike-lookup h loc)]) ;; uses the storelike-lookup metafunction
+
+
 
 ; adds new location-value pairing to existing heap
 (define-metafunction JL-Machine
@@ -408,17 +436,23 @@
   [(h-extend* h [loc -> hv] ...)
    ,(storelike-extend* <= (term h) (term ([loc -> hv] ...)))])
 
+
+
 ; gets location in heap of the local variable called x
 (define-metafunction JL-Machine
   η-lookup : η x -> loc
   [(η-lookup η x)
    (storelike-lookup η x)]) ;; uses the storelike-lookup metafunction
 
+
+
 ; extends the local variable list to include x
 (define-metafunction JL-Machine
   η-extend* : η [x -> loc] ... -> η
   [(η-extend* η [x -> loc] ...)
    ,(storelike-extend* id-<= (term η) (term ([x -> loc] ...)))])
+
+
 
 ; finds the location in heap of a field 'f' assocaited with 'object'
 (define-metafunction JL-Machine
@@ -437,11 +471,15 @@
     (not (member (term f_target)
                  (term (f_t1 ... f_1 ... ...)))))])
 
+
+
 ; finds the location in the heap of field f, a field of 'object' which is of type C
 (define-metafunction JL-Machine
   field-lookup : object f C -> loc
   [(field-lookup object f_target C)
    (restricted-field-lookup (restrict-object object C) f_target)])
+
+
 
 (define-metafunction JL-Machine
   restrict-object : object C -> object
@@ -452,12 +490,16 @@
         (C_c [f_c loc_c] ...))
    (side-condition (equal? (term C) (term C_c)))])
 
+
+
 ; returns the name of a class
 ; ex: (parent-name (class A extends B {...})) will return 'A'
 (define-metafunction JL-Machine
   class-name : CL -> C ;; seems to be defined for a class list input but the class list doesn't seem to be used
   [(class-name (class C_t extends C ([T f] ...) (M ...))) ;; just works on the head of the list
    C_t])
+
+
 
 ; returns the name of the parent of a class (ie: the class the input class extends from)
 ; (recall- every class extends from something in Javalite so this is a well defined operation)
@@ -467,11 +509,16 @@
   [(parent-name (class C extends C_p ([T f] ...) (M ...)))
    C_p])
 
+
+
+
 ; returns a list of fields (and associated types) associated with a class
 (define-metafunction JL-Machine
   field-list : CL -> ([T f] ...)
   [(field-list (class C extends C_p ([T f] ...) (M ...)))
    ([T f] ...)])
+
+
 
 ; extends a list of classes with an additional class
 ; adds the new class to the end of the list
@@ -479,6 +526,8 @@
   class-list-extend : (C ...) C -> (C ...)
   [(class-list-extend (C_0 ...) C_1)
    (C_0 ... C_1)])
+
+
 
 ; gets a class definition: (CL ::= (class C extends C ([T f] ...) (M ...)))
 ; useful when wanting to get method definitions from a class
@@ -488,11 +537,15 @@
    CL_1 
    (side-condition (equal? (term (class-name CL_1)) (term C)))])
 
+
+
 ; gets the list of classes (super classes + self class) from a 'raw' object (no e's, all v's)
 (define-metafunction JL-Machine
   class-list-from-object : object -> (C ...)
   [(class-list-from-object ((C_1 [f_1 loc_1] ...) ...)) 
    (C_1 ...)])
+
+
 
 ; generates a list including the super classes of C and the class C itself
 (define-metafunction JL-Machine
@@ -504,11 +557,15 @@
    (where CL (class-lookup μ id))
    (where C_p (parent-name CL))])
 
+
+
 ; extends a list of fields by appending another list of fields to the end
 (define-metafunction JL-Machine
   field-lists-extend : (([T f] ...) ...) ([T f] ...) -> (([T f] ...) ...)
   [(field-lists-extend  (([T_0 f_0] ...) ...) ([T_1 f_1] ...))
    (([T_0 f_0] ...) ... ([T_1 f_1] ...))])
+
+
 
 ; returns a ([T f] ...) for every class included in list of super classes and self
 (define-metafunction JL-Machine
@@ -521,11 +578,15 @@
    (where C_p (parent-name CL))
    (where ([T f] ...) (field-list CL))])
 
+
+
 ; takes a method declaration and returns the name of the method
 (define-metafunction JL-Machine
   method-name : M -> m
   [(method-name (T_0 m ([T_1 x] ...) e))
    m])
+
+
 
 ; takes a method declaration and returns the expression of the method
 (define-metafunction JL-Machine
@@ -533,11 +594,15 @@
   [(method-expression (T_0 m ([T_1 x] ...) e))
    e])
 
+
+
 ; takes a method declaration and returns the arguments of the method
 (define-metafunction JL-Machine
   method-args : M -> (x ...)
   [(method-args (T_0 m ([T_1 x] ...) e))
    (x ...)])
+
+
 
 ; gets the specification of the method identified as 'm' from the class description 'CL'
 (define-metafunction JL-Machine
@@ -550,10 +615,14 @@
    (side-condition (equal? (findf (λ (i) (equal? (term (method-name ,i)) (term m)))
                                    (term (M ...))) #f))])
 
+
+
 (define (->bool v)
     (if v
         'true
         'false))
+
+
 
 ; cast to a new type ;FOR TYPES
 (define-metafunction JL-Machine

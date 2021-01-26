@@ -190,15 +190,18 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    ; varAssgn_OS
    (--> (M ((((((x_0 := x_1 @ f) $ Stmts) η) · ψ) χ)))
         (M (((Stmts η_0) · ψ) χ))
-        ;; side condition: x_1 points to an address
         ;; side condition: x_1 is same classtype as 'this' in the current runtime config
         "varAssgn_OS"
+
+        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;; x_1 must point to an address, i.e. an object for field to possibly exist
         (where addr_0 (η-lookup η x_1))
-        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;; x_1 must point to an address, i.e. must contain an object in order for there to be a field dereference
-        ;;(side-condition for field-lookup returning something?)
-        
         (where Object_0 (h-lookup χ addr_0))
-        (where v_0 (field-lookup Object_0 f)) 
+
+        ;;(side-condition for field-lookup returning something?) will otherwise get an errors
+        
+        
+        
+        (where v_0 (field-lookup Object_0 f))
         (where η_0 (η-extend* η [x_0 -> v_0]))
     )
 
@@ -294,10 +297,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      (cond
        [(equal? k ki)   ;; if the key is already in the mapping, just replace the value it maps to 
         `(,storelike [,ki -> ,hv])]
-       [(<= k ki)  ;;otherwise, if k <= ki, recursively call one item back in the list
+       [(<= k ki)  ;;otherwise, if k <= ki, recursively call one item back in the list to check if that one is equal to k
         `(,(storelike-extend <= storelike k hv) [,ki -> ,hvi])]
        [else
-        `((,storelike [,ki -> ,hvi]) [,k -> ,hv])])]))     
+        `((,storelike [,ki -> ,hvi]) [,k -> ,hv])])]))     ;;if you either get to the end or find the spot where [k -> hv] fits in the ordering, put it there
 
 
 (define (storelike-extend* <= storelike extend*)

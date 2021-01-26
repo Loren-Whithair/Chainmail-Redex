@@ -28,4 +28,9 @@
 
         )
    ))
+
+(define (->bool v)
+    (if v
+        'true
+        'false))
    
