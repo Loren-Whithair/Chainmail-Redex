@@ -197,7 +197,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (where η_0 (η-extend* η [x_0 -> v_0]))
     )
 
-               
    ; fieldAssgn_OS
    (--> (M ((((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)))
         (M (((Stmts η) · ψ) insert-hextend(χ [f -> y]))) ;;insert hextend
