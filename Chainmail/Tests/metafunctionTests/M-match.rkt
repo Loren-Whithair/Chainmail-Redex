@@ -6,7 +6,7 @@
 (define (test-M-match)
 
   (display "-------------------------------------")
-  (display "\nRunning _ Tests:\n")
+  (display "\nRunning M-match Tests:\n")
 
 
   (define true_M-match (list

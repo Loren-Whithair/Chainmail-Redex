@@ -6,7 +6,7 @@
 (define (test-lcl-extend*)
 
   (display "-------------------------------------")
-  (display "\nRunning _ Tests:\n")
+  (display "\nRunning lcl-extend* Tests:\n")
 
 
   (define true_lcl-extend (list

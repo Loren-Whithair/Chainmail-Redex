@@ -6,7 +6,7 @@
 (define (test-storelike-lookup)
 
   (display "-------------------------------------")
-  (display "\nRunning _ Tests:\n")
+  (display "\nRunning storelike-lookup Tests:\n")
 
 
   (define true_storelike-lookup (list

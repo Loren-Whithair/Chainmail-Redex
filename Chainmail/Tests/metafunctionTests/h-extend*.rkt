@@ -6,7 +6,7 @@
 (define (test-h-extend*)
 
   (display "-------------------------------------")
-  (display "\nRunning _ Tests:\n")
+  (display "\nRunning h-extend* Tests:\n")
 
 
   (define true_h-extend* (list

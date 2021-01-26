@@ -6,7 +6,7 @@
 (define (test-lcl-lookup)
 
   (display "-------------------------------------")
-  (display "\nRunning _ Tests:\n")
+  (display "\nRunning lcl-lookup Tests:\n")
 
 
   (define true_lcl-lookup (list

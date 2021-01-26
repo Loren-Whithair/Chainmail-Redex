@@ -6,8 +6,7 @@
 (define (test-field-lookup)
 
   (display "-------------------------------------")
-  (display "\nRunning _ Tests:\n")
-
+  (display "\nRunning field-lookup Tests:\n")
 
   (define true_field-lookup (list
 

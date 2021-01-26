@@ -6,7 +6,7 @@
 (define (test-h-lookup)
 
   (display "-------------------------------------")
-  (display "\nRunning _ Tests:\n")
+  (display "\nRunning h-lookup Tests:\n")
 
 
   (define true_h-lookup (list
