@@ -194,8 +194,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         ;; side condition: x_1 is same classtype as 'this' in the current runtime config
         "varAssgn_OS"
         (where addr_0 (η-lookup η x_1))
-        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;;x must point to an address, i.e. must contain an object
- 
+        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;; x_1 must point to an address, i.e. must contain an object in order for there to be a field dereference
+        ;;(side-condition for field-lookup returning something?)
+        
         (where Object_0 (h-lookup χ addr_0))
         (where v_0 (field-lookup Object_0 f)) 
         (where η_0 (η-extend* η [x_0 -> v_0]))
