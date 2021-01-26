@@ -1,7 +1,9 @@
 #lang racket
 (require redex)
+(require "../../Loo.rkt")
+(require "../Loo-Machine_tests/heap.rkt")
 
-(provide test-h-lookup)
+(provide test-h-lookup) ;; for use by the test helper
 
 (define (test-h-lookup)
 
@@ -18,10 +20,10 @@
                          ))
 
   (for ([h-lookup true_h-lookup])
-    (test-equal )
+    (test-equal ))
   
   (for ([h-lookup false_h-lookup])
-    (test-equal )
+    (test-equal ))
 
   (test-results)
 

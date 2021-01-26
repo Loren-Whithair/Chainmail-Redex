@@ -273,8 +273,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
-  [(storelike-lookup mt any_0)
-   ,(error 'storelike-loopup "~e not found in ~e" (term any_0) (term mt))] ;; unable to find anything in an empty 'any' (for example, an object)
+  [(storelike-lookup mt any_0) #false] ;; unable to find anything in an empty 'any' (for example, an object)
   [(storelike-lookup (any_0 [any_t -> any_ans]) any_t)
    any_ans] ;; if any_t points to any_ans in any_0, we return any_ans
   [(storelike-lookup (any_0 [any_k -> any_v]) any_t)
