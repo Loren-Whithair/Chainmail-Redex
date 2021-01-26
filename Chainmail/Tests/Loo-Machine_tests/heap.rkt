@@ -13,16 +13,16 @@
 
   (define true_heaps (list
                       (term mt)   ;;empty heap
-                      (term (mt [1 -> (C)]))
-                      (term (mt [1 -> (C1 [f1 -> 10])]))
-                      (term ((mt [1 -> (C1 [f1 -> 10])]) [2 -> (C2 [f2 -> 100])]))
+                      (term (mt [1 -> (C mt)]))
+                      (term (mt [1 -> (C1 (mt [f1 -> true]))]))
+                      (term ((mt [1 -> (C1 (mt [f1 -> 10]))]) [2 -> (C2 mt)]))
                       ))
 
   (define false_heaps (list
-                       (term (mt [a -> (C)]))  ;;invalid addr
-                       (term ([1 -> (C1 [f1 -> 2])]))   ;;missing mt
-                       (term (mt [1 -> true]))  ;;cannot map to values, should this be changed? Ask Julian
-                       (term (mt [1 -> (C1 [f1 -> 10])] [2 -> (C1 [f1 -> 30])]))  ;;incorrect bracketing, require nesting
+                       (term (mt [a -> (C mt)]))  ;;invalid addr
+                       (term ([1 -> (C1 (mt [f1 -> 2]))]))   ;;missing mt
+                       (term (mt [1 -> true]))  ;;cannot map to values, as they are stored as immediate references from local variables (i.e. x -> v
+                       (term (mt [1 -> (C1 (mt [f1 -> 10]))] [2 -> (C1 mt)]))  ;;incorrect bracketing, require nesting
                        ))
 
   (for ([heaps true_heaps])
