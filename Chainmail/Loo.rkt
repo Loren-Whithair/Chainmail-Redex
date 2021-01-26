@@ -3,8 +3,6 @@
 
 (provide (all-defined-out))
 
-
-
 #| 
 NOTES
 --------------------------------
@@ -199,6 +197,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
         ;;(side-condition for field-lookup returning something?) will otherwise get an errors
         
+        
+        
         (where v_0 (field-lookup Object_0 f))
         (where η_0 (η-extend* η [x_0 -> v_0]))
     )
@@ -281,27 +281,13 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (storelike-lookup any_0 any_t)
    (side-condition (not (equal? (term any_k) (term any_t))))]) ;; ensures any_k != any_t (otherwise we would match the previous condition)
 
-
-
-
-
-(define-metafunction Loo-Machine
-  h-extend* : χ [addr -> Object] ... -> χ ;; takes in a arbitrary number of mappings
-  [(h-extend* χ [addr -> Object] ...)
-   ,(storelike-extend* <= (term χ) (term ([addr -> Object] ...)))])
-
-(define-metafunction Loo-Machine
-  η-extend* : η [x -> addr] ... -> η
-  [(η-extend* η [x -> addr] ...)
-   ,(storelike-extend* id-<= (term η) (term ([x -> addr] ...)))])
-
-
-
 (define (id-<= a b)
   (string<=? (symbol->string a) (symbol->string b)))
 
+
 ;; if 'storelike' is empty, return just the new mapping
 ; else insert the new mapping [k -> hv] while keeping the ordering of the keys
+
 (define (storelike-extend <= storelike k hv)  ;;storelike: the map we're extending, k: the key, hv: the value
   (match storelike
     ['mt `(mt [,k -> ,hv])]
@@ -321,6 +307,18 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     [`([,k -> ,hv] . ,extend*)
      (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
 
+
+(define-metafunction Loo-Machine
+  h-extend* : χ [addr -> Object] ... -> χ ;; takes in a arbitrary number of mappings
+  [(h-extend* χ [addr -> Object] ...)
+   ,(storelike-extend* <= (term χ) (term ([addr -> Object] ...)))])
+
+
+
+(define-metafunction Loo-Machine
+  η-extend* : η [x -> addr] ... -> η
+  [(η-extend* η [x -> addr] ...)
+   ,(storelike-extend* id-<= (term η) (term ([x -> addr] ...)))])
 
 ;(define-metafunction
 
