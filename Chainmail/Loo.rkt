@@ -198,6 +198,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    ; objCreate_OS
    (--> (M (((((x_0 := new C(x ...) $ Stmts) η) · ψ) χ))) ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
         (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) add-to-heap(χ [addr_1 -> (C, empty)])))   ;; we might need to change (C, empty) based on the metafunction ↓
+        ;(side-condition 
+        ;"objCreate_OS"
+        
+
+
         ;; where addr_1 is a newly allocated address on the heap, for the new object
         ;; where Φ'' is the new frame, based on the constructor
         ;; where (C, ∅) is an object created of that class, and none of the fields are assigned values
@@ -226,6 +231,79 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; -----------------------------------------------------
 
 
+(define-metafunction Loo-Machine
+  h-lookup : χ addr -> Object
+  [(h-lookup χ addr)
+   (storelike-lookup χ addr)])
+
+(define-metafunction Loo-Machine
+  η-lookup : η x -> addr
+  [(η-lookup η x)
+   (storelike-lookup η x)])
+
+
+;(define testM
+;  (M-match (mt [C1 -> ('class C1(x1) {})]) C1))
+  
+(define-metafunction Loo-Machine
+  M-match : M C -> 'bool
+  [(M-match M C)
+   (cond
+     [(equal? (storelike-lookup M C) ,(error 'storelike-loopup "~e not found in ~e" (term any_0) (term mt)))
+      #false]
+     [else #true])])
+    ;;if we call store-like lookup and get a ClassDesc back, then True, if we get an error then false
+
+(define-metafunction Loo-Machine
+  storelike-lookup : any any -> any
+  [(storelike-lookup mt any_0)
+   ,(error 'storelike-loopup "~e not found in ~e" (term any_0) (term mt))] ;; unable to find anything in an empty 'any' (for example, an object)
+  [(storelike-lookup (any_0 [any_t -> any_ans]) any_t)
+   any_ans] ;; if any_t points to any_ans in any_0, we return any_ans
+  [(storelike-lookup (any_0 [any_k -> any_v]) any_t)
+   (storelike-lookup any_0 any_t)
+   (side-condition (not (equal? (term any_k) (term any_t))))]) ;; ensures any_k != any_t (otherwise we would match the previous condition)
+
+(define (id-<= a b)
+  (string<=? (symbol->string a) (symbol->string b)))
+
+
+;; if 'storelike' is empty, return just the new mapping
+; else insert the new mapping [k -> hv] while keeping the ordering of the keys
+
+(define (storelike-extend <= storelike k hv)  ;;storelike: the map we're extending, k: the key, hv: the value
+  (match storelike
+    ['mt `(mt [,k -> ,hv])]
+    [`(,storelike [,ki -> ,hvi])
+     (cond
+       [(equal? k ki)   ;; if the key is already in the mapping, just replace the value it maps to 
+        `(,storelike [,ki -> ,hv])]
+       [(<= k ki)  ;;otherwise, if k <= ki, recursively call one item back in the list
+        `(,(storelike-extend <= storelike k hv) [,ki -> ,hvi])]
+       [else
+        `((,storelike [,ki -> ,hvi]) [,k -> ,hv])])]))     
+
+
+(define (storelike-extend* <= storelike extend*)
+  (match extend*
+    ['() storelike]
+    [`([,k -> ,hv] . ,extend*)
+     (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
+
+
+(define-metafunction Loo-Machine
+  h-extend* : χ [addr -> Object] ... -> χ ;; takes in a arbitrary number of mappings
+  [(h-extend* χ [addr -> Object] ...)
+   ,(storelike-extend* <= (term χ) (term ([addr -> Object] ...)))])
+
+
+
+(define-metafunction Loo-Machine
+  η-extend* : η [x -> addr] ... -> η
+  [(η-extend* η [x -> addr] ...)
+   ,(storelike-extend* id-<= (term η) (term ([x -> addr] ...)))])
+
+
 #|
 
 what we need:
@@ -248,7 +326,8 @@ add-to-local-vars(η [x_1 -> v]): assigns value of x to x_1 and then adds to η
 
 
 
-
+(define M? (redex-match Loo M))
+(define CD? (redex-match Loo ClassDesc))
 
 
 

@@ -119,3 +119,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      error)  ;; variable
   (loc ::= number))   ;; numeric location in heap  ;;not in basic Loo, but will be needed
   
+
+  
+  
+  OPERATIONAL SEMANTICS
+  
+  -varAssgn_os ; class type of this must match class type of y
