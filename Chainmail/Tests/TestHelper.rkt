@@ -33,11 +33,12 @@
 (test-Stmts)
 (test-expressions)
 
+
+; machine syntax tests:
 (display "\n--------------------------\n")
 (display "-- Machine Syntax Tests---\n")
 (display "--------------------------\n")
 
-; machine syntax tests:
 (test-states)
 (test-runtimeConfig)
 (test-continuation)
