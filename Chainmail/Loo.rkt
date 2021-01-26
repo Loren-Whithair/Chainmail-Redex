@@ -6,21 +6,21 @@
 
 
 #| 
-NOTES, NEXT STEPS, QUESTIONS
+NOTES
 --------------------------------
+
 
 OPERATIONAL SEMANTICS NOTES
 
 Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment
-This is because for the sake of <access> and <authority> of information with respect to Chainmail, being able to create new fields doesn't matter.
+This is because for the sake of <access> and <authority> with respect to Chainmail, being able to create new fields doesn't matter.
+
+For (side-condition), if you want to call a metafunction to extract the value use (term (mf-apply myfunc args...))
+
+To check if a non-terminal is of a particular type in the grammar, e.g. if a v is an addr, simply use (redex-match? Loo-Machine v e)
 
 -------
-Issues:
-
-(where clauses) allow us to create information e.g. where object_1 = myfunc(x)
-How do we do this for (side-condition)? We need to lookup a piece of information in a map and check what type it is
-
-If we have a non-terminal in the grammar that may or may not be a certain other non-terminal, how do we check this in a (side-condition)
+NEXT STEPS:
 
 We need to create a function (Class x σ) that finds out what ClassID is attributed to the object stored in local var x in the current runtime config σ
 
@@ -129,8 +129,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (v ::= ;;values
      null
      addr
-     true  ;; not in paper 
-     false ;; not in paper
+     true    ;; not in paper 
+     false   ;; not in paper
+     integer ;; not in paper
 ;    (addr ...))
 )
   
@@ -193,7 +194,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         ;; side condition: x_1 is same classtype as 'this' in the current runtime config
         "varAssgn_OS"
         (where addr_0 (η-lookup η x_1))
-;;      (side-condition (redex-match? Loo-Machine addr (η-lookup η x_1))) ;;term??
+      (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))
  
         (where Object_0 (h-lookup χ addr_0))
         (where v_0 (field-lookup Object_0 f)) 
