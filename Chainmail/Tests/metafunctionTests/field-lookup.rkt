@@ -1,6 +1,7 @@
 #lang racket
 (require redex)
 (require "../../Loo.rkt")
+
 (provide test-field-lookup)
 
 (define (test-field-lookup)

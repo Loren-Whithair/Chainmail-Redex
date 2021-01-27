@@ -11,7 +11,8 @@
   (v := 
      true
      false
-     integer)
+     addr)
+  (addr := natural)
   (x := null))
 
 (define v? (redex-match TestLang v))
@@ -33,4 +34,6 @@
     (if v
         'true
         'false))
-   
+
+(define (id-<= a b)
+  (string<=? (symbol->string a) (symbol->string b)))

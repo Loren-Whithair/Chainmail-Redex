@@ -129,7 +129,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      addr
      true    ;; not in paper 
      false   ;; not in paper
-     integer ;; not in paper
+     [integer] ;; not in paper
 ;    (addr ...))
 )
   

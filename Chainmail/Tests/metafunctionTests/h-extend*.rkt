@@ -1,8 +1,8 @@
 #lang racket
 (require redex)
 (require "../../Loo.rkt")
-(provide test-h-extend*)
 
+(provide test-h-extend*)
 
 (define (test-h-extend*)
 

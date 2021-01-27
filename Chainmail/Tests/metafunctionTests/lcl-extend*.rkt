@@ -1,6 +1,7 @@
 #lang racket
 (require redex)
 (require "../../Loo.rkt")
+
 (provide test-lcl-extend*)
 
 (define (test-lcl-extend*)

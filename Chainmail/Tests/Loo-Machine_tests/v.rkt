@@ -14,6 +14,7 @@
   (define true_values (list
                        (term null)
                        (term 5)
+                       (term [-2]) ;;integers are allowed, but to differentiate them from addrs we wrap them in []
                        (term true)
                        (term false)
                        ))
