@@ -4,7 +4,12 @@
 
 (provide test-heap)
 
-(define true_heaps (list
+(define (test-heap)
+
+  (display "-------------------------------------")
+  (display "\nRunning Heap Tests:\n")
+
+  (define true_heaps (list
                     (term mt) ;; empty heap
                     (term (mt [1 -> (C mt)]))
                     (term (mt [1 -> (C1 (mt [f1 -> true]))]))
@@ -17,11 +22,6 @@
                      (term (mt [1 -> true]))  ;;cannot map to values, as they are stored as immediate references from local variables (i.e. x -> v
                      (term (mt [1 -> (C1 (mt [f1 -> 10]))] [2 -> (C1 mt)]))  ;;incorrect bracketing, require nesting
                      ))
-
-(define (test-heap)
-
-  (display "-------------------------------------")
-  (display "\nRunning Heap Tests:\n")
 
   (define Machine_heap? (redex-match? Loo-Machine χ))
 

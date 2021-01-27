@@ -8,6 +8,7 @@
 (require "LooTests/GhostFields.rkt")
 (require "LooTests/Stmts.rkt")
 (require "LooTests/expressions.rkt")
+
 (require "Loo-Machine_tests/v.rkt")
 (require "Loo-Machine_tests/states.rkt")
 (require "Loo-Machine_tests/stack.rkt")
@@ -18,9 +19,10 @@
 (require "Loo-Machine_tests/Object.rkt")
 (require "Loo-Machine_tests/Continuation.rkt")
 
+(require "RandomTests/RandomTesting.rkt")
+
 
 ; syntax tests:
-
 (display "\n--------------------------\n")
 (display "----- Syntax Tests -------\n")
 (display "--------------------------\n")
@@ -33,6 +35,14 @@
 (test-Stmts)
 (test-expressions)
 
+
+; random testing:
+(display "\n--------------------------\n")
+(display "------- Random Tests-------\n")
+(display "--------------------------\n")
+
+(random-test-syntax)
+;(random-test-semantics)
 
 ; machine syntax tests:
 (display "\n--------------------------\n")
@@ -48,3 +58,5 @@
 (test-heap)
 (test-frame)
 (test-object)
+
+
