@@ -250,7 +250,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (storelike-lookup χ addr)])
 
 (define-metafunction Loo-Machine
-  η-lookup : η x -> addr
+  η-lookup : η x -> v
   [(η-lookup η x)
    (storelike-lookup η x)])
 
@@ -315,9 +315,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 
 (define-metafunction Loo-Machine
-  η-extend* : η [x -> addr] ... -> η
-  [(η-extend* η [x -> addr] ...)
-   ,(storelike-extend* id-<= (term η) (term ([x -> addr] ...)))])
+  η-extend* : η [x -> v] ... -> η
+  [(η-extend* η [x -> v] ...)
+   ,(storelike-extend* id-<= (term η) (term ([x -> v] ...)))])
 
 ;(define-metafunction
 
