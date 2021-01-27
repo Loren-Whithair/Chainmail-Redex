@@ -2,7 +2,7 @@
 (require redex)
 (require "../../Loo.rkt")
 
-(provide all-defined-out)
+(provide test-heap)
 
 (define true_heaps (list
                     (term mt) ;; empty heap

@@ -81,7 +81,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      (M [C -> ClassDesc]))
   ;;TODO: is this the appropriate place to define a Module, or should this be in Loo-Machine, or separate?
      
-  (ClassDesc ::= ('class C(x ...) { FieldDecl ... CDecl ... MethDecl ... GhostDecl ... }))
+  (ClassDesc ::= (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... GhostDecl ... }))
   (FieldDecl ::= ('field f))
   (CDecl ::= (constructor(x ...) { Stmts }))
   (MethDecl ::= (method m(x ...) { Stmts }))
@@ -255,21 +255,25 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (storelike-lookup η x)])
 
 
-;;NEEDS TESTING
+
 (define-metafunction Loo-Machine
   field-lookup : Object f -> v
   [(field-lookup (C fieldMap) f)
    (storelike-lookup fieldMap f)])
 
 
+
+
 (define-metafunction Loo-Machine
   M-match : M C -> 'bool
   [(M-match M C)
    (cond
-     [(equal? (storelike-lookup M C) ,(error 'storelike-loopup "~e not found in ~e" (term any_0) (term mt)))
+     [(equal? (storelike-lookup M C) #false)
       #false]
      [else #true])])
     ;;if we call store-like lookup and get a ClassDesc back, then True, if we get an error then false
+
+
 
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
