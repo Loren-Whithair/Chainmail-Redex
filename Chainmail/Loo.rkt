@@ -250,7 +250,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 (define-metafunction Loo-Machine
   get-classname : Object -> C
-  [(get-classname C fieldMap) C])
+  [(get-classname (C fieldMap)) C])
 
 
         
@@ -276,7 +276,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   [(M-match mt any_0) #false]
   [(M-match (M [C -> any_1]) C) #true]
   [(M-match (M [C1 -> any_1]) C2) (M-match M C2)])
-                                
+
 
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
