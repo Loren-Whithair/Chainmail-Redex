@@ -250,7 +250,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 (define-metafunction Loo-Machine
   get-classname : Object -> C
-  [(C fieldMap) C])
+  [(get-classname C fieldMap) C])
 
 
         
