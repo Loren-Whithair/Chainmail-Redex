@@ -207,8 +207,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; varAssgn_OS
-   (--> (M ((((((x_0 := x_1 @ f) $ Stmts) η) · ψ) χ)))
-        (M (((Stmts η_0) · ψ) χ))
+   (--> (M (((((x_0 := x_1 @ f) $ Stmts) η ) · ψ) χ))
+        (M (((Stmts η_0 ) · ψ) χ)) 
         "varAssgn_OS"
 
         (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;; x_1 must point to an address, i.e. an object for field to possibly exist
@@ -243,8 +243,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; return_OS
-   (--> (M ((((return x $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
-        (M ((Stmts_1 η_2) · ψ) χ)
+   (--> (M (((((return x) $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
+        (M  (((Stmts_1 η_2) · ψ) χ))
         "return_OS"
         ;; where η_2 is add-to-local-vars(η_1 [x_1 -> x])
         ;; x gets dereferenced with another metafunction (maybe)
