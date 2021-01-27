@@ -193,17 +193,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;; x_1 must point to an address, i.e. an object for field to possibly exist
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
-
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
-
         (side-condition (equal? (term (mf-apply get-classname Object_0)) (term (mf-apply get-classname Object_1))))
-        
         (where value (f-lookup Object_0 f))  ;;storelike-lookup: need to handle if f isn't in object fieldMap
         (where η_0 (η-extend* η [x_0 -> value]))
-        
-        
-        
         (where v_0 (field-lookup Object_0 f))
         (where η_0 (η-extend* η [x_0 -> v_0]))
     )
@@ -252,7 +246,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   get-classname : Object -> C
   [(get-classname (C fieldMap)) C])
 
-
         
 (define-metafunction Loo-Machine
   h-lookup : χ addr -> Object
@@ -276,8 +269,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   [(M-match mt any_0) #false]
   [(M-match (M [C -> any_1]) C) #true]
   [(M-match (M [C1 -> any_1]) C2) (M-match M C2)])
-
-
+  [(M-match (M [C1 -> any_1]) C) (M-match M C)]
+  )
+                               
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
   [(storelike-lookup mt any_0) #false] ;; unable to find anything in an empty 'any' (for example, an object)

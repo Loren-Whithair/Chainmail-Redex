@@ -1,27 +1,19 @@
 #lang racket
 (require redex)
+(require "../../Loo.rkt")
 
-(provide test-M-match)
+(provide test-M-match) ;; for use by the test helper
 
 (define (test-M-match)
 
   (display "-------------------------------------")
   (display "\nRunning M-match Tests:\n")
 
+  (define module (term ((mt [C1 -> (clss C1() {})]) [C2 -> (clss C2() {})])))
 
-  (define true_M-match (list
+  (test-equal (term (mf-apply M-match ,module C1)) #true)
+ 
 
-                        ))
-
-  (define false_M-match (list
-
-                         ))
-
-  (for ([M-match true_M-match])
-    (test-equal )
-  
-  (for ([M-match false_M-match])
-    (test-equal )
 
   (test-results)
 
