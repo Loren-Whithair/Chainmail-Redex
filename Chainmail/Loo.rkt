@@ -267,7 +267,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 (define-metafunction Loo-Machine
   M-match : M C -> boolean
   [(M-match mt any_0) #false]
-  [(M-match (M [C -> any_1]) C) #true]
+  [(M-match (M [C_1 -> any_1]) C_1) #true]
   [(M-match (M_1 [C_1 -> ClassDesc_1]) C_2)
    (M-match M_1 C_2)
    (side-condition (not (equal? (term C_1) (term C_2))))])
