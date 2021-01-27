@@ -268,10 +268,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   M-match : M C -> boolean
   [(M-match mt any_0) #false]
   [(M-match (M [C -> any_1]) C) #true]
-  [(M-match (M [C1 -> any_1]) C2) (M-match M C2)])
-  [(M-match (M [C1 -> any_1]) C) (M-match M C)]
-  )
-                               
+  [(M-match (M_1 [C_1 -> ClassDesc_1]) C_2)
+   (M-match M_1 C_2)
+   (side-condition (not (equal? (term C_1) (term C_2))))])
+
+
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
   [(storelike-lookup mt any_0) #false] ;; unable to find anything in an empty 'any' (for example, an object)
