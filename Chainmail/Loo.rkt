@@ -70,6 +70,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 |#
 
+
+
+
+
 ; -----------------------------------------------------
 ; -------------------- SYNTAX -------------------------
 ; -----------------------------------------------------
@@ -114,6 +118,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (id ::= variable-not-otherwise-mentioned)
 
   (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier)) ;; this is for random testing
+
+
+
 
 
 ; -----------------------------------------------------
@@ -165,6 +172,19 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
                 Stmts (x := * $ Stmts))
 
   (machine-language ::= addr v Object Φ η ψ χ σ state Continuation)) ;; used for random testing of reduction rules
+
+
+
+(define Object? (redex-match Loo-Machine Object))
+(define Frame? (redex-match Loo-Machine Φ))
+(define local? (redex-match Loo-Machine η))
+(define stack? (redex-match Loo-Machine ψ))
+(define heap? (redex-match Loo-Machine χ))
+(define RC? (redex-match Loo-Machine σ))
+(define state? (redex-match Loo-Machine state))
+(define Cont? (redex-match Loo-Machine Continuation))
+
+
 
 
 ; -----------------------------------------------------
@@ -237,6 +257,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         ;; x gets dereferenced with another metafunction (maybe)
         )
    ))
+
+
+
+
 
 ; -----------------------------------------------------
 ; ------------------ HELPER FUNCTIONS -----------------
