@@ -5,7 +5,7 @@
 (provide all-defined-out)
 
 (define true_heaps (list
-                    (term mt)   ;;empty heap
+                    (term mt) ;; empty heap
                     (term (mt [1 -> (C mt)]))
                     (term (mt [1 -> (C1 (mt [f1 -> true]))]))
                     (term ((mt [1 -> (C1 (mt [f1 -> 10]))]) [2 -> (C2 mt)]))
