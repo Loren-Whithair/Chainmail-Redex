@@ -10,7 +10,7 @@
   (display "-------------------------------------")
   (display "\nRunning h-lookup Tests:\n")
 
-  ; (display (term (mf-apply h-lookup (mt [1 -> (C mt)]) mt))) ;; doesn't work- will need to 
+  ; (display (term (mf-apply h-lookup (mt [1 -> (C mt)]) mt))) ;; failed- we will need to handle this case
   (test-equal (term (mf-apply h-lookup (mt [1 -> (C mt)]) 1)) (term (C mt)))
   (test-equal (term (mf-apply h-lookup (mt [1 -> (C1 (mt [f1 -> true]))]) 1)) (term (C1 (mt [f1 -> true]))))
   (test-equal (term (mf-apply h-lookup ((mt [1 -> (C1 (mt [f1 -> 10]))]) [2 -> (C2 mt)]) 1)) (term (C1 (mt [f1 -> 10]))))

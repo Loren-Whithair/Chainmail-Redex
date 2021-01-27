@@ -255,7 +255,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (storelike-lookup η x)])
 
 
-
 (define-metafunction Loo-Machine
   field-lookup : Object f -> v
   [(field-lookup (C fieldMap) f)
@@ -268,8 +267,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   [(M-match (M [C -> any_1]) C) #true]
   [(M-match (M [C1 -> any_1]) C2) (M-match M C2)])
                                 
-
-
 
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
@@ -307,11 +304,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
 
 
-
-
-
-
-
 (define-metafunction Loo-Machine
   h-extend* : χ [addr -> Object] ... -> χ ;; takes in a arbitrary number of mappings
   [(h-extend* χ [addr -> Object] ...)
@@ -322,25 +314,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   [(η-extend* η [x -> v] ...)
    ,(storelike-extend* id-<= (term η) (term ([x -> v] ...)))])
 
-;(define-metafunction
- 
-#|
-
-what we need:
-
-heap-change(χ [f -> y]): changes field 'f' to value y
-
-add-to-heap(χ [addr -> (C, F)]): where F is all fields of class C
-
-add-to-local-vars(η [x_1 -> v]): assigns value of x to x_1 and then adds to η
-
-|#
-
-;(define-metafunction Loo-Machine
-;  heap-change : χ [f -> y] -> χ
-;  [[]])
-
-; (MethDecl ::= (method m(x ...) { Stmts }))
 
 
 

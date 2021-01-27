@@ -21,6 +21,13 @@
 
 (require "RandomTests/RandomTesting.rkt")
 
+(require "metafunctionTests/lcl-lookup.rkt")
+(require "metafunctionTests/field-lookup.rkt")
+(require "metafunctionTests/h-lookup.rkt")
+(require "metafunctionTests/lcl-extend.rkt")
+(require "metafunctionTests/h-extend.rkt")
+;(require "metafunctionTests/M-match.rkt")
+
 
 ; syntax tests:
 (display "\n--------------------------\n")
@@ -35,14 +42,6 @@
 (test-Stmts)
 (test-expressions)
 
-
-; random testing:
-(display "\n--------------------------\n")
-(display "------- Random Tests-------\n")
-(display "--------------------------\n")
-
-(random-test-syntax)
-;(random-test-semantics)
 
 ; machine syntax tests:
 (display "\n--------------------------\n")
@@ -60,3 +59,23 @@
 (test-object)
 
 
+; random testing:
+(display "\n--------------------------\n")
+(display "------- Random Tests-------\n")
+(display "--------------------------\n")
+
+(random-test-syntax)
+;(random-test-semantics)
+
+
+; machine syntax tests:
+(display "\n--------------------------\n")
+(display "---- Metafunction Tests----\n")
+(display "--------------------------\n")
+
+(test-lcl-lookup)
+(test-field-lookup)
+(test-h-lookup)
+(test-lcl-extend)
+(test-h-extend)
+;(test-M-match)
