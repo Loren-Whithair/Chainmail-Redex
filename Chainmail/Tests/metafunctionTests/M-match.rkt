@@ -35,11 +35,7 @@
   (test-equal (term (mf-apply M-match ,moduleX C1)) #true)  
   (test-equal (term (mf-apply M-match ,moduleX C2)) #false)
 
-  
-
  
-
-
   (test-results)
 
   (display "-------------------------------------")
