@@ -271,17 +271,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 
 
-;(define-metafunction Loo-Machine
-;  M-match : M C -> any ;;should return boolean
-;  [(M-match M C)   
-;   (cond
-;     [(equal? (storelike-lookup M C) #f)
-;      #f]
-;     [else #t])])
-    ;;if we call store-like lookup and get a ClassDesc back, then True, if we get an error then false
-
-
-
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
   [(storelike-lookup mt any_0) #false] ;; unable to find anything in an empty 'any' (for example, an object)
@@ -352,13 +341,6 @@ add-to-local-vars(η [x_1 -> v]): assigns value of x to x_1 and then adds to η
 ;  [[]])
 
 ; (MethDecl ::= (method m(x ...) { Stmts }))
-
-
-
-
-
-(define M? (redex-match Loo M))
-(define CD? (redex-match Loo ClassDesc))
 
 
 
