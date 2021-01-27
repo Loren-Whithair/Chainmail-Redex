@@ -22,7 +22,7 @@ NEXT STEPS:
 
 We need to create a function (Class x σ) that finds out what ClassID is attributed to the object stored in local var x in the current runtime config σ
 
-
+Tests: h-extend* throws an error if you give it something invalid to add to the hepa ("not in my domain") - do we want to test these? Can we catch errors?
 
 
 
