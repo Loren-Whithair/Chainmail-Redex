@@ -250,10 +250,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         ;; x gets dereferenced with another metafunction (maybe)
         )
    
-   ; return_OS
+   ; return_OS-noArgs
    (--> (M ((((return x) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
-        (M ((Stmts_1 η_2) · ψ) χ)
-        "return_OS - no args"
+        (M (((Stmts_1 η_2) · ψ) χ))
+        "return_OS -noArgs"
         ;; where η_2 is add-to-local-vars(η_1 [x_1 -> x])
         ;; x gets dereferenced with another metafunction (maybe)
         )
