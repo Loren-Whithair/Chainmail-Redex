@@ -23,7 +23,7 @@
 
   (define false_Objects (list
                          (term ((C (mt [f -> 1])))) ;; showing the importance of correct bracketing
-                         (term ((('class C() { ('field f) }) [f -> 5]))) ;; correct bracketing but using ClassDesc instead of class identifier
+                         (term (((clss C() { ('field f) }) [f -> 5]))) ;; correct bracketing but using ClassDesc instead of class identifier
                          (term (C (mt [f1 -> addr])))     ;;wrong v type
                          (term (C [f1 -> 2 -> 5]))   ;; invalid mapping
                          (term (C1 [10 -> 35]))      ;; invalid mapping
