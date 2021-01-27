@@ -18,7 +18,7 @@
   
   (test-equal (term (mf-apply field-lookup (C (((mt [f -> 1]) [f -> 2]) [f -> 3])) f)) (term 3))  ;;when there are multiple fields with the same name, returns the last one in the list
   (test-equal (term (mf-apply field-lookup (C ((((mt [f -> 1]) [f1 -> 2]) [f -> 3]) [f1 -> 4])) f)) (term 3)) ;;returns the last one in the list that has that field name
-                        
+       
   (test-results)
   (display "-------------------------------------")
   )

@@ -262,15 +262,22 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (storelike-lookup fieldMap f)])
 
 
-
-
 (define-metafunction Loo-Machine
-  M-match : M C -> 'bool
-  [(M-match M C)
-   (cond
-     [(equal? (storelike-lookup M C) #false)
-      #false]
-     [else #true])])
+  M-match : M C -> boolean
+  [(M-match mt any_0) #false]
+  [(M-match (M [C -> any_1]) C) #true]
+  [(M-match (M [C1 -> any_1]) C2) (M-match M C2)])
+                                
+
+
+
+;(define-metafunction Loo-Machine
+;  M-match : M C -> any ;;should return boolean
+;  [(M-match M C)   
+;   (cond
+;     [(equal? (storelike-lookup M C) #f)
+;      #f]
+;     [else #t])])
     ;;if we call store-like lookup and get a ClassDesc back, then True, if we get an error then false
 
 
