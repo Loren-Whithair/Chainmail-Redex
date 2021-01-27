@@ -175,6 +175,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 
 
+(define Module? (redex-match Loo M))
 (define Object? (redex-match Loo-Machine Object))
 (define Frame? (redex-match Loo-Machine Φ))
 (define local? (redex-match Loo-Machine η))
