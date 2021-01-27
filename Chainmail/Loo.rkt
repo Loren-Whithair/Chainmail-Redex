@@ -320,7 +320,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    ,(storelike-extend* id-<= (term η) (term ([x -> v] ...)))])
 
 ;(define-metafunction
-
+ 
 #|
 
 what we need:
