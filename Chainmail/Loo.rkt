@@ -307,12 +307,15 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
 
 
+
+
+
+
+
 (define-metafunction Loo-Machine
   h-extend* : χ [addr -> Object] ... -> χ ;; takes in a arbitrary number of mappings
   [(h-extend* χ [addr -> Object] ...)
    ,(storelike-extend* <= (term χ) (term ([addr -> Object] ...)))])
-
-
 
 (define-metafunction Loo-Machine
   η-extend* : η [x -> v] ... -> η

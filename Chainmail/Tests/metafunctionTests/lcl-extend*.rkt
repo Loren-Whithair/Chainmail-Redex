@@ -17,7 +17,7 @@
   (test-equal (term (mf-apply η-extend* ((mt [x -> 1]) [x1 -> 2]) [x1 -> 3])) (term ((mt [x -> 1]) [x1 -> 3])))  ;;overwriting the last mapping
   (test-equal (term (mf-apply η-extend* (((mt [x0 -> 1]) [x1 -> 2]) [x2 -> 3]) [x1 -> 4])) (term (((mt [x0 -> 1]) [x1 -> 4]) [x2 -> 3]))) ;;overwriting the middle mapping
 
-  (test-equal (term (mf-apply η-extend* ((mt [x0 -> 1]) [x1 -> 2]) [x1 -> 1])) (term ((mt [x0 -> 1]) [x1 -> 1]))) ;;setting two x's to map to the same value
+  (test-equal (term (mf-apply η-extend* ((mt [x0 -> false]) [x1 -> 2]) [x1 -> 1])) (term ((mt [x0 -> false]) [x1 -> 1]))) ;;setting two x's to map to the same value
   
   (test-results)
 
