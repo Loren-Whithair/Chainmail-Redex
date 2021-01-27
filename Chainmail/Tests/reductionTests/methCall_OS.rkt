@@ -6,6 +6,13 @@
 
 (define (test-methCall_OS)
 
-  ;;PUT FUNCTION HERE
+  (display "-------------------------------------")
+  (display "\nRunning methCall_OS Tests:\n")
+
+
+  ;;PUT TESTS HERE
+  
+  (test-results)
+  (display "-------------------------------------")
 
   )

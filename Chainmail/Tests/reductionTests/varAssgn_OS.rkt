@@ -6,8 +6,14 @@
 
 (define (test-varAssgn_OS)
 
-  ;;PUT FUNCTION HERE
+  (display "-------------------------------------")
+  (display "\nRunning varAssgn_OS Tests:\n")
 
+
+  ;;PUT TESTS HERE
+  
+  (test-results)
+  (display "-------------------------------------")
   )
 
 

@@ -6,6 +6,12 @@
 
 (define (test-return_OS-no-args)
 
-  ;;PUT FUNCTION HERE
+  (display "-------------------------------------")
+  (display "\nRunning return_OS-no-args Tests:\n")
 
+
+  ;;PUT TESTS HERE
+  
+  (test-results)
+  (display "-------------------------------------")
   )

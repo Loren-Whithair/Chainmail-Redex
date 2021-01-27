@@ -6,6 +6,12 @@
 
 (define (test-fieldAssgn_OS)
 
-  ;;PUT FUNCTION HERE
+  (display "-------------------------------------")
+  (display "\nRunning fieldAssgn_OS Tests:\n")
 
+
+  ;;PUT TESTS HERE
+  
+  (test-results)
+  (display "-------------------------------------")
   )

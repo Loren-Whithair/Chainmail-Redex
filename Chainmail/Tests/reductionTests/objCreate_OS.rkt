@@ -5,7 +5,13 @@
 (provide test-objCreate_OS)
 
 (define (test-objCreate_OS)
+  
+  (display "-------------------------------------")
+  (display "\nRunning objCreate_OS Tests:\n")
 
-  ;;PUT FUNCTION HERE
 
+  ;;PUT TESTS HERE
+  
+  (test-results)
+  (display "-------------------------------------")
   )
