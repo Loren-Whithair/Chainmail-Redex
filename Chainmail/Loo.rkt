@@ -6,27 +6,15 @@
 #| 
 NOTES
 --------------------------------
-
-
 OPERATIONAL SEMANTICS NOTES
-
 Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment
 This is because for the sake of <access> and <authority> with respect to Chainmail, being able to create new fields doesn't matter.
-
 For (side-condition), if you want to call a metafunction to extract the value use (term (mf-apply myfunc args...))
-
 To check if a non-terminal is of a particular type in the grammar, e.g. if a v is an addr, simply use (redex-match? Loo-Machine v e)
-
 -------
 NEXT STEPS:
-
 We need to create a function (Class x σ) that finds out what ClassID is attributed to the object stored in local var x in the current runtime config σ
-
 Tests: h-extend* throws an error if you give it something invalid to add to the hepa ("not in my domain") - do we want to test these? Can we catch errors?
-
-
-
-
     GRAMMAR COMPARISON
  Loo       | Javalite
 -----------|-------------
@@ -42,9 +30,7 @@ Tests: h-extend* throws an error if you give it something invalid to add to the 
  x         | x
  C, f, m   | ~~C, f, m
  id        | id
-
  
-
  
  
   
@@ -57,8 +43,6 @@ heap      | χ                  | h
 contin.   | Continuation       | k (but defn. in Loo paper is much less detailed than Javalite) 
 class list| (MODULE + σ)       | μ   
 address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
-
-
     REDUCTIONS COMPARISON ~~roughly
  Loo           | Javalite (as it's labellled in Redex reduction)
 ---------------|--------------
@@ -67,7 +51,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
  fieldAssgn_OS | "assign field"
  objCreate_OS  | "new"
  return_OS     | "pop η" ~~roughly, missing the actual return
-
 |#
 
 
@@ -343,8 +326,3 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   η-extend* : η [x -> v] ... -> η
   [(η-extend* η [x -> v] ...)
    ,(storelike-extend* id-<= (term η) (term ([x -> v] ...)))])
-
-
-
-
-
