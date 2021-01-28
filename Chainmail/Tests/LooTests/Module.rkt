@@ -18,7 +18,7 @@
                         (term (mt [C1 -> (clss C1() {})]))
                         (term ((mt [C1 -> (clss C1() {})]) [C2 -> (clss C2() {})]))
                         (term (mt [C1 -> (clss C1(x1) {})]))
-                        (term (mt [C1 -> (clss C(arg1 arg2) { ('field f_1) ('field f_2) (constructor(arg1 arg2) { () }) (method m() { () }) (ghost f(x y) { x }) })]))
+                        (term (mt [C1 -> (clss C(arg1 arg2) { (fld f_1) (fld f_2) (constructor(arg1 arg2) { () }) (method m() { () }) (ghost f(x y) { x }) })]))
                         ))
 
   (define false_Modules (list

@@ -5,17 +5,30 @@
 
 #| 
 NOTES
+
+
+SUGGESTIONS
+--------------
+- Reformat to remove some of the parentheses in the reduction rules?
+
+- Swap * with ● for context holes?
+
+- 
+
 --------------------------------
 OPERATIONAL SEMANTICS NOTES
 Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment
 This is because for the sake of <access> and <authority> with respect to Chainmail, being able to create new fields doesn't matter.
 For (side-condition), if you want to call a metafunction to extract the value use (term (mf-apply myfunc args...))
 To check if a non-terminal is of a particular type in the grammar, e.g. if a v is an addr, simply use (redex-match? Loo-Machine v e)
+
 -------
 NEXT STEPS:
 We need to create a function (Class x σ) that finds out what ClassID is attributed to the object stored in local var x in the current runtime config σ
 Tests: h-extend* throws an error if you give it something invalid to add to the hepa ("not in my domain") - do we want to test these? Can we catch errors?
-    GRAMMAR COMPARISON
+
+
+GRAMMAR COMPARISON
  Loo       | Javalite
 -----------|-------------
  M         | μ
@@ -69,7 +82,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   ;;TODO: is this the appropriate place to define a Module, or should this be in Loo-Machine, or separate?
      
   (ClassDesc ::= (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... GhostDecl ... }))
-  (FieldDecl ::= ('field f))
+  (FieldDecl ::= (fld f))
   (CDecl ::= (constructor(x ...) { Stmts }))
   (MethDecl ::= (method m(x ...) { Stmts }))
   (Stmts ::= Stmt
@@ -81,7 +94,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
             (x := new C(x ...))
             (return x))
   
-  (GhostDecl ::= (ghost f(x ...) { e }))   ;;TODO: consider changing f here to differ from FieldDecl
+  (GhostDecl ::= (ghost gf(x ...) { e }))   ;;TODO: consider changing f here to differ from FieldDecl
 
   (e ::= true
          false
@@ -94,7 +107,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (identifier ::= x C f m)
   
   (x ::= this variable-not-otherwise-mentioned) ;; VarID  (variable name)
-  (C f m ::= variable-not-otherwise-mentioned)      ;; ClassID (class name)
+  (C f m gf ::= variable-not-otherwise-mentioned)      ;; ClassID (class name)
   
   (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier)) ;; this is for random testing
 
@@ -180,8 +193,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    #:domain state
 
    ; methCall_OS
-   (--> (M (((((x_0 := x_0 @ m(x ...)) $ Stmts) η) · ψ) χ)) ;; correct
-        (M ((Φ_1 · (((x := * $ Stmts) η_0) · ψ)) χ)) ;; correct
+   (--> (M (((((x_0 := x_1 @ m(x ...)) $ Stmts) η) · ψ) χ)) ;; correct
+        (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ)) ;; correct
         "methCall_OS"
         ;; where Φ_1 is the new frame, based on the method we have called
         ;; where η_0 is the new local variable set for the method we called
@@ -193,12 +206,12 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (M (((Stmts η_0 ) · ψ) χ))  ;;correct
         "varAssgn_OS"
 
-       ; (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;; x_1 must point to an address, i.e. an object for field to possibly exist
+        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;; x_1 must point to an address, i.e. an object for field to possibly exist
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
-       ; (side-condition (equal? (term (mf-apply get-classname Object_0)) (term (mf-apply get-classname Object_1))))
+        (side-condition (equal? (term (mf-apply get-classname Object_0)) (term (mf-apply get-classname Object_1))))
         (where v_0 (field-lookup Object_0 f))
         (where η_0 (η-extend* η [x_0 -> v_0]))
     )
