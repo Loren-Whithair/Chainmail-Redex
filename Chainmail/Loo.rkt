@@ -74,7 +74,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (MethDecl ::= (method m(x ...) { Stmts }))
   (Stmts ::= Stmt
              (Stmt $ Stmts))
-  (Stmt ::= () ;; empty statement- possbily delete later
+  (Stmt ::= () ;; empty statement
             (x @ f := x)
             (x := x @ f)
             (x := x @ m(x ...))
@@ -145,8 +145,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (σ ::= ;; Runtime Configurations
          (ψ χ)) ;; consist of heaps and stacks of frames
 
-  (state := (M σ))
+  (state := (M σ)) ;; (M ((Φ · ψ) χ))
+  
 
+ 
+  
   (Continuation ::= ;; Continuation: represents the code to be executed next
                 Stmts (x := * $ Stmts))
 
@@ -177,8 +180,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    #:domain state
 
    ; methCall_OS
-   (--> (M (((((x_0 := x_0 @ m(x ...)) $ Stmts) η) · ψ) χ))
-        (M ((Φ_1 · (((x ... := * $ Stmts) η_0) · ψ)) χ))
+   (--> (M (((((x_0 := x_0 @ m(x ...)) $ Stmts) η) · ψ) χ)) ;; correct
+        (M ((Φ_1 · (((x := * $ Stmts) η_0) · ψ)) χ)) ;; correct
         "methCall_OS"
         ;; where Φ_1 is the new frame, based on the method we have called
         ;; where η_0 is the new local variable set for the method we called
@@ -201,15 +204,18 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; fieldAssgn_OS
-   (--> (M ((((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)))
-        (M (((Stmts η) · ψ) insert-hextend(χ [f -> y]))) ;;insert hextend
+   (--> (M (((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)) ;; correct
+        (M (((Stmts η) · ψ) χ_1)) ;; where χ_1 = insert-hextend(χ_0 [f -> y]) ;; correct
         "fieldAssgn_OS"
         ;(where
     )
 
    ; objCreate_OS
-   (--> (M (((((x_0 := new C(x ...) $ Stmts) η) · ψ) χ))) ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
-        (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) add-to-heap(χ [addr_1 -> (C, empty)])))   ;; we might need to change (C, empty) based on the metafunction ↓
+   (--> (M (((((result := new C(x ...)) $ Stmts) η) · ψ) mt)) ;; correct
+        ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
+        (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)]) ;; correct
+        ;; we might need to change (C, empty) based on the metafunction ↓
+
         ;(side-condition 
         ;"objCreate_OS"
         
