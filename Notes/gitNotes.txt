@@ -34,6 +34,6 @@ git pull --rebase: pulls the remote changes into the node in the graph of commit
 
 ((i.e. call this when someone else has pushed to the remote repo but you also have local commits that you can't push because there are remote changes you don't have on your computer.))
 
-git restore --staged [file]: unstage [file]
+git restore --staged [file/folder]: unstage [file/folder]
 
-git reset: unstages every file
+git reset: unstages all files
