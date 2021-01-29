@@ -1,7 +1,6 @@
+# using ** will make this work reucrsively (for all subdirectories)
 
 **/compiled/
-
-# using ** will make this work reucrsively (for all subdirectories)
 
 **.DS_Store
 **.rkt~
