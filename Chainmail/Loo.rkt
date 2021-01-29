@@ -224,7 +224,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; objCreate_OS
-   (--> (M (((((result := new C(x ...)) $ Stmts) η) · ψ) mt)) ;; correct
+   (--> (M (((((x_0 := new C(x ...)) $ Stmts) η) · ψ) mt)) ;; correct
         ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
         (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)]) ;; correct
         ;; we might need to change (C, empty) based on the metafunction ↓
