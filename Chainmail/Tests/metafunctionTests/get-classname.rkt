@@ -8,10 +8,12 @@
 
   
   (display "-------------------------------------")
-  (display "\nRunning varAssgn_OS Tests:\n")
+  (display "\nRunning get-classname Tests:\n")
 
 
-  ;;PUT TESTS HERE
+  (test-equal (term (mf-apply get-classname (C1 mt))) (term C1))
+  (test-equal (term (mf-apply get-classname (C1 (mt [f1 -> 1])))) (term C1))
+  (test-equal (term (mf-apply get-classname (random mt))) (term random)) 
   
   (test-results)
   (display "-------------------------------------")
