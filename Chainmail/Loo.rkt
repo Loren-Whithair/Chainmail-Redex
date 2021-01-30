@@ -113,8 +113,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 
 
-
-
 ; -----------------------------------------------------
 ; ---------------- MACHINE SYNTAX ---------------------
 ; -----------------------------------------------------
@@ -159,10 +157,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
          (ψ χ)) ;; consist of heaps and stacks of frames
 
   (state := (M σ)) ;; (M ((Φ · ψ) χ))
-  
-
- 
-  
+   
   (Continuation ::= ;; Continuation: represents the code to be executed next
                 Stmts (x := * $ Stmts))
 
@@ -178,8 +173,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 (define RC? (redex-match Loo-Machine σ))
 (define state? (redex-match Loo-Machine state))
 (define Cont? (redex-match Loo-Machine Continuation))
-
-
 
 
 ; -----------------------------------------------------
@@ -198,7 +191,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         "methCall_OS"
         ;; where Φ_1 is the new frame, based on the method we have called
         ;; where η_0 is the new local variable set for the method we called
-        
     )
 
    ; varAssgn_OS
@@ -224,7 +216,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; objCreate_OS
-   (--> (M (((((x_0 := new C(x ...)) $ Stmts) η) · ψ) mt)) ;; correct
+   (--> (M (((((x_0 := new C(x ...)) $ Stmts) η) · ψ) χ_0)) ;; correct
         ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
         (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)]) ;; correct
         ;; we might need to change (C, empty) based on the metafunction ↓
