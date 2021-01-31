@@ -339,7 +339,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 (define-metafunction Loo-Machine
   Object-extend* : Object [f -> v] ... -> Object
   [(Object-extend* (C_0 fieldMap) [f -> v] ...)
-   (C_0 (term (mf-apply fieldMap-extend* fieldMap [f -> v] ...)))]) 
+   (C_0 (mf-apply fieldMap-extend* fieldMap [f -> v] ...))]) 
    ;   ,(storelike-extend* id-<= (term η) (term ([x -> v])))])
 
 (define-metafunction Loo-Machine
