@@ -178,7 +178,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; -----------------------------------------------------
 ; ---------------- REDUCTION RULES --------------------
 ; -----------------------------------------------------
-(current-traced-metafunctions 'all)
+;(current-traced-metafunctions 'all)
 
 (define expr-reductions
   (reduction-relation

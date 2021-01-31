@@ -37,3 +37,7 @@ git pull --rebase: pulls the remote changes into the node in the graph of commit
 git restore --staged [file/folder]: unstage [file/folder]
 
 git reset: unstages all files
+
+git reset --hard: resets all files to last committed point
+
+git fetch --all: gets latest changes from repo but does not merge them with our current branch (if we follow this with a 'git reset --hard' we will be up to date with the repo and have discarded local changes that we've made)
