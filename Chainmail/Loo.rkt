@@ -212,7 +212,16 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (--> (M (((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)) ;; correct
         (M (((Stmts η) · ψ) χ_1)) ;; where χ_1 = insert-hextend(χ_0 [f -> y]) ;; correct
         "fieldAssgn_OS"
-        ;(where
+        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_0))) #t))  ;; x_1 must point to an address, i.e. an object for field to possibly exist
+        (where addr_0 (η-lookup η x_0))
+        (where Object_0 (h-lookup χ addr_0))
+        (where addr_1 (η-lookup η this))
+        (where Object_1 (h-lookup χ addr_1))
+        (side-condition (equal? (term (mf-apply get-classname Object_0)) (term (mf-apply get-classname Object_1))))
+
+        (where v_0 (η-lookup η x_1))
+        ;(where Object_2 (
+        
     )
 
    ; objCreate_OS
@@ -326,3 +335,15 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   η-extend* : η [x -> v] ... -> η
   [(η-extend* η [x -> v] ...)
    ,(storelike-extend* id-<= (term η) (term ([x -> v] ...)))])
+
+(define-metafunction Loo-Machine
+  Object-extend* : Object [f -> v] ... -> Object
+  [(Object-extend* (C_0 fieldMap) [f -> v] ...)
+   (C_0 (term (mf-apply fieldMap-extend* fieldMap [f -> v] ...)))]) 
+   ;   ,(storelike-extend* id-<= (term η) (term ([x -> v])))])
+
+(define-metafunction Loo-Machine
+  fieldMap-extend* : fieldMap [f -> v] ... -> fieldMap
+  [(fieldMap-extend* fieldMap [f -> v] ...)
+   ,(storelike-extend* id-<= (term fieldMap) (term ([f -> v] ...)))])
+   
