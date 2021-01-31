@@ -9,13 +9,21 @@
   (display "-------------------------------------")
   (display "\nRunning fieldAssgn_OS Tests:\n")
 
+  
   ;----------------
   ;---TRUE TESTS---
   ;----------------
 
-  ;;Add tests here
 
+  (test-->
+   expr-reductions
+   (term ((mt [C1 -> (clss C1() {})]) (((((x_0 @ f := x_1) $ (x := x @ m(x y))) (((mt [x_0 -> 0]) [x_1 -> 1]) [this -> 0])) · (() mt)) (mt [0 -> (C1 (mt [f -> null]))]))))
+   (term ((mt (C1 -> (clss C1 () ()))) ((((x := x @ m(x y)) (((mt (x_0 -> 0)) (x_1 -> 1)) (this -> 0))) · (() mt)) (mt (0 -> (C1 (mt (f -> 1)))))))))
 
+  (test-->
+   expr-reductions
+   (term ((mt [C1 -> (clss C1() {})]) (((((x_0 @ f := x_1) $ ()) (((mt [x_0 -> 0]) [x_1 -> 2]) [this -> 2])) · (() mt)) ((mt [0 -> (C1 (mt [f -> null]))]) [2 -> (C1 (mt [f -> true]))]))))
+   (term ((mt (C1 -> (clss C1 () ()))) (((() (((mt (x_0 -> 0)) (x_1 -> 2)) (this -> 2))) · (() mt)) ((mt (0 -> (C1 (mt (f -> 2))))) (2 -> (C1 (mt (f -> true)))))))))
 
   
   ;----------------
