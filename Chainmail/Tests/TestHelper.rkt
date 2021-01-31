@@ -26,6 +26,8 @@
 (require "metafunctionTests/h-lookup.rkt")
 (require "metafunctionTests/lcl-extend.rkt")
 (require "metafunctionTests/h-extend.rkt")
+(require "metafunctionTests/fieldMap-extend.rkt")
+(require "metafunctionTests/Object-extend.rkt")
 ;(require "metafunctionTests/M-match.rkt")
 
 
@@ -78,4 +80,6 @@
 (test-h-lookup)
 (test-lcl-extend)
 (test-h-extend)
+(test-fieldMap-extend)
+(test-Object-extend)
 ;(test-M-match)
