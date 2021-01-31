@@ -220,8 +220,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (side-condition (equal? (term (mf-apply get-classname Object_0)) (term (mf-apply get-classname Object_1))))
 
         (where v_0 (η-lookup η x_1))
-        ;(where Object_2 (
-        
+        (where Object_2 (Object-extend* Object_0 [f -> v_0]))
+        (where χ_1 (h-extend* χ [addr_0 -> Object_2]))
     )
 
    ; objCreate_OS
