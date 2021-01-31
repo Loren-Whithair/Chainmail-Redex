@@ -22,6 +22,9 @@ This is because for the sake of <access> and <authority> with respect to Chainma
 For (side-condition), if you want to call a metafunction to extract the value use (term (mf-apply myfunc args...))
 To check if a non-terminal is of a particular type in the grammar, e.g. if a v is an addr, simply use (redex-match? Loo-Machine v e)
 
+
+NOTE: what does the fieldAssgn and varAssgn reductions do when the variable is itself? e.g. x_0 @ f := x_0
+
 -------
 NEXT STEPS:
 We need to create a function (Class x σ) that finds out what ClassID is attributed to the object stored in local var x in the current runtime config σ
