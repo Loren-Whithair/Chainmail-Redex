@@ -297,6 +297,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (storelike-lookup fieldMap f)])
 
 (define-metafunction Loo-Machine
+  CD-lookup : M C -> ClassDesc
+  [(CD-lookup M C)
+   (storelike-lookup M C)])
+
+(define-metafunction Loo-Machine
   M-match : M C -> boolean
   [(M-match mt any_0) #false]
   [(M-match (M [C_1 -> any_1]) C_1) #true]
