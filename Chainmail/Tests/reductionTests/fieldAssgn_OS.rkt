@@ -30,7 +30,7 @@
   ;---FALSE TESTS--
   ;----------------
 
-  (test--> ;;Class(x_0) ≠ Clas(this), with one class not define in Module M
+  (test--> ;;Class(x_0) ≠ Class(this), with one class not define in Module M
    expr-reductions
    (term ((mt [C1 -> (clss C1() {})]) ;;Module
           (((((x_0 @ f_1 := x_1) $ ()  ) ((mt [x_0 -> 2]) [this -> 1])) · (() mt)) ;;Stack
