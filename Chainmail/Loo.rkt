@@ -190,11 +190,22 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
    ; methCall_OS
    (--> (M (((((x_0 := x_1 @ m(x ...)) $ Stmts) η) · ψ) χ)) ;; correct
-        (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ)) ;; correct
+        (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ)) ;; correct
         "methCall_OS"
-        ;; where Φ_1 is the new frame, based on the method we have called
-        ;; where η_0 is the new local variable set for the method we called
-    )
+        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))
+        (where addr_0 (η-lookup η x_1))
+        (where Object_0 (h-lookup χ addr_0))
+        (where cname (get-classname Object_0))
+        
+        ;(side-condition class exists in module (M-match))
+        ;(where ClassDesc_0 (CD-lookup))
+        ;(side-condition method exists in ClassDesc (need new metafunction)
+        ;(where MethDecl_0 (method-lookup))
+
+        ;(where Cont_1 is MethDecl_0?)
+        ;(where η_1 is based on the arguments given to the method)
+        ;(where Φ_1 is (Cont_1 η_1))
+        )
 
    ; varAssgn_OS
    (--> (M (((((x_0 := x_1 @ f) $ Stmts) η ) · ψ) χ))  ;;correct
