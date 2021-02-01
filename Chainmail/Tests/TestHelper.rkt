@@ -28,7 +28,7 @@
 (require "metafunctionTests/h-extend.rkt")
 (require "metafunctionTests/fieldMap-extend.rkt")
 (require "metafunctionTests/Object-extend.rkt")
-;(require "metafunctionTests/M-match.rkt")
+(require "metafunctionTests/M-match.rkt")
 
 
 ; syntax tests:
