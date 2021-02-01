@@ -29,6 +29,7 @@
 (require "metafunctionTests/fieldMap-extend.rkt")
 (require "metafunctionTests/Object-extend.rkt")
 (require "metafunctionTests/M-match.rkt")
+(require "metafunctionTests/CD-lookup.rkt")
 
 
 ; syntax tests:
@@ -82,4 +83,5 @@
 (test-h-extend)
 (test-fieldMap-extend)
 (test-Object-extend)
-;(test-M-match)
+(test-M-match)
+(test-CD-lookup)
