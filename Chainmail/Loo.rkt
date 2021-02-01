@@ -82,7 +82,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   (M ::=  ;;MODULE
      mt
      (M [C -> ClassDesc]))
-  ;;TODO: is this the appropriate place to define a Module, or should this be in Loo-Machine, or separate?
      
   (ClassDesc ::= (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... GhostDecl ... }))
   (FieldDecl ::= (fld f))
@@ -97,7 +96,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
             (x := new C(x ...))
             (return x))
   
-  (GhostDecl ::= (ghost gf(x ...) { e }))   ;;TODO: consider changing f here to differ from FieldDecl
+  (GhostDecl ::= (ghost gf(x ...) { e }))   
 
   (e ::= true
          false
@@ -105,14 +104,14 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
          x
          (e = e)
          (if e then e else e)
-         (e @ f(e ...)))
+         (e @ gf(e ...)))
   
   (identifier ::= x C f m)
   
   (x ::= this variable-not-otherwise-mentioned) ;; VarID  (variable name)
-  (C f m gf ::= variable-not-otherwise-mentioned)      ;; ClassID (class name)
+  (C f m gf ::= variable-not-otherwise-mentioned)      ;;ClassID, fieldID, methodID, ghostfieldID
   
-  (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier)) ;; this is for random testing
+  (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier)) ;; for random testing
 
 
 
@@ -130,7 +129,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
      true    ;; not in paper 
      false   ;; not in paper
      [integer] ;; not in paper
-;    (addr ...))
 )
   
   (Object ::=
@@ -192,7 +190,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (--> (M (((((x_0 := x_1 @ m(x ...)) $ Stmts) η) · ψ) χ)) ;; correct
         (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ)) ;; correct
         "methCall_OS"
-        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))
+        (where addr (η-lookup η x_1))
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
         (where cname (get-classname Object_0))
@@ -212,12 +210,12 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (M (((Stmts η_0 ) · ψ) χ))  ;;correct
         "varAssgn_OS"
 
-        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_1))) #t))  ;; x_1 must point to an address, i.e. an object for field to possibly exist
+        (where addr (η-lookup η x_1))  ;; x_1 is an addr (i.e. an object, so that it can contain fields)
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
-        (side-condition (equal? (term (mf-apply get-classname Object_0)) (term (mf-apply get-classname Object_1))))
+        (where [C C] [(get-classname Object_0) (get-classname Object_1)])  ;;Class(this) == Class(x_1)
         (where v_0 (field-lookup Object_0 f))
         (where η_0 (η-extend* η [x_0 -> v_0]))
     )
@@ -226,13 +224,12 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (--> (M (((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)) ;; correct
         (M (((Stmts η) · ψ) χ_1)) ;; where χ_1 = insert-hextend(χ_0 [f -> y]) ;; correct
         "fieldAssgn_OS"
-        (side-condition (equal? (redex-match? Loo-Machine addr (term (mf-apply η-lookup η x_0))) #t))  ;; x_1 must point to an address, i.e. an object for field to possibly exist
+        (where addr (η-lookup η x_0)) ;;x_0 is an addr (i.e. an object, so that it can contain fields)
         (where addr_0 (η-lookup η x_0))
         (where Object_0 (h-lookup χ addr_0))
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
-        (side-condition (equal? (term (mf-apply get-classname Object_0)) (term (mf-apply get-classname Object_1))))
-
+        (where [C C] [(get-classname Object_0) (get-classname Object_1)])  ;;Class(this) == Class(x_1)
         (where v_0 (η-lookup η x_1))
         (where Object_2 (Object-extend* Object_0 [f -> v_0]))
         (where χ_1 (h-extend* χ [addr_0 -> Object_2]))
@@ -275,11 +272,14 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; ------------------ HELPER FUNCTIONS -----------------
 ; -----------------------------------------------------
 
+
+;------------------------------
+;----Search through mappings---
+
 (define-metafunction Loo-Machine
   get-classname : Object -> C
   [(get-classname (C fieldMap)) C])
-
-        
+       
 (define-metafunction Loo-Machine
   h-lookup : χ addr -> Object
   [(h-lookup χ addr)
@@ -290,7 +290,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   [(η-lookup η x)
    (storelike-lookup η x)])
 
-
 (define-metafunction Loo-Machine
   field-lookup : Object f -> v
   [(field-lookup (C fieldMap) f)
@@ -298,8 +297,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 (define-metafunction Loo-Machine
   CD-lookup : M C -> ClassDesc
-  [(ClassDesc-lookup M C)
+  [(CD-lookup M C)
    (storelike-lookup M C)])
+
 
 (define-metafunction Loo-Machine
   M-match : M C -> boolean
@@ -309,6 +309,10 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (M-match M_1 C_2)
    (side-condition (not (equal? (term C_1) (term C_2))))])
 
+
+
+
+
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
   ; [(storelike-lookup mt any_0) #false] ;; unable to find anything in an empty 'any' (for example, an object)
@@ -317,33 +321,11 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   [(storelike-lookup (any_0 [any_k -> any_v]) any_t)
    (storelike-lookup any_0 any_t)
    (side-condition (not (equal? (term any_k) (term any_t))))]) ;; ensures any_k != any_t (otherwise we would match the previous condition)
-    
-(define (id-<= a b)
-  (string<=? (symbol->string a) (symbol->string b)))
 
 
-;; if 'storelike' is empty, return just the new mapping
-; else insert the new mapping [k -> hv] while keeping the ordering of the keys
 
-(define (storelike-extend <= storelike k hv)  ;;storelike: the map we're extending, k: the key, hv: the value
-  (match storelike
-    ['mt `(mt [,k -> ,hv])]
-    [`(,storelike [,ki -> ,hvi])
-     (cond
-       [(equal? k ki)   ;; if the key is already in the mapping, just replace the value it maps to 
-        `(,storelike [,ki -> ,hv])]
-       [(<= k ki)  ;;otherwise, if k <= ki, recursively call one item back in the list to check if that one is equal to k
-        `(,(storelike-extend <= storelike k hv) [,ki -> ,hvi])]
-       [else
-        `((,storelike [,ki -> ,hvi]) [,k -> ,hv])])]))     ;;if you either get to the end or find the spot where [k -> hv] fits in the ordering, put it there
-
-
-(define (storelike-extend* <= storelike extend*)
-  (match extend*
-    ['() storelike]
-    [`([,k -> ,hv] . ,extend*)
-     (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
-
+;------------------------------
+;------Adding to mappings------
 
 (define-metafunction Loo-Machine
   h-extend* : χ [addr -> Object] ... -> χ ;; takes in a arbitrary number of mappings
@@ -364,4 +346,33 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   fieldMap-extend* : fieldMap [f -> v] ... -> fieldMap
   [(fieldMap-extend* fieldMap [f -> v] ...)
    ,(storelike-extend* id-<= (term fieldMap) (term ([f -> v] ...)))])
+
+
+
+
+(define (id-<= a b)
+  (string<=? (symbol->string a) (symbol->string b)))
+
+;; if 'storelike' is empty, return just the new mapping
+; else insert the new mapping [k -> hv] while keeping the ordering of the keys
+(define (storelike-extend <= storelike k hv)  ;;storelike: the map we're extending, k: the key, hv: the value
+  (match storelike
+    ['mt `(mt [,k -> ,hv])]
+    [`(,storelike [,ki -> ,hvi])
+     (cond
+       [(equal? k ki)   ;; if the key is already in the mapping, just replace the value it maps to 
+        `(,storelike [,ki -> ,hv])]
+       [(<= k ki)  ;;otherwise, if k <= ki, recursively call one item back in the list to check if that one is equal to k
+        `(,(storelike-extend <= storelike k hv) [,ki -> ,hvi])]
+       [else
+        `((,storelike [,ki -> ,hvi]) [,k -> ,hv])])]))     ;;if you either get to the end or find the spot where [k -> hv] fits in the ordering, put it there
+
+(define (storelike-extend* <= storelike extend*)
+  (match extend*
+    ['() storelike]
+    [`([,k -> ,hv] . ,extend*)
+     (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
+
+
+
    
