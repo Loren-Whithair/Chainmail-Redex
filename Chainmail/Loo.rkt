@@ -241,8 +241,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)]) ;; correct
         ;; we might need to change (C, empty) based on the metafunction ↓
 
-        ;(side-condition 
-        ;"objCreate_OS"
+        "objCreate_OS"
         
         ;; where addr_1 is a newly allocated address on the heap, for the new object
         ;; where Φ'' is the new frame, based on the constructor
