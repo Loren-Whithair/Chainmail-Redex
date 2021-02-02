@@ -10,7 +10,14 @@
   (display "\nRunning return_OS-no-args Tests:\n")
 
 
-  ;;PUT TESTS HERE
+  ;----------------
+  ;---TRUE TESTS---
+  ;----------------
+
+  ;----------------
+  ;---FALSE TESTS--
+  ;----------------
+
   
   (test-results)
   (display "-------------------------------------")

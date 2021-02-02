@@ -130,35 +130,35 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   
   (Object ::=
           (C fieldMap))
-
   (fieldMap ::=
             mt
             (fieldMap [f -> v]))
 
   (Φ ::= ;; Frame
-         (Continuation η)) ;; pairs consisting of a continuation, and a mapping from identifiers to values
+         (Continuation η));; Stmts followed by a mapping of VarIDs to values
   
   (η ::= ;; local vars
      mt
      (η [x -> v]))   
 
   (ψ ::= ;; Stack
-          Φ ;; might want an mt here
-         (Φ · ψ)) ;; sequences of frames
+          Φ 
+         (Φ · ψ)) 
 
   (χ ::= ;; Heap
      mt
      (χ [addr -> Object]))
   
   (σ ::= ;; Runtime Configurations
-         (ψ χ)) ;; consist of heaps and stacks of frames
+         (ψ χ))
 
-  (state := (M σ)) ;; (M ((Φ · ψ) χ))
+  (state := (M σ)) ;; = (M ((Φ · ψ) χ))
    
-  (Continuation ::= ;; Continuation: represents the code to be executed next
-                Stmts (x := * $ Stmts))
+  (Continuation ::= ;; 
+                Stmts
+                (x := * $ Stmts)) ;; * is a hole, where the frame on top will return the value to fill it
 
-  (machine-language ::= addr v Object Φ η ψ χ σ state Continuation)) ;; used for random testing of reduction rules
+  (machine-language ::= addr v Object Φ η ψ χ σ state Continuation)) ;; for random testing of reduction rules
 
 
 (define Module? (redex-match Loo M))
@@ -175,6 +175,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; -----------------------------------------------------
 ; ---------------- REDUCTION RULES --------------------
 ; -----------------------------------------------------
+
 ;(current-traced-metafunctions 'all)
 
 (define expr-reductions
@@ -183,57 +184,57 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    #:domain state
 
    ; methCall_OS
-   (--> (M (((((x_0 := x_1 @ m(x_2 ...)) $ Stmts) η) · ψ) χ)) ;; correct
-        (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ)) ;; correct
+   (--> (M (((((x_0 := x_1 @ m(x_2 ...)) $ Stmts) η) · ψ) χ)) 
+        (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ)) 
         "methCall_OS"
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
         (where C_0 (get-classname Object_0))
 
-        (where #t (M-match M C_0))
-        (where ClassDesc_0 (CD-lookup M C_0))
+        (where #t (M-match M C_0))  ;; The class of x_1 must be defined in the Module
+        (where ClassDesc_0 (CD-lookup M C_0)) 
         (where MethDecl_0 (method-lookup ClassDesc_0 m))
         (where Stmts_0 (method-Stmts MethDecl_0))
         (where (x_3 ...) (method-params MethDecl_0))
-        ;(where _ [(param x) ...])  ;; does the param list have to be the same length as the args list?
+        ;(where _ [(param x) ...])  
         (where η_1 (η-extend* (mt [this -> (η-lookup η x_1)]) [x_3 -> (η-lookup η x_2)] ...))
         (where Φ_1 (Stmts_0 η_1))
         )
 
    ; varAssgn_OS
-   (--> (M (((((x_0 := x_1 @ f) $ Stmts) η ) · ψ) χ))  ;;correct
-        (M (((Stmts η_0 ) · ψ) χ))  ;;correct
+   (--> (M (((((x_0 := x_1 @ f) $ Stmts) η ) · ψ) χ)) 
+        (M (((Stmts η_0 ) · ψ) χ))
         "varAssgn_OS"
 
-        (where addr (η-lookup η x_1))  ;; x_1 is an addr (i.e. an object, so that it can contain fields)
+        (where addr (η-lookup η x_1))  ;; x_1 must be an addr (i.e. an object, so that it can contain fields)
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
-        (where [C C] [(get-classname Object_0) (get-classname Object_1)])  ;;Class(this) == Class(x_1)
+        (where [C C] [(get-classname Object_0) (get-classname Object_1)])  ;;Class(this) must == Class(x_1) for permission to access
         (where v_0 (field-lookup Object_0 f))
         (where η_0 (η-extend* η [x_0 -> v_0]))
     )
 
    ; fieldAssgn_OS
-   (--> (M (((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)) ;; correct
-        (M (((Stmts η) · ψ) χ_1)) ;; where χ_1 = insert-hextend(χ_0 [f -> y]) ;; correct
+   (--> (M (((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)) 
+        (M (((Stmts η) · ψ) χ_1)) 
         "fieldAssgn_OS"
-        (where addr (η-lookup η x_0)) ;;x_0 is an addr (i.e. an object, so that it can contain fields)
+        (where addr (η-lookup η x_0)) ;; x_0 must be an addr (i.e. an object, so that it can contain fields)
         (where addr_0 (η-lookup η x_0))
         (where Object_0 (h-lookup χ addr_0))
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
-        (where [C C] [(get-classname Object_0) (get-classname Object_1)])  ;;Class(this) == Class(x_1)
+        (where [C C] [(get-classname Object_0) (get-classname Object_1)])  ;;Class(this) must == Class(x_1) for permission to access
         (where v_0 (η-lookup η x_1))
         (where Object_2 (Object-extend* Object_0 [f -> v_0]))
         (where χ_1 (h-extend* χ [addr_0 -> Object_2]))
     )
 
    ; objCreate_OS
-   (--> (M (((((x_0 := new C(x ...)) $ Stmts) η) · ψ) χ_0)) ;; correct
+   (--> (M (((((x_0 := new C(x ...)) $ Stmts) η) · ψ) χ_0)) 
         ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
-        (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)]) ;; correct
+        (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)])
         ;; we might need to change (C, empty) based on the metafunction ↓
 
         "objCreate_OS"
@@ -245,16 +246,16 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; return_OS
-   (--> (M (((((return x) $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))  ;;correct
-        (M  (((Stmts_1 η_2) · ψ) χ))  ;;correct
+   (--> (M (((((return x) $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ)) 
+        (M  (((Stmts_1 η_2) · ψ) χ))
         "return_OS"
         ;; where η_2 is add-to-local-vars(η_1 [x_1 -> x])
         ;; x gets dereferenced with another metafunction (maybe)
         )
    
    ; return_OS-noArgs
-   (--> (M ((((return x) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))  ;;correct
-        (M (((Stmts_1 η_2) · ψ) χ)) ;;correct
+   (--> (M ((((return x) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ)) 
+        (M (((Stmts_1 η_2) · ψ) χ))
         "return_OS -noArgs"
         ;; where η_2 is add-to-local-vars(η_1 [x_1 -> x])
         ;; x gets dereferenced with another metafunction (maybe)
@@ -286,7 +287,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ;------------------------------
 ;----Search through mappings---
 
-       
 (define-metafunction Loo-Machine
   h-lookup : χ addr -> Object
   [(h-lookup χ addr)
@@ -307,6 +307,12 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   [(CD-lookup M C)
    (storelike-lookup M C)])
 
+(define-metafunction Loo-Machine
+  method-lookup : ClassDesc m -> MethDecl
+  [(method-lookup (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... (method m_0(x_0 ...) { Stmts }) MethDecl ...  GhostDecl ... }) m_0)
+   (method m_0(x_0 ...) { Stmts })])
+
+
 
 (define-metafunction Loo-Machine
   M-match : M C -> boolean
@@ -316,12 +322,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (M-match M_1 C_2)
    (side-condition (not (equal? (term C_1) (term C_2))))])
 
-
-
-(define-metafunction Loo-Machine
-  method-lookup : ClassDesc m -> MethDecl
-  [(method-lookup (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... (method m_0(x_0 ...) { Stmts }) MethDecl ...  GhostDecl ... }) m_0)
-   (method m_0(x_0 ...) { Stmts })])
 
 
 ;------------------------------
