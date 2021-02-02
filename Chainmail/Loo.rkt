@@ -187,7 +187,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    #:domain state
 
    ; methCall_OS
-   (--> (M (((((x_0 := x_1 @ m(x ...)) $ Stmts) η) · ψ) χ)) ;; correct
+   (--> (M (((((x_0 := x_1 @ m(x_2 ...)) $ Stmts) η) · ψ) χ)) ;; correct
         (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ)) ;; correct
         "methCall_OS"
         (where addr_0 (η-lookup η x_1))
@@ -198,9 +198,9 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (where ClassDesc_0 (CD-lookup M C_0))
         (where MethDecl_0 (method-lookup ClassDesc_0 m))
         (where Stmts_0 (method-Stmts MethDecl_0))
-        (where (param ...) (method-params MethDecl_0))
-        (where _ [(param x) ...])  ;; does the param list have to be the same length as the args list?
-        (where η_1 (η-extend* (mt [this -> (η-lookup η x_1)]) [param -> x] ...)) 
+        (where (x_3 ...) (method-params MethDecl_0))
+        ;(where _ [(param x) ...])  ;; does the param list have to be the same length as the args list?
+        (where η_1 (η-extend* (mt [this -> (η-lookup η x_1)]) [x_3 -> (η-lookup η x_2)] ...))
         (where Φ_1 (Stmts_0 η_1))
         )
 
