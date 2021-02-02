@@ -12,7 +12,6 @@
   (define Machine_Object? (redex-match? Loo-Machine Object))
 
   (define true_Objects (list
-                        (term mt) ;; empty machine object- possibly suggests that mt for machine objects is unneccessary
                         (term (C mt))  ; ----------------- ;; object with no fields
                         (term (Cname mt))   ; ------------ ;; ren
                         (term (C (mt [f -> 1])))  ; -------- ;; single field
