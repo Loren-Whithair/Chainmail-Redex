@@ -5,6 +5,7 @@
 (provide test-GhostFields)
 
 (define (test-GhostFields)
+
   (display "-------------------------------------")
   (display "\nRunning Ghost Field Tests:\n")
 
@@ -18,8 +19,8 @@
     )
 
   (define false_Ghosts (list
-                        (term (ghost gf_1(true) {x_1}))
-                        (term (ghost1 gf_1(x_1) {x_1})))
+                        (term (ghost gf_1(true) {x_1}))  ;; arguments can only be VarIDs
+                        (term (ghost1 gf_1(x_1) {x_1}))) ;; must have keyword ghost
     )
 
   (for ([ghost_declarations true_Ghosts])

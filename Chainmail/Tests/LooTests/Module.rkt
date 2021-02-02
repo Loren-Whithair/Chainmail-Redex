@@ -6,8 +6,6 @@
 
 (define (test-modules)
 
-
-  
   (display "-------------------------------------")
   (display "\nRunning Modules Tests:\n")
 
@@ -22,9 +20,9 @@
                         ))
 
   (define false_Modules (list
-                         (term (mt))
-                         (term ([C1 -> (clss C1() {})]))
-                         (term (([C1 -> (clss C1() {})]) [C2 -> (clss C2() {})]))
+                         (term (mt))  ; ----------------------------------------- ;; no brackets required around mt
+                         (term ([C1 -> (clss C1() {})]))  ; --------------------- ;; missing mt
+                         (term (([C1 -> (clss C1() {})]) [C2 -> (clss C2() {})])) ;; missing mt
                          ))
 
   (for ([Modules true_Modules])

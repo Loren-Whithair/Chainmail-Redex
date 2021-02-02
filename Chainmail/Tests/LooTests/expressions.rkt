@@ -5,12 +5,13 @@
 (provide test-expressions)
 
 (define (test-expressions)
+
   (display "-------------------------------------")
   (display "\nRunning expression Tests:\n")
 
   (define Loo_expression? (redex-match? Loo e))
 
-  ; true expressions
+  
   (define true_expressions (list
                             (term (x_1 = x_4))
                             (term (true = false))
@@ -25,7 +26,6 @@
                             (term (null @ f((true = true))))
                             ))
 
-  ; false expressions
   (define false_expressions (list
                              (term (true = false = true))
                              (term (5 = 5))

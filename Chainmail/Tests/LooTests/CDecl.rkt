@@ -5,6 +5,7 @@
 (provide test-CDecl)
 
 (define (test-CDecl)
+
   (display "-------------------------------------")
   (display "\nRunning Constructor Declaration Tests:\n")
 
@@ -14,11 +15,13 @@
                       (term (constructor() {()}))
                       (term (constructor(arg1) {()}))
                       (term (constructor(arg1 arg2) {()}))
+                      (term (constructor() {(method_result := x @ m())}))
                       ))
 
   (define false_Const (list
-                       (term (constructor_1(arg1 arg2) {()}))
-                       (term (constructor(1 2) {()}))
+                       (term (constructor_1(arg1 arg2) {()}))  ;; constructor is the only correct literal
+                       (term (constructor(1 2) {()})) ; ------ ;; arguments must be VarID's, cannot be values
+                       (term (constructor(arg1) {(x @ m ())})) ;; body must be a valid Stmts
                        ))
     
 

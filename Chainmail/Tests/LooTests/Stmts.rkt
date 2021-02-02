@@ -12,25 +12,39 @@
 
   ; true statements
   (define true_Stmts (list
-                      (term ()) ;; testing the empty statement
-                      (term (() $ ())) ;; testing that we can have multiple statments chained together
+                      (term ()) ; ------- ;; testing the empty Stmt
+                      (term (() $ ()))    ;; chaining Stmt
                       (term (x @ f := y))
                       (term (z := y @ f))
+                      
                       (term (method_result := x @ m()))
                       (term (method_result := x @ m(arg1)))
-                      (term (method_result := x @ m(arg1 arg2)))
-                      (term (object_result := new C()))
+                      (term (method_res := x @ m(arg1 arg2)))
+
+                      (term (an_object := new C()))
                       (term (object_result := new C(arg1)))
                       (term ((object_result := new C(arg1)) $ ()))
                       (term (object_result := new C(arg1 arg2)))
+
                       (term (return result))
-                      (term ((x2 @ f1 := x1) $ ()))  ;;two stmts, second one empty
+                      (term (return x1))
+                      
+                      (term ((x2 @ f1 := x1) $ ()))  ; ---------------------- ;; two stmts, second one empty
                       (term ((x2 @ f1 := x1) $ (x1 := x2 @ m1(arg2)))) ; ---- ;; two stmts, both with values 
                       (term ((x2 @ f1 := x1) $ ((x1 := x2 @ m1(arg2)) $ ()))) ;; three stmts, last one empty
+
+                      
                       ))
 
   ; false statements
   (define false_Stmts (list
+                       (term (x @ 5 := y)) ; ----------------------------------- ;; 5 cannot be a fieldID
+                       (term (x2 @ f1 := x1 $ method_result := x @ m()))  ; ---- ;; missing brackets around each Stm
+                       (term ((x2 @ f1 := x1) $ (method_result := x @ m()) $ ())) ;; missing brackets around the second pair of Stmt, still valid
+
+
+                       (term (() $ () $ ()))   ;; incorrect brackets
+                       (term ((() $ ()) $ ()))
                        ))
 
   (for ([statements true_Stmts])
@@ -39,10 +53,7 @@
   (for ([statements false_Stmts])
     (test-equal (Loo_Stmts? statements) #false))
   
-  ; the next 3 tests show the importance of correctly bracketing our chained statements
-  (test-equal (Loo_Stmts? (term (() $ () $ ()))) #false)
-  (test-equal (Loo_Stmts? (term ((() $ ()) $ ()))) #false)
-  (test-equal (Loo_Stmts? (term (() $ (() $ ())))) #true)
+
 
   (test-results)
   (display "-------------------------------------")

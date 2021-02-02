@@ -5,6 +5,7 @@
 (provide test-MethDecl)
 
 (define (test-MethDecl)
+
   (display "-------------------------------------")
   (display "\nRunning Method Declaration Tests:\n")
 
@@ -19,8 +20,8 @@
                       ))
 
   (define false_Meths (list
-                       (term (method_1 m(arg1 arg2) {()}))
-                       (term (method m(1 2) {()}))
+                       (term (method_1 m(arg1 arg2) {()}))  ;; method is the only valid keyword
+                       (term (method m(1 2) {()}))  ; ----- ;; arguments must be VarIDs
                        ))
 
   (for ([method_declarations true_Meths])
