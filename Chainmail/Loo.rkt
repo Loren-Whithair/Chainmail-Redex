@@ -190,13 +190,12 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (--> (M (((((x_0 := x_1 @ m(x ...)) $ Stmts) η) · ψ) χ)) ;; correct
         (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ)) ;; correct
         "methCall_OS"
-        (where addr (η-lookup η x_1))
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
-        (where cname (get-classname Object_0))
+        (where C_0 (get-classname Object_0))
 
-        (where #t (M-match M cname))
-        (where ClassDesc_0 (CD-lookup cname))
+        (where #t (M-match M C_0))
+        (where ClassDesc_0 (CD-lookup M C_0))
         (where MethDecl_0 (method-lookup ClassDesc_0 m))
         (where Stmts_0 (method-Stmts MethDecl_0))
         (where (param ...) (method-params MethDecl_0))
