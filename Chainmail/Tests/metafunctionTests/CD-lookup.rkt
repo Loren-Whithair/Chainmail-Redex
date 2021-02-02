@@ -20,8 +20,7 @@
 
   (test-equal (term (mf-apply CD-lookup ,module3 C2)) (term (clss C2() {}))) ;;lookup one of multiple ClassDescs, not first nor last
 
-  
-  
+
   (test-results)
   (display "-------------------------------------")
   )
