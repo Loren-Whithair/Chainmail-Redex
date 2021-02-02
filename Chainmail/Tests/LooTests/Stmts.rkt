@@ -21,8 +21,12 @@
                       (term (method_result := x @ m(arg1 arg2)))
                       (term (object_result := new C()))
                       (term (object_result := new C(arg1)))
+                      (term ((object_result := new C(arg1)) $ ()))
                       (term (object_result := new C(arg1 arg2)))
                       (term (return result))
+                      (term ((x2 @ f1 := x1) $ ()))  ;;two stmts, second one empty
+                      (term ((x2 @ f1 := x1) $ (x1 := x2 @ m1(arg2)))) ; ---- ;; two stmts, both with values 
+                      (term ((x2 @ f1 := x1) $ ((x1 := x2 @ m1(arg2)) $ ()))) ;; three stmts, last one empty
                       ))
 
   ; false statements

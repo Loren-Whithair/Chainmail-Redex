@@ -14,6 +14,8 @@
                       (term (method m() {()}))
                       (term (method m(arg1) {()}))
                       (term (method m(arg1 arg2) {()}))
+                      (term (method m(arg1 arg2) { (z := y @ f) }))
+                      (term (method myMethod() {()}))
                       ))
 
   (define false_Meths (list
