@@ -31,6 +31,9 @@
 (require "metafunctionTests/M-match.rkt")
 (require "metafunctionTests/CD-lookup.rkt")
 
+(require "metafunctionTests/method-lookup.rkt")
+(require "metafunctionTests/method-params.rkt")
+(require "metafunctionTests/method-Stmts.rkt")
 
 ; syntax tests:
 (display "\n--------------------------\n")
@@ -85,3 +88,6 @@
 (test-Object-extend)
 (test-M-match)
 (test-CD-lookup)
+(test-method-lookup)
+(test-method-Stmts)
+(test-method-params)
