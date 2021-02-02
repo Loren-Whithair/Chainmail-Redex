@@ -325,8 +325,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 (define-metafunction Loo-Machine
   method-lookup : ClassDesc m -> MethDecl
-  [(method-lookup (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... (method m_0(x ...) { Stmts }) MethDecl ...  GhostDecl ... }) m_0)
-   (method m_0(x ...) { Stmts })])
+  [(method-lookup (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... (method m_0(x_0 ...) { Stmts }) MethDecl ...  GhostDecl ... }) m_0)
+   (method m_0(x_0 ...) { Stmts })])
 
 
 ;------------------------------
