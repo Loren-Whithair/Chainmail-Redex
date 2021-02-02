@@ -4,11 +4,6 @@
 
 (provide test-method-lookup)
 
-;(define-metafunction Loo-Machine
-;  method-lookup : ClassDesc m -> MethDecl
-;  [(method-lookup (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... (method m_0(x ...) { Stmts }) MethDecl ...  GhostDecl ... }) m_0)
-;   (method m_0(x ...) { Stmts })])
-
 (define (test-method-lookup)
 
   (display "-------------------------------------")
