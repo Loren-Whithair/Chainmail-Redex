@@ -329,18 +329,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (method m_0(x ...) { Stmts })])
 
 
-  
-(define-metafunction Loo-Machine
-  storelike-lookup : any any -> any
-  ; [(storelike-lookup mt any_0) #false] ;; unable to find anything in an empty 'any' (for example, an object)
-  [(storelike-lookup (any_0 [any_t -> any_ans]) any_t)
-   any_ans] ;; if any_t points to any_ans in any_0, we return any_ans
-  [(storelike-lookup (any_0 [any_k -> any_v]) any_t)
-   (storelike-lookup any_0 any_t)
-   (side-condition (not (equal? (term any_k) (term any_t))))]) ;; ensures any_k != any_t (otherwise we would match the previous condition)
-
-
-
 ;------------------------------
 ;------Adding to mappings------
 
@@ -365,8 +353,19 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    ,(storelike-extend* id-<= (term fieldMap) (term ([f -> v] ...)))])
 
 
+
 ;------------------------------
 ;------Auxiliary functions-----
+ 
+(define-metafunction Loo-Machine
+  storelike-lookup : any any -> any
+  ; [(storelike-lookup mt any_0) #false] ;; unable to find anything in an empty 'any' (for example, an object)
+  [(storelike-lookup (any_0 [any_t -> any_ans]) any_t)
+   any_ans] ;; if any_t points to any_ans in any_0, we return any_ans
+  [(storelike-lookup (any_0 [any_k -> any_v]) any_t)
+   (storelike-lookup any_0 any_t)
+   (side-condition (not (equal? (term any_k) (term any_t))))]) ;; ensures any_k != any_t (otherwise we would match the previous condition)
+
 
 
 (define (id-<= a b)
