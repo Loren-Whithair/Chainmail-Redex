@@ -194,15 +194,15 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
         (where cname (get-classname Object_0))
-        
-        ;(side-condition class exists in module (M-match))
-        ;(where ClassDesc_0 (CD-lookup))
-        ;(side-condition method exists in ClassDesc (need new metafunction)
-        ;(where MethDecl_0 (method-lookup))
 
-        ;(where Cont_1 is MethDecl_0?)
-        ;(where η_1 is based on the arguments given to the method)
-        ;(where Φ_1 is (Cont_1 η_1))
+        (where #t (M-match M cname))
+        (where ClassDesc_0 (CD-lookup cname))
+        (where MethDecl_0 (method-lookup ClassDesc_0 m))
+        (where Stmts_0 (method-Stmts MethDecl_0))
+        (where (param ...) (method-params MethDecl_0))
+        (where _ [(param x) ...])  ;; does the param list have to be the same length as the args list?
+        (where η_1 (η-extend* (mt [this -> (η-lookup η x_1)]) [param -> x] ...)) 
+        (where Φ_1 (Stmts_0 η_1))
         )
 
    ; varAssgn_OS
@@ -271,13 +271,26 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; ------------------ HELPER FUNCTIONS -----------------
 ; -----------------------------------------------------
 
-
 ;------------------------------
-;----Search through mappings---
+;-------Simple functions-------
 
 (define-metafunction Loo-Machine
   get-classname : Object -> C
   [(get-classname (C fieldMap)) C])
+
+(define-metafunction Loo-Machine
+  method-Stmts : MethDecl -> Stmts
+  [(method-Stmts (method m_0(x ...) { Stmts })) Stmts])
+
+(define-metafunction Loo-Machine
+  method-params : MethDecl -> (x ...)
+  [(method-params (method m_0(x ...) { Stmts })) (x ...)])
+
+
+
+;------------------------------
+;----Search through mappings---
+
        
 (define-metafunction Loo-Machine
   h-lookup : χ addr -> Object
@@ -310,8 +323,13 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
 
 
+(define-metafunction Loo-Machine
+  method-lookup : ClassDesc m -> MethDecl
+  [(method-lookup (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... (method m_0(x ...) { Stmts }) MethDecl ...  GhostDecl ... }) m_0)
+   (method m_0(x ...) { Stmts })])
 
 
+  
 (define-metafunction Loo-Machine
   storelike-lookup : any any -> any
   ; [(storelike-lookup mt any_0) #false] ;; unable to find anything in an empty 'any' (for example, an object)
@@ -347,6 +365,8 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    ,(storelike-extend* id-<= (term fieldMap) (term ([f -> v] ...)))])
 
 
+;------------------------------
+;------Auxiliary functions-----
 
 
 (define (id-<= a b)
