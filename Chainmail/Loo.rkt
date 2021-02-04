@@ -279,11 +279,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    ,(add1 (term (h-max χ)))])
 
 
-;(define-metafunction Loo-Machine
-;  new-addr : χ -> (addr)
-;  [(new-addr mt) (1)]
-;  [(new-addr (χ [addr_0 -> Object])) ,(add1 (term addr_0))])
-
 ;------------------------------
 ;-------Simple functions-------
 
