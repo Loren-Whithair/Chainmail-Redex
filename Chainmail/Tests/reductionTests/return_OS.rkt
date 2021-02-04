@@ -66,28 +66,7 @@
             · (() mt)) ;; bottom frame
            ((mt (1 -> (C1 mt))) (2 -> (C1 mt))))))) ;; heap
 
-  #| Reference in Loo.rkt to this test case
-  ; Correct reductions but onlt working if we add f_0 to the local variables
-  (traces
-   expr-reductions
-      (term ((mt (C1 -> (clss C1() ( (fld f_0) (method m_0() ((return f_0))))))) ;; module
-          ((((return f_0) ((mt (this -> 2)) (f_0 -> true))) ;; top frame
-            · (((x_0 := * $ ()) ((mt (x_1 -> 2)) (this -> 1))) ;; next frame
-               · (() mt))) ;; bottom frame
-           ((mt (1 -> (C1 mt))) (2 -> (C1 (mt [f_0 -> false])))))))) ;; heap
 
-; This is the example above with f_0 removed from the local variable map.
-  ; It doesn't reduce but should (f_0 is defined in the object's fieldMap).
-  (traces
-   expr-reductions
-      (term ((mt (C1 -> (clss C1() ( (fld f_0) (method m_0() ((return f_0))))))) ;; module
-          ((((return f_0) (mt (this -> 2))) ;; top frame
-            · (((x_0 := * $ ()) ((mt (x_1 -> 2)) (this -> 1))) ;; next frame
-               · (() mt))) ;; bottom frame
-           ((mt (1 -> (C1 mt))) (2 -> (C1 (mt [f_0 -> false])))))))) ;; heap
-
-  |#
-  
   ;----------------
   ;---FALSE TESTS--
   ;----------------
