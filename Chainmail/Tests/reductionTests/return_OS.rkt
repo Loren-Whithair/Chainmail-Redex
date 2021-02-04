@@ -92,6 +92,20 @@
   ;---FALSE TESTS--
   ;----------------
 
+  #|   ;;y not in local variable map: throws error
+  (test-->
+   expr-reductions
+     (term ((mt (C1 -> (clss C1() ((method m_0() ((return y))))))) ;; module
+          ((((return y) (mt (this -> 2))) ;; top frame
+            · (((x_0 := * $ ()) ((mt (x_1 -> 2)) (this -> 1))) ;; next frame
+               · (() mt))) ;; bottom frame
+           ((mt (1 -> (C1 mt))) (2 -> (C1 mt)))))) ;; heap
+
+     ;;doesn't reduce
+     )
+  |#
+
+ 
   #|
   ;; Showing that we can't return another method call from a method.
   (traces
