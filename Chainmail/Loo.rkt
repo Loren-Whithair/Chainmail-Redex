@@ -176,7 +176,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; ---------------- REDUCTION RULES --------------------
 ; -----------------------------------------------------
 
-;(current-traced-metafunctions 'all)
+(current-traced-metafunctions 'all)
 
 (define expr-reductions
   (reduction-relation
@@ -264,6 +264,25 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; -----------------------------------------------------
 ; ------------------ HELPER FUNCTIONS -----------------
 ; -----------------------------------------------------
+
+
+(define-metafunction Loo-Machine
+  h-max : χ -> addr
+  [(h-max mt) 0]
+  [(h-max (χ [addr -> Object]))
+   ,(max (term addr) (term (h-max χ)))])
+
+
+(define-metafunction Loo-Machine
+  new-addr : χ -> addr
+  [(new-addr χ)
+   ,(add1 (term (h-max χ)))])
+
+
+;(define-metafunction Loo-Machine
+;  new-addr : χ -> (addr)
+;  [(new-addr mt) (1)]
+;  [(new-addr (χ [addr_0 -> Object])) ,(add1 (term addr_0))])
 
 ;------------------------------
 ;-------Simple functions-------
