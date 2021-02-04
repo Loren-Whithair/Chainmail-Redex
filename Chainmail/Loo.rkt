@@ -190,7 +190,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
         (where C_0 (get-classname Object_0))
-
         (where #t (M-match M C_0))  ;; The class of x_1 must be defined in the Module
         (where ClassDesc_0 (CD-lookup M C_0)) 
         (where MethDecl_0 (method-lookup ClassDesc_0 m))
@@ -205,7 +204,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (--> (M (((((x_0 := x_1 @ f) $ Stmts) η ) · ψ) χ)) 
         (M (((Stmts η_0 ) · ψ) χ))
         "varAssgn_OS"
-
         (where addr (η-lookup η x_1))  ;; x_1 must be an addr (i.e. an object, so that it can contain fields)
         (where addr_0 (η-lookup η x_1))
         (where Object_0 (h-lookup χ addr_0))
@@ -246,20 +244,21 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; return_OS
-   (--> (M (((((return x_0) $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ)) 
+   (--> (M (((((return x_0) $ Stmts) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
         (M  (((Stmts_1 η_2) · ψ) χ))
         "return_OS"
-        (where v_0 (η-lookup η_0 x_0))
+        (where v_0 (η-lookup η_0 x_0)) ;; should this always be lcl-lookup? maybe it should be field-lookup sometimes as well? see example in return_OS.rkt reductions test file
         (where η_2 (η-extend* η_1 [x_1 -> v_0]))
         )
    
    ; return_OS-noArgs
-   (--> (M ((((return x_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ)) 
+   (--> (M ((((return x_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
         (M (((Stmts_1 η_2) · ψ) χ))
         "return_OS -noArgs"
         (where v_0 (η-lookup η_0 x_0))
         (where η_2 (η-extend* η_1 [x_1 -> v_0]))        
-   )))
+   ))
+  )
 
 
 ; -----------------------------------------------------
