@@ -246,21 +246,20 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; return_OS
-   (--> (M (((((return x) $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ)) 
+   (--> (M (((((return x_0) $ Stmts_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ)) 
         (M  (((Stmts_1 η_2) · ψ) χ))
         "return_OS"
-        ;; where η_2 is add-to-local-vars(η_1 [x_1 -> x])
-        ;; x gets dereferenced with another metafunction (maybe)
+        (where v_0 (η-lookup η_0 x_0))
+        (where η_2 (η-extend* η_1 [x_1 -> v_0]))
         )
    
    ; return_OS-noArgs
-   (--> (M ((((return x) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ)) 
+   (--> (M ((((return x_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ)) 
         (M (((Stmts_1 η_2) · ψ) χ))
         "return_OS -noArgs"
-        ;; where η_2 is add-to-local-vars(η_1 [x_1 -> x])
-        ;; x gets dereferenced with another metafunction (maybe)
-        )
-   ))
+        (where v_0 (η-lookup η_0 x_0))
+        (where η_2 (η-extend* η_1 [x_1 -> v_0]))        
+   )))
 
 
 ; -----------------------------------------------------
