@@ -35,6 +35,14 @@
 (require "metafunctionTests/method-Stmts.rkt")
 (require "metafunctionTests/new-addr.rkt")
 
+(require "reductionTests/methCall_OS.rkt")
+(require "reductionTests/varAssgn_OS.rkt")
+(require "reductionTests/fieldAssgn_OS.rkt")
+(require "reductionTests/objCreate_OS.rkt")
+(require "reductionTests/return_OS.rkt")
+(require "reductionTests/return_OS-no-args.rkt")
+
+
 
 ; syntax tests:
 (display "\n--------------------------\n")
@@ -75,7 +83,7 @@
 ;(random-test-semantics)
 
 
-; machine syntax tests:
+; metafunctions tests:
 (display "\n--------------------------\n")
 (display "---- Metafunction Tests----\n")
 (display "--------------------------\n")
@@ -93,3 +101,17 @@
 (test-method-Stmts)
 (test-method-params)
 (test-new-addr)
+
+; reduction tests:
+(display "\n--------------------------\n")
+(display "------ Reduction Tests-----\n")
+(display "--------------------------\n")
+
+(test-methCall_OS)
+(test-varAssgn_OS)
+(test-fieldAssgn_OS)
+(test-methCall_OS)
+;(test-objCreate_OS)
+(test-return_OS)
+;(test-return_OS-no-args)
+
