@@ -3,7 +3,7 @@
 (require "../../Loo.rkt")
 
 (provide random-test-syntax)
-;(provide random-test-semantics)
+(provide random-test-semantics)
 
 ;; random testing of syntax
 (define (random-test-syntax)
@@ -12,10 +12,8 @@
 
 ;; random testing of reduction rules
 ;; none will work at this stage because no reduction rules are full defined
-#|
 (define (random-test-semantics)
   (display "\nThen random testing of Loo reduction rules:\n")
   (define (reduces? e) (not (null? (apply-reduction-relation expr-reductions (term (e))))))
-  ;(redex-check Loo-Machine machine-language (reduces? (term e)))
-  ) |#
-  
+  (redex-check Loo-Machine machine-language (reduces? (term e)))
+  )

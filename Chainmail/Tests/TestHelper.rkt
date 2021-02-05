@@ -82,7 +82,6 @@
 (random-test-syntax)
 ;(random-test-semantics)
 
-
 ; metafunctions tests:
 (display "\n--------------------------\n")
 (display "---- Metafunction Tests----\n")
@@ -112,6 +111,6 @@
 (test-varAssgn_OS)
 (test-fieldAssgn_OS)
 (test-methCall_OS)
-;(test-objCreate_OS)
+(test-objCreate_OS)
 (test-return_OS)
-;(test-return_OS-no-args)
+(test-return_OS-no-args)
