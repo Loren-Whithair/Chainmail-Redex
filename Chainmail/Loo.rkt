@@ -1,4 +1,4 @@
-#lang racket
+ #lang racket
 (require redex)
 
 (provide (all-defined-out))
@@ -176,7 +176,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 ; ---------------- REDUCTION RULES --------------------
 ; -----------------------------------------------------
 
-(current-traced-metafunctions 'all)
+; (current-traced-metafunctions 'all)
 
 (define expr-reductions
   (reduction-relation
@@ -238,7 +238,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
         "objCreate_OS"
         
         ;; where addr_1 is a newly allocated address on the heap, for the new object
-        ;; where Φ'' is the new frame, based on the constructor
+        ;; where Φ'' is the new frame, based on the constructor ;; means that we will have to have some kind of 
         ;; where (C, ∅) is an object created of that class, and none of the fields are assigned values
         ;; where η_0 is the new local variable set for the constructor
     )
@@ -247,7 +247,7 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
    (--> (M (((((return x_0) $ Stmts) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
         (M  (((Stmts_1 η_2) · ψ) χ))
         "return_OS"
-        (where v_0 (η-lookup η_0 x_0)) ;; should this always be lcl-lookup? maybe it should be field-lookup sometimes as well? see example in return_OS.rkt reductions test file
+        (where v_0 (η-lookup η_0 x_0)) ;; only η-lookup needed based on reduction rules defined in paper (ie: we can't return a field directly)
         (where η_2 (η-extend* η_1 [x_1 -> v_0]))
         )
    

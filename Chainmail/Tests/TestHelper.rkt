@@ -30,10 +30,11 @@
 (require "metafunctionTests/Object-extend.rkt")
 (require "metafunctionTests/M-match.rkt")
 (require "metafunctionTests/CD-lookup.rkt")
-
 (require "metafunctionTests/method-lookup.rkt")
 (require "metafunctionTests/method-params.rkt")
 (require "metafunctionTests/method-Stmts.rkt")
+(require "metafunctionTests/new-addr.rkt")
+
 
 ; syntax tests:
 (display "\n--------------------------\n")
@@ -91,3 +92,4 @@
 (test-method-lookup)
 (test-method-Stmts)
 (test-method-params)
+(test-new-addr)
