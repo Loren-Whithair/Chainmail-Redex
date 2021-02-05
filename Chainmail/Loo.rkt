@@ -230,17 +230,22 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
     )
 
    ; objCreate_OS
-   (--> (M (((((x_0 := new C(x ...)) $ Stmts) η) · ψ) χ_0)) 
+   (--> (M (((((x_0 := new C_0(x_1 ...)) $ Stmts) η) · ψ) χ_0)) 
         ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
-        (M ((Φ_1 · (((x_0 := * $ Stmts) η_0) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)])
+        (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)])
         ;; we might need to change (C, empty) based on the metafunction ↓
 
         "objCreate_OS"
-        
-        ;; where addr_1 is a newly allocated address on the heap, for the new object
-        ;; where Φ'' is the new frame, based on the constructor ;; means that we will have to have some kind of 
-        ;; where (C, ∅) is an object created of that class, and none of the fields are assigned values
-        ;; where η_0 is the new local variable set for the constructor
+        (where addr_0 (new-addr χ_0))
+        (where χ_1 (h-extend* χ_0 [addr_0 -> (C_0 mt)]))
+
+        (where ClassDesc_0 (CD-lookup M C_0))
+        (where (constructor(x_2 ...) { Stmts_1 }) (constructor-lookup ClassDesc_0))  ;;should the fields be automatically assigned by a constructor???
+        ;;do constructors have to have return stmts at the end???
+
+        (where η_1 (η-extend* (mt [this -> addr_0]) [x_2 -> (η-lookup η x_1)] ...))
+        (where Φ_1 (Stmts_1 η_1))
+
     )
 
    ; return_OS
@@ -323,6 +328,13 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   method-lookup : ClassDesc m -> MethDecl
   [(method-lookup (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... (method m_0(x_0 ...) { Stmts }) MethDecl ...  GhostDecl ... }) m_0)
    (method m_0(x_0 ...) { Stmts })])
+
+(define-metafunction Loo-Machine
+  constructor-lookup : ClassDesc -> CDecl
+  [(constructor-lookup (clss C(x_0 ...) { FieldDecl ... (constructor(x_1 ...) { Stmts_0 }) MethDecl ... GhostDecl ... }))
+   (constructor(x_1 ...) { Stmts_0 })]
+  [(constructor-lookup (clss C(x ...) { FieldDecl ... MethDecl ... GhostDecl ... }))
+   (constructor() { (return this) })])  ;;maybe remove return this later
 
 
 
