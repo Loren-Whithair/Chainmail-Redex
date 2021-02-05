@@ -24,6 +24,7 @@
 (require "metafunctionTests/lcl-lookup.rkt")
 (require "metafunctionTests/field-lookup.rkt")
 (require "metafunctionTests/h-lookup.rkt")
+(require "metafunctionTests/constructor-lookup.rkt")
 (require "metafunctionTests/lcl-extend.rkt")
 (require "metafunctionTests/h-extend.rkt")
 (require "metafunctionTests/fieldMap-extend.rkt")
@@ -34,6 +35,7 @@
 (require "metafunctionTests/method-params.rkt")
 (require "metafunctionTests/method-Stmts.rkt")
 (require "metafunctionTests/new-addr.rkt")
+
 
 (require "reductionTests/methCall_OS.rkt")
 (require "reductionTests/varAssgn_OS.rkt")
@@ -89,6 +91,7 @@
 (test-lcl-lookup)
 (test-field-lookup)
 (test-h-lookup)
+(test-constructor-lookup)
 (test-lcl-extend)
 (test-h-extend)
 (test-fieldMap-extend)

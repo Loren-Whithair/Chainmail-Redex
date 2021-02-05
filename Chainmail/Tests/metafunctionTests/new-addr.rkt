@@ -1,7 +1,6 @@
 #lang racket
 (require redex)
 (require "../../Loo.rkt")
-(require "../Loo-Machine_tests/heap.rkt") ;; we could use our true_heaps from here
 
 (provide test-new-addr) ;; for use by the test helper
 
