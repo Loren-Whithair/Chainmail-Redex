@@ -110,8 +110,6 @@ address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
   
   (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier)) ;; for random testing
 
-
-
 ; -----------------------------------------------------
 ; ---------------- MACHINE SYNTAX ---------------------
 ; -----------------------------------------------------
