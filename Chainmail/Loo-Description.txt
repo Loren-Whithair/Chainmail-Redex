@@ -1,8 +1,3 @@
-SUGGESTIONS
---------------
-- Reformat to remove some of the parentheses in the reduction rules
-
-- Swap * with ● for context holes
 
 
 --------------------------------
@@ -11,7 +6,17 @@ Fields don't have to exist when being assigned to, i.e. you can create a new fie
 This is because for the sake of <access> and <authority> with respect to Chainmail, being able to create new fields doesn't matter.
 
 
-GRAMMAR COMPARISON
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Below is a set of tables listing elements in Loo, and the elements in Javalite that correspond to their functionality. 
+This may prove handy given that the code in Loo.rkt is strongly based off of the Redex implementation of Javalite.
+
+BASIC GRAMMAR COMPARISON
  Loo       | Javalite
 -----------|-------------
  M         | μ
@@ -27,10 +32,8 @@ GRAMMAR COMPARISON
  C, f, m   | ~~C, f, m
  id        | id
  
- 
- 
   
-    OPERATIONAL SEMANTICS COMPARISON
+    MACHINE SYNTAX COMPARISON
 elem      | Loo                | Javalite
 ----------|--------------------|-----------------------------------------------------------------
 frame     | φ                  | part of state (similar): (η + e)
@@ -40,7 +43,8 @@ contin.   | Continuation       | k (but defn. in Loo paper is much less detailed
 class list| (MODULE + σ)       | μ   
 address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
-    REDUCTIONS COMPARISON ~~roughly
+
+    OPERATIONAL SEMANTICS (reduction rules) COMPARISON
  Loo           | Javalite (as it's labellled in Redex reduction)
 ---------------|--------------
  methcall_OS   | "raw method invocation" + "assign"
