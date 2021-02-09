@@ -8,17 +8,17 @@
 This file contains all syntax and semantics for Loo: a deterministic and minimal Object Oriented Programming language.
 
 --------------------------------
-OPERATIONAL SEMANTICS OBSERVATIONS
+Notes on decisions made when encoding Loo in Redex:
 
-Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment
+Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment.
 This is because for the sake of <access> and <authority> with respect to Chainmail, being able to create new fields doesn't matter.
 
+A class can have 0, 1, or many constructors. 
 
 
-
+--------------------------------
 
 To consider: what does the fieldAssgn and varAssgn reductions do when the variable is itself? e.g. x_0 @ f := x_0
-
 |#
 
 
