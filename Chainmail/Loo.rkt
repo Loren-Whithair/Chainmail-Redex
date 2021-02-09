@@ -7,13 +7,46 @@
 
 This file contains all syntax and semantics for Loo: a deterministic and minimal Object Oriented Programming language.
 
---------------------------------
-Notes on decisions made when encoding Loo in Redex:
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+Below is a list of key things to note about the
+Redex implementation of Loo. There is more information
+in the form of comments throughout the code.
 
-Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment.
+
+------------
+Loo:
+
+- The word "class" has been swapped for "clss" in ClassDesc
+
+- The world "field" has been swapped for "fld" in FieldDecl
+
+- A class can have one constructor or none.
+
+
+------------
+Loo-Machine:
+
+- An 'addr' cannot be a negative number
+
+- In the work-in-progress version of the Chainmail paper, a value (or 'v') can only be null, an 'addr', or a list of 'addr'.
+In Loo.rkt, we have removed the feature of a 'v' being a list of addr.
+We have also added 'true', 'false', and integers, which must be surrounded with [ ] to distinguish between integers and addrs.
+
+- An Object's list of fields is a recursive non-terminal, called 'fieldMap'
+
+- A non-terminal to represent local variable mappings, 'η' has been added. It is recursively defined
+
+- Heaps, 'χ', are also recursively defined.
+
+
+------------
+expr-reductions (the operational semantics):
+
+- Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment.
 This is because for the sake of <access> and <authority> with respect to Chainmail, being able to create new fields doesn't matter.
 
-A class can have 0, 1, or many constructors. 
+
 
 
 --------------------------------
@@ -34,19 +67,25 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
   (M ::=  ;;MODULE
      mt
      (M [C -> ClassDesc]))
-     
-  (ClassDesc ::= (clss C(x ...) { FieldDecl ... CDecl ... MethDecl ... GhostDecl ... }))
+
+  ; 'clss' instead of 'class'
+  (ClassDesc ::= (clss C(x ...) { FieldDecl ... MethDecl ... GhostDecl ... })  ;;no constructor
+                 (clss C(x ...) { FieldDecl ... CDecl MethDecl ... GhostDecl ... })) ;;one constructor
+
+  ; 'fld' instead of 'field'
   (FieldDecl ::= (fld f))
   (CDecl ::= (constructor(x ...) { Stmts }))
   (MethDecl ::= (method m(x ...) { Stmts }))
+
   (Stmts ::= Stmt
              (Stmt $ Stmts))
-  (Stmt ::= () ;; empty statement
-            (x @ f := x)
-            (x := x @ f)
-            (x := x @ m(x ...))
-            (x := new C(x ...))
-            (return x))
+
+  (Stmt ::= ()  ; ------------- ;; empty statement
+            (x @ f := x)  ; --- ;; field assignment
+            (x := x @ f)  ; --- ;; field access
+            (x := x @ m(x ...)) ;; method call
+            (x := new C(x ...)) ;; object creation (constructor invocation)
+            (return x))  ; ---- ;; return
   
   (GhostDecl ::= (ghost gf(x ...) { e }))   
 
@@ -65,6 +104,9 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
   
   (language ::= M ClassDesc FieldDecl CDecl MethDecl Stmts GhostDecl e identifier)) ;; for random testing
 
+
+
+
 ; -----------------------------------------------------
 ; ---------------- MACHINE SYNTAX ---------------------
 ; -----------------------------------------------------
@@ -78,11 +120,12 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
      addr
      true      ;; not in paper 
      false     ;; not in paper
-     [integer] ;; not in paper
+     [integer] ;; not in paper   ;;surrounded with [ ] to distinguish from 'addr'
 )
   
   (Object ::=
           (C fieldMap))
+
   (fieldMap ::=
             mt
             (fieldMap [f -> v]))
@@ -114,16 +157,6 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
   (machine-language ::= addr v Object Φ η ψ χ σ state Continuation)) ;; for random testing of reduction rules
 
 
-(define Module? (redex-match Loo M))
-(define Object? (redex-match Loo-Machine Object))
-(define Frame? (redex-match Loo-Machine Φ))
-(define local? (redex-match Loo-Machine η))
-(define stack? (redex-match Loo-Machine ψ))
-(define heap? (redex-match Loo-Machine χ))
-(define RC? (redex-match Loo-Machine σ))
-(define state? (redex-match Loo-Machine state))
-(define Cont? (redex-match Loo-Machine Continuation))
-
 
 ; -----------------------------------------------------
 ; ---------------- REDUCTION RULES --------------------
@@ -136,23 +169,32 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
    Loo-Machine
    #:domain state
 
+   
    ; methCall_OS
    (--> (M (((((x_0 := x_1 @ m(x_2 ...)) $ Stmts) η) · ψ) χ)) 
         (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ)) 
         "methCall_OS"
-        (where addr_0 (η-lookup η x_1))
-        (where Object_0 (h-lookup χ addr_0))
+
+        ;; Obtain the ClassID and ClassDesc of x_1
+        (where addr_0 (η-lookup η x_1)) 
+        (where Object_0 (h-lookup χ addr_0)) 
         (where C_0 (get-classname Object_0))
-        (where #t (M-match M C_0))  ;; The class of x_1 must be defined in the Module
-        (where ClassDesc_0 (CD-lookup M C_0)) 
+        (where #t (M-match M C_0))  ; ------- ;; The class of x_1 must be defined in the Module
+        (where ClassDesc_0 (CD-lookup M C_0))
+
+        ;; Obtain the method body and list of required arguments
         (where MethDecl_0 (method-lookup ClassDesc_0 m))
         (where Stmts_0 (method-Stmts MethDecl_0))
         (where (x_3 ...) (method-params MethDecl_0))
-        ;(where _ [(param x) ...])  
-        (where η_1 (η-extend* (mt [this -> (η-lookup η x_1)]) [x_3 -> (η-lookup η x_2)] ...))
+        
+        (where η_1 (η-extend* (mt [this -> addr_0]) [x_3 -> (η-lookup η x_2)] ...))  ;; [this -> (the object the method was invoked on)], followed by [parameters -> arguments given]
         (where Φ_1 (Stmts_0 η_1))
+        ;; The new Φ is the method body and the local var map where the arguments given have been assigned to the method's parameter names
         )
 
+
+
+   
    ; varAssgn_OS
    (--> (M (((((x_0 := x_1 @ f) $ Stmts) η ) · ψ) χ)) 
         (M (((Stmts η_0 ) · ψ) χ))
