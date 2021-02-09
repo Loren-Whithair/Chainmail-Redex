@@ -18,6 +18,7 @@
 (require "Loo-Machine_tests/frame.rkt")
 (require "Loo-Machine_tests/Object.rkt")
 (require "Loo-Machine_tests/Continuation.rkt")
+(require "Loo-Machine_tests/fieldMap.rkt")
 
 (require "RandomTests/RandomTesting.rkt")
 
@@ -72,6 +73,7 @@
 (test-heap)
 (test-frame)
 (test-object)
+(test-fieldMap)
 
 
 ; random testing:
