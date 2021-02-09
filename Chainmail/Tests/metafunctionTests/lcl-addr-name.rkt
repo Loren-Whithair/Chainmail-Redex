@@ -21,6 +21,8 @@
   (test-equal (term (mf-apply lcl-addr-name ,l3 1)) (term x1))
   (test-equal (term (mf-apply lcl-addr-name ,l3 2)) (term x2))
   (test-equal (term (mf-apply lcl-addr-name ,l3 3)) (term x3))
+
+  (test-equal (term (mf-apply lcl-addr-name ((mt [this -> 1]) [x1 -> 2]) 1)) (term this))
   
   (test-results)
   (display "-------------------------------------")
