@@ -2,6 +2,8 @@
 (require redex)
 (require "Loo.rkt")
 
+(provide (all-defined-out))
+ 
 (define-extended-language Chainmail Loo-Machine
   (A ::=
      (< addr access addr >)
