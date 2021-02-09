@@ -176,7 +176,7 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
         "methCall_OS"
 
         ;; Obtain the ClassID and ClassDesc of x_1
-        (where addr_0 (η-lookup η x_1)) 
+        (where addr_0 (η-lookup η x_1)) ; --- ;; x_1 must point to an addr, i.e. an Object
         (where Object_0 (h-lookup χ addr_0)) 
         (where C_0 (get-classname Object_0))
         (where #t (M-match M C_0))  ; ------- ;; The class of x_1 must be defined in the Module
@@ -186,10 +186,10 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
         (where MethDecl_0 (method-lookup ClassDesc_0 m))
         (where Stmts_0 (method-Stmts MethDecl_0))
         (where (x_3 ...) (method-params MethDecl_0))
-        
+
+        ;; Create the new frame
         (where η_1 (η-extend* (mt [this -> addr_0]) [x_3 -> (η-lookup η x_2)] ...))  ;; [this -> (the object the method was invoked on)], followed by [parameters -> arguments given]
         (where Φ_1 (Stmts_0 η_1))
-        ;; The new Φ is the method body and the local var map where the arguments given have been assigned to the method's parameter names
         )
 
 
@@ -199,16 +199,23 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
    (--> (M (((((x_0 := x_1 @ f) $ Stmts) η ) · ψ) χ)) 
         (M (((Stmts η_0 ) · ψ) χ))
         "varAssgn_OS"
-        (where addr (η-lookup η x_1))  ;; x_1 must be an addr (i.e. an object, so that it can contain fields)
-        (where addr_0 (η-lookup η x_1))
+
+        ;; Obtaining the Objects pointed to by x_1 and 'this'
+        (where addr_0 (η-lookup η x_1)) ;    ;;x_1 must point to an addr, i.e. an Object
         (where Object_0 (h-lookup χ addr_0))
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
-        (where [C C] [(get-classname Object_0) (get-classname Object_1)])  ;;Class(this) must == Class(x_1) for permission to access
+
+        ;;Class(this) must == Class(x_1) for permission to access
+        (where [C C] [(get-classname Object_0) (get-classname Object_1)])
+
+        ;; Assign the value of the field f in x_1 to the VarID x_0
         (where v_0 (field-lookup Object_0 f))
         (where η_0 (η-extend* η [x_0 -> v_0]))
     )
 
+
+   
    ; fieldAssgn_OS
    (--> (M (((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)) 
         (M (((Stmts η) · ψ) χ_1)) 
