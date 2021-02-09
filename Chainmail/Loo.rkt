@@ -187,7 +187,7 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
         (where Stmts_0 (method-Stmts MethDecl_0))
         (where (x_3 ...) (method-params MethDecl_0))
 
-        ;; Create the new frame
+        ;; Create the new frame where the Stmts are those of the method body, and η is as defined below:
         (where η_1 (η-extend* (mt [this -> addr_0]) [x_3 -> (η-lookup η x_2)] ...))  ;; [this -> (the object the method was invoked on)], followed by [parameters -> arguments given]
         (where Φ_1 (Stmts_0 η_1))
         )
@@ -238,19 +238,20 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
 
    ; objCreate_OS
    (--> (M (((((x_0 := new C_0(x_1 ...)) $ Stmts) η) · ψ) χ_0)) 
-        ;; we might need to change (x ...) to limit or ensure that the number of elements is correct
-        (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ_1)) ;; where χ_1 = add-to-heap(χ_0 [addr_1 -> (C empty)])
+        (M ((Φ_1 · (((x_0 := * $ Stmts) η) · ψ)) χ_1)) 
         ;; we might need to change (C, empty) based on the metafunction ↓
-
         "objCreate_OS"
+
+        ;; Creating a new Object and assigning it to an unoccupied addr in the heap.
         (where addr_0 (new-addr χ_0))
-        (where χ_1 (h-extend* χ_0 [addr_0 -> (C_0 mt)]))
+        (where χ_1 (h-extend* χ_0 [addr_0 -> (C_0 mt)])) ;; the new Object has a ClassID corresponding to the 'new' Stmt
 
+        ;; Obtaining the constructor method body and list of required arguments
         (where ClassDesc_0 (CD-lookup M C_0))
-        (where (constructor(x_2 ...) { Stmts_1 }) (constructor-lookup ClassDesc_0))  ;;should the fields be automatically assigned by a constructor???
-        ;;do constructors have to have return stmts at the end???
+        (where (constructor(x_2 ...) { Stmts_1 }) (constructor-lookup ClassDesc_0)) 
 
-        (where η_1 (η-extend* (mt [this -> addr_0]) [x_2 -> (η-lookup η x_1)] ...))
+        ;; Create the new frame where the Stmts are from the constructor method body, and η is as defined below:
+        (where η_1 (η-extend* (mt [this -> addr_0]) [x_2 -> (η-lookup η x_1)] ...))  ;; [this -> the new Object created], followed by [parameters -> arguments given]
         (where Φ_1 (Stmts_1 η_1))
 
     )
