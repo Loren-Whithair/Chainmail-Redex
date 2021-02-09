@@ -13,7 +13,7 @@
   )
 )
 
-
+(current-traced-metafunctions 'all)
 
 
 (define-judgment-form
@@ -21,24 +21,25 @@
   #:mode     (? I I I I)
   #:contract (? M state ⊨ A)
 
-
-
   ;; addr_1 is a FIELD of addr_0
   [(where (C fieldMap_0) (h-lookup χ addr_0))
-   (side-condition (val-in-fieldMap fieldMap_0 addr_1))
-   ---------------
-   (? M_0 (M_1 (((Continuation_0 η_0) · Ψ) χ))  ⊨ (< addr_0 access addr_1 >))]
+   (side-condition (addr-in-fieldMap fieldMap_0 addr_1))
+   ----------------------------------------------------------------------------
+   (? M_0 (M_1 (((Continuation_0 η_0) · ψ) χ))  ⊨ (< addr_0 access addr_1 >))]
 
   
   ;; addr_1 is pointed to in local var map, and addr_0 is this (in η_0)
-  [(side-condition (addr-in-lcl η_0 addr_1))
-   (side-condition (addr-in-lcl η_0 addr_0))
-   (where this (lcl-addr-name η_0 addr_0))
-   ---------------
-   (? M_0 (M_1 (((Continuation_0 η_0) · Ψ) χ))  ⊨ (< addr_0 access addr_1 >))]
+  [(side-condition (term (mf-apply addr-in-lcl η_0 addr_1)))
+   (side-condition (term (mf-apply addr-in-lcl η_0 addr_0)))
+   (Equal this (mf-apply lcl-addr-name η_0 addr_0))
+   --------------------------------------------------------------------------------
+   (? M_0 (M_1 (((Continuation_0 η_0) · ψ) χ))  ⊨ (< addr_0 access addr_1 >))]
 
   )
   
+
+(define-judgment-form Chainmail #:mode(Equal I I) #:contract(Equal any any)
+  ((Equal any any)))
 
 
 
