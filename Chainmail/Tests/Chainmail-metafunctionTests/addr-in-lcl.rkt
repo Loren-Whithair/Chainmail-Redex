@@ -1,6 +1,7 @@
 #lang racket
 (require redex)
 (require "../../Loo.rkt")
+(require "../../Chainmail.rkt")
 
 (provide test-addr-in-lcl)
 
@@ -9,7 +10,7 @@
   (display "-------------------------------------")
   (display "\nRunning addr-in-lcl Tests:\n")
 
-                        
+  
   (test-results)
   (display "-------------------------------------")
   )
