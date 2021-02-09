@@ -49,13 +49,13 @@
     
 ;NEEDS TESTING
 (define-metafunction Loo-Machine
-  addr-in-fieldMap : fieldMap addr -> bool
+  addr-in-fieldMap : fieldMap addr -> boolean
   [(addr-in-fieldMap mt addr) #false]
   [(addr-in-fieldMap (fieldMap [f_0 -> addr_0]) addr_0) #true]
   [(addr-in-fieldMap (fieldMap_0 [f_0 -> addr_0]) addr_1) (addr-in-fieldMap fieldMap_0 addr_1)])
 
 (define-metafunction Loo-Machine
-  addr-in-lcl : η addr -> bool
+  addr-in-lcl : η addr -> boolean
   [(addr-in-lcl mt addr) #false]
   [(addr-in-lcl (η [x_0 -> addr_0]) addr_0) #true]
   [(addr-in-lcl (η_0 [x_0 -> addr_0]) addr_1) (addr-in-lcl η_0 addr_1)])

@@ -20,18 +20,50 @@ Fields don't have to exist when being assigned to, i.e. you can create a new fie
 This is because for the sake of <access> and <authority> with respect to Chainmail, being able to create new fields doesn't matter.
 
 
+NOTE: what does the fieldAssgn and varAssgn reductions do when the variable is itself? e.g. x_0 @ f := x_0
+
 -------
 NEXT STEPS:
+Tests: h-extend* throws an error if you give it something invalid to add to the hepa ("not in my domain") - do we want to test these? Can we catch errors?
 
-- Do we want metafunctions to catch Redex errors?
 
-- Return statements at the end of constructors, should these be enforced? Where?
+GRAMMAR COMPARISON
+ Loo       | Javalite
+-----------|-------------
+ M         | μ
+ ClassDesc | CL
+ FieldDecl | !no equivalent! -- used for ClassDesc, declaring class fields
+ CDecl     | !no equivalent! -- constructor, not used in Javalite
+ MethDecl  | M
+ Stmts     | ~~ (begin e ...)
+ Stmt      | ~~ e (Javalite e == Loo (Stmt + e))
+ GhostDecl | !no equivalent!
+ e         | ~~ e (Javalite e == Loo (Stmt + e))
+ x         | x
+ C, f, m   | ~~C, f, m
+ id        | id
+ 
+ 
+ 
+  
+    OPERATIONAL SEMANTICS COMPARISON
+elem      | Loo                | Javalite
+----------|--------------------|-----------------------------------------------------------------
+frame     | φ                  | part of state (similar): (η + e)
+stack     | ψ                  | (managed by state, not explicitly an element)
+heap      | χ                  | h
+contin.   | Continuation       | k (but defn. in Loo paper is much less detailed than Javalite) 
+class list| (MODULE + σ)       | μ   
+address   | addr (Loo Machine) | pointer (Javalite, not JL-Machine)
 
-- Check that there are no weird results when referring to the same address in the heap multiple times, such as modifying the same object twice in one Stmt
-(i.e. what does the fieldAssgn and varAssgn reductions do when the variable is itself? e.g. x_0 @ f := x_0)
-
-- Add/edit comments
-
+    REDUCTIONS COMPARISON ~~roughly
+ Loo           | Javalite (as it's labellled in Redex reduction)
+---------------|--------------
+ methcall_OS   | "raw method invocation" + "assign"
+ varAssgn_OS   | "field access" + "assign"
+ fieldAssgn_OS | "assign field"
+ objCreate_OS  | "new"
+ return_OS     | "pop η" ~~roughly, missing the actual return
 |#
 
 
@@ -375,7 +407,3 @@ NEXT STEPS:
     ['() storelike]
     [`([,k -> ,hv] . ,extend*)
      (storelike-extend* <= (storelike-extend <= storelike k hv) extend*)]))
-
-
-
-   
