@@ -5,7 +5,7 @@ This is for the purpose of proving basic Chainmail assertions on programs writte
 
 All of the work relating to Chainmail is in the **Chainmail** folder
 
-Key files/folders:
+### Key files/folders:
 
 **Chainmail/Loo.rkt** contains the majority of the completed work. It contains:
 - the language "Loo" consisting of the fundamental elements of the language 
