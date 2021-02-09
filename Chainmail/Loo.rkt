@@ -201,13 +201,12 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
         "varAssgn_OS"
 
         ;; Obtaining the Objects pointed to by x_1 and 'this'
-        (where addr_0 (η-lookup η x_1)) ;    ;;x_1 must point to an addr, i.e. an Object
+        (where addr_0 (η-lookup η x_1))      ;;x_1 must point to an addr, i.e. an Object, in order to contain fields
         (where Object_0 (h-lookup χ addr_0))
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
 
-        ;;Class(this) must == Class(x_1) for permission to access
-        (where [C C] [(get-classname Object_0) (get-classname Object_1)])
+        (where [C C] [(get-classname Object_0) (get-classname Object_1)]) ;;Class(this) must == Class(x_1) for permission to access
 
         ;; Assign the value of the field f in x_1 to the VarID x_0
         (where v_0 (field-lookup Object_0 f))
@@ -220,16 +219,22 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
    (--> (M (((((x_0 @ f := x_1) $ Stmts) η) · ψ) χ)) 
         (M (((Stmts η) · ψ) χ_1)) 
         "fieldAssgn_OS"
-        (where addr (η-lookup η x_0)) ;; x_0 must be an addr (i.e. an object, so that it can contain fields)
-        (where addr_0 (η-lookup η x_0))
+
+        ;; Obtaining the Objects pointed to by x_0 and 'this'
+        (where addr_0 (η-lookup η x_0))       ;; x_0 must be an addr, i.e. an Object, in order to contain fields
         (where Object_0 (h-lookup χ addr_0))
         (where addr_1 (η-lookup η this))
         (where Object_1 (h-lookup χ addr_1))
-        (where [C C] [(get-classname Object_0) (get-classname Object_1)])  ;;Class(this) must == Class(x_1) for permission to access
+        
+        (where [C C] [(get-classname Object_0) (get-classname Object_1)]) ;;Class(this) must == Class(x_1) for permission to access
+
+        ;; Assign the value of x_1 to the field f in x_0
         (where v_0 (η-lookup η x_1))
         (where Object_2 (Object-extend* Object_0 [f -> v_0]))
-        (where χ_1 (h-extend* χ [addr_0 -> Object_2]))
+        (where χ_1 (h-extend* χ [addr_0 -> Object_2]))  ;; Overwriting in the heap the old version of the Object with the new one, with an updated fieldMap
     )
+
+   
 
    ; objCreate_OS
    (--> (M (((((x_0 := new C_0(x_1 ...)) $ Stmts) η) · ψ) χ_0)) 
