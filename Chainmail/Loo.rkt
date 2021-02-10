@@ -211,7 +211,7 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
         ;; Assign the value of the field f in x_1 to the VarID x_0
         (where v_0 (field-lookup Object_0 f))
         (where η_0 (η-extend* η [x_0 -> v_0]))
-    )
+        )
 
 
    
@@ -232,7 +232,7 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
         (where v_0 (η-lookup η x_1))
         (where Object_2 (Object-extend* Object_0 [f -> v_0]))
         (where χ_1 (h-extend* χ [addr_0 -> Object_2]))  ;; Overwriting in the heap the old version of the Object with the new one, with an updated fieldMap
-    )
+        )
 
    
 
@@ -253,25 +253,35 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
         ;; Create the new frame where the Stmts are from the constructor method body, and η is as defined below:
         (where η_1 (η-extend* (mt [this -> addr_0]) [x_2 -> (η-lookup η x_1)] ...))  ;; [this -> the new Object created], followed by [parameters -> arguments given]
         (where Φ_1 (Stmts_1 η_1))
+        )
 
-    )
 
+   
    ; return_OS
-   (--> (M (((((return x_0) $ Stmts) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
+   (--> (M (((((return x_0) $ Stmts) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))  ;; return Stmt is followed by other Stmts, which will NOT be executed
         (M  (((Stmts_1 η_2) · ψ) χ))
         "return_OS"
-        (where v_0 (η-lookup η_0 x_0)) ;; only η-lookup needed based on reduction rules defined in paper (ie: we can't return a field directly)
+
+        ;; Fill the hole in the second frame by updating η_1 with [x_1 -> the value return by the top frame]
+        (where v_0 (η-lookup η_0 x_0))
         (where η_2 (η-extend* η_1 [x_1 -> v_0]))
         )
+
+
    
    ; return_OS-noArgs
-   (--> (M ((((return x_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))
+   (--> (M ((((return x_0) η_0) · (((x_1 := * $ Stmts_1) η_1) · ψ)) χ))  ;; return Stmt is not followed by other Stmts
         (M (((Stmts_1 η_2) · ψ) χ))
         "return_OS -noArgs"
+
+        ;; Fill the hole in the second frame by updating η_1 with [x_1 -> the value return by the top frame]
         (where v_0 (η-lookup η_0 x_0))
         (where η_2 (η-extend* η_1 [x_1 -> v_0]))        
    ))
   )
+
+
+
 
 
 ; -----------------------------------------------------
