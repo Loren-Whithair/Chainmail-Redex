@@ -7,6 +7,7 @@
 To do list:
  - Do constructors have to have return stmts at the end?
  - Make a test-file for h-max
+ - remove tests for method-params and method-Stmts, both from folder and TestHelper.rkt
 
 |#
 
