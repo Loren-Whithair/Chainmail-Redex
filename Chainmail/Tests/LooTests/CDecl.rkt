@@ -12,10 +12,10 @@
   (define Loo_CDecl? (redex-match? Loo CDecl))
 
   (define true_Const (list
-                      (term (constructor() {()}))
-                      (term (constructor(arg1) {()}))
-                      (term (constructor(arg1 arg2) {()}))
-                      (term (constructor() {(method_result := x @ m())}))
+                      (term (constructor() {()}))  ; -------------------- ;; A constructor will pattern match without a method body, but will not reduce
+                      (term (constructor(arg1) {()})) ; ----------------- ;; Arguments do not have to be used in the constructor body
+                      (term (constructor(arg1 arg2) {()})) ; ------------ ;;
+                      (term (constructor() {(method_result := x @ m())})) ;; 
                       ))
 
   (define false_Const (list

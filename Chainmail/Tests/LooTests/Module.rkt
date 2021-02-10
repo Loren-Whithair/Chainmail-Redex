@@ -12,10 +12,14 @@
   (define Loo_M? (redex-match? Loo M))
 
   (define true_Modules (list
-                        (term mt)
-                        (term (mt [C1 -> (clss C1() {})]))
-                        (term ((mt [C1 -> (clss C1() {})]) [C2 -> (clss C2() {})]))
-                        (term (mt [C1 -> (clss C1(x1) {})]))
+
+                        ;; simple Modules
+                        (term mt)   ; --------------------------------------------- ;; empty Module
+                        (term (mt [C1 -> (clss C1() {})]))  ; --------------------- ;; one ClassDesc
+                        (term ((mt [C1 -> (clss C1() {})]) [C2 -> (clss C2() {})])) ;; two ClassDesc
+
+                        ;; more complicated ClassDescs inside of Module
+                        (term (mt [C1 -> (clss C1(x1) {})])) 
                         (term (mt [C1 -> (clss C(arg1 arg2) { (fld f_1) (fld f_2) (constructor(arg1 arg2) { () }) (method m() { () }) (ghost f(x y) { x }) })]))
                         ))
 

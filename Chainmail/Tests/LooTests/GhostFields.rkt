@@ -12,14 +12,18 @@
   (define Loo_GhostDecl? (redex-match? Loo GhostDecl))
 
   (define true_Ghosts (list
-                       (term (ghost gf(x y) { x }))
-                       (term (ghost gf_1(x_1 x_2 x_3) { true}))
+                       ;; no arguments
                        (term (ghost gf_1() {x_1}))
-                       (term (ghost x_1() {x_2})))
+                       (term (ghost x_1() {x_2}))  ;; the ghost field can be any name
+
+                       ;; with arguments
+                       (term (ghost gf(x y) { x }))
+                       (term (ghost gf_1(x_1 x_2 x_3) {true})))
     )
 
   (define false_Ghosts (list
-                        (term (ghost gf_1(true) {x_1}))  ;; arguments can only be VarIDs
+                        (term (ghost gf_1(true) {x_1}))  ;; arguments can only be varIDs
+                        (term (ghost gf_1() {})) ; ----- ;; must have exactly ONE expression in {}
                         (term (ghost1 gf_1(x_1) {x_1}))) ;; must have keyword ghost
     )
 
