@@ -33,8 +33,6 @@
 (require "metafunctionTests/M-match.rkt")
 (require "metafunctionTests/CD-lookup.rkt")
 (require "metafunctionTests/method-lookup.rkt")
-(require "metafunctionTests/method-params.rkt")
-(require "metafunctionTests/method-Stmts.rkt")
 (require "metafunctionTests/new-addr.rkt")
 
 
@@ -100,8 +98,6 @@
 (test-M-match)
 (test-CD-lookup)
 (test-method-lookup)
-(test-method-Stmts)
-(test-method-params)
 (test-new-addr)
 
 ; reduction tests:
