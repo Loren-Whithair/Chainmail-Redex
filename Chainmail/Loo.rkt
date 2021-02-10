@@ -4,6 +4,17 @@
 (provide (all-defined-out))
 
 #|
+To do list:
+ - Do constructors have to have return stmts at the end?
+ - Make a test-file for h-max
+
+|#
+
+
+
+
+
+#|
 
 This file contains all syntax and semantics for Loo: a deterministic and minimal Object Oriented Programming language.
 
@@ -46,7 +57,9 @@ expr-reductions (the operational semantics):
 - Fields don't have to exist when being assigned to, i.e. you can create a new field in an object with an assignment.
 This is because for the sake of <access> and <authority> with respect to Chainmail, being able to create new fields doesn't matter.
 
-
+- Addresses in heaps will be numerically ordered.
+This is ensured by 'storelike-extend*' which maintains the ordering of keys in a map.
+We can consequently generate and add new addrs to a heap by finding the maximum value of a heap object
 
 
 --------------------------------
@@ -289,6 +302,7 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
 ; -----------------------------------------------------
 
 
+;; h-max : finds the maximum addr number in the heap
 (define-metafunction Loo-Machine
   h-max : χ -> addr
   [(h-max mt) 0]
