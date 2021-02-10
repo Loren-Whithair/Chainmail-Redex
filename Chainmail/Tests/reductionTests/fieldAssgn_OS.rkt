@@ -14,30 +14,37 @@
   ;---TRUE TESTS---
   ;----------------
 
-  
+  ; This test assigns the value of the field f belonging to x_0 to x_1.
+  ; This works as we would expect with the field of the object pointed to by x_0 (address 0 in the heap), changing field value from 'null' to 1 (which is the value of x_1 in the local variable map).
+  ; Note: that this value doesn't point to anything in the heap (we do no checks for this).
   (test-->
    expr-reductions
-   (term ((mt [C1 -> (clss C1() {})])
-          (((((x_0 @ f := x_1) $ (x := x @ m(x y))) (((mt [x_0 -> 0]) [x_1 -> 1]) [this -> 0])) · (() mt))
-           (mt [0 -> (C1 (mt [f -> null]))]))))
+   (term ((mt [C1 ->
+                  (clss C1() {})]) ;; module
+          (((((x_0 @ f := x_1) $ (x := x @ m(x y))) (((mt [x_0 -> 0]) [x_1 -> 1]) [this -> 0])) ;; top frame
+            · (() mt)) ;; bottom frame
+           (mt [0 -> (C1 (mt [f -> null]))])))) ;; heap
    
-   (term ((mt (C1 -> (clss C1 () ())))
-          ((((x := x @ m(x y)) (((mt (x_0 -> 0)) (x_1 -> 1)) (this -> 0))) · (() mt))
-           (mt (0 -> (C1 (mt (f -> 1)))))))))
+   (term ((mt (C1 ->
+                  (clss C1 () ()))) ;; module
+          ((((x := x @ m(x y)) (((mt (x_0 -> 0)) (x_1 -> 1)) (this -> 0))) ;; top frame
+            · (() mt)) ;; bottom frame
+           (mt (0 -> (C1 (mt (f -> 1))))))))) ;; heap
 
-
-  
+  ; This test is extremely comparable to the above test with the difference being that the value assigned to the field does actually point to an object in the heap.
   (test-->
    expr-reductions
-   (term ((mt [C1 -> (clss C1() {})])
-          (((((x_0 @ f := x_1) $ ()) (((mt [x_0 -> 0]) [x_1 -> 2]) [this -> 2])) · (() mt))
-           ((mt [0 -> (C1 (mt [f -> null]))]) [2 -> (C1 (mt [f -> true]))]))))
+   (term ((mt [C1 ->
+                  (clss C1() {})]) ;; module
+          (((((x_0 @ f := x_1) $ ()) (((mt [x_0 -> 0]) [x_1 -> 2]) [this -> 2])) ;; top frame
+            · (() mt)) ;; bottom frame
+           ((mt [0 -> (C1 (mt [f -> null]))]) [2 -> (C1 (mt [f -> true]))])))) ;; heap
    
-   (term ((mt (C1 -> (clss C1 () ())))
-          (((() (((mt (x_0 -> 0)) (x_1 -> 2)) (this -> 2))) · (() mt))
-           ((mt (0 -> (C1 (mt (f -> 2))))) (2 -> (C1 (mt (f -> true)))))))))
-
-
+   (term ((mt (C1 ->
+                  (clss C1 () ()))) ;; module
+          (((() (((mt (x_0 -> 0)) (x_1 -> 2)) (this -> 2))) ;; top frame
+            · (() mt)) ;; bottom frame
+           ((mt (0 -> (C1 (mt (f -> 2))))) (2 -> (C1 (mt (f -> true))))))))) ;; heap
 
   
   ;----------------

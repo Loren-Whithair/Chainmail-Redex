@@ -15,7 +15,9 @@
   (define moduleX (term (mt [C1 -> (clss C(arg1 arg2) { (fld f_1) (fld f_2) (constructor(arg1 arg2) { () }) (method m() { () }) (ghost f(x y) { x }) })])))
   
   
-  (test-equal (term (mf-apply M-match mt C1)) #false)  ;; empty module has no classes
+  (test-equal (term (mf-apply M-match mt C1))
+              #false)  ;; empty module has no classes
+
   ;;one class in module
   (test-equal (term (mf-apply M-match ,module1 C1)) #true) 
   (test-equal (term (mf-apply M-match ,module1 C2)) #false) 
@@ -34,7 +36,6 @@
   ;;more complicated ClassDesc
   (test-equal (term (mf-apply M-match ,moduleX C1)) #true)  
   (test-equal (term (mf-apply M-match ,moduleX C2)) #false)
-
  
   (test-results)
 
