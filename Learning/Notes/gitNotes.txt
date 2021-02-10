@@ -1,0 +1,43 @@
+git commands:
+
+git clone [github link]: create directory for code stored at [github link]
+
+git status: see staging area
+
+git add [file]: adds file to staging area (use git add * for all files in directory)
+
+git commit -m “[message]“: commits file in staging area to repository with [message]
+
+git push orign [branch name]: commits file stored in local repository to remote repository
+
+git branch: see all branches
+
+git checkout [branch name]: move to [branch name] branch
+
+git merge [branch]: merge test branch into [current branch]
+
+git branch -d [branch]: deletes [branch] in local repository
+
+git push origin --delete [branch]: deletes [branch] in remote repository
+
+git log: view your commit history
+
+git checkout [[commit] hash code]: changes active branch to [commit]
+
+git checkout -b [chosen branch name] [[commit] hash code]: changes active branch to [commit] and saves [commit] to [chosen branch name]
+
+git commit -am “[message]”: adds and commits changes
+
+git pull origin: gets the latest code from the remote repository to your local repository
+
+git pull --rebase: pulls the remote changes into the node in the graph of commits where you last pulled
+
+((i.e. call this when someone else has pushed to the remote repo but you also have local commits that you can't push because there are remote changes you don't have on your computer.))
+
+git restore --staged [file/folder]: unstage [file/folder]
+
+git reset: unstages all files
+
+git reset --hard: resets all files to last committed point
+
+git fetch --all: gets latest changes from repo but does not merge them with our current branch (if we follow this with a 'git reset --hard' we will be up to date with the repo and have discarded local changes that we've made)
