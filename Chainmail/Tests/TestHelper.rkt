@@ -34,6 +34,7 @@
 (require "metafunctionTests/CD-lookup.rkt")
 (require "metafunctionTests/method-lookup.rkt")
 (require "metafunctionTests/new-addr.rkt")
+(require "metafunctionTests/h-max.rkt")
 
 
 (require "reductionTests/methCall_OS.rkt")
@@ -99,6 +100,7 @@
 (test-CD-lookup)
 (test-method-lookup)
 (test-new-addr)
+(test-h-max)
 
 ; reduction tests:
 (display "\n--------------------------\n")
@@ -108,7 +110,6 @@
 (test-methCall_OS)
 (test-varAssgn_OS)
 (test-fieldAssgn_OS)
-(test-methCall_OS)
 (test-objCreate_OS)
 (test-return_OS)
 (test-return_OS-no-args)
