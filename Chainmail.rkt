@@ -10,9 +10,12 @@
      (< addr internal >)
      (< addr external >)
      (< addr calls addr @ m(x ...) >)
+     (< addr : C >)
      (A ∧ A)
      (A ∨ A)
      (¬ A)
+     (A → A)
+     
   )
 )
 
@@ -80,12 +83,20 @@
   [(Equal #f ,(judgment-holds (? M_0 (M_1 (ψ χ_0))  ⊨ A_0)))
    -----------
    (? M_0 (M_1 (ψ χ_0))  ⊨ (¬ A_0))]
+
+
+  ;; implies   A1 -> A2 == ¬A1 ∨ A2
+  [(? M_0 (M_1 (ψ χ))  ⊨ ((¬ A_1) ∨ A_2))
+   --------------
+   (? M_0 (M_1 (ψ χ))  ⊨ (A_1 → A_2))]
+
   
+  [(where (C_0 fieldMap) (h-lookup χ_0 addr_0))
+   --------------------
+   (? M_0 (M_1 (ψ χ_0))  ⊨ (< addr_0 : C_0 >))
+   ]
   )
   
-
-(define-judgment-form Chainmail #:mode(Equal I I) #:contract(Equal any any)
-  ((Equal any any)))
 
 
 
@@ -93,6 +104,8 @@
 ; ------------------ HELPER FUNCTIONS -----------------
 ; -----------------------------------------------------
 
+(define-judgment-form Chainmail #:mode(Equal I I) #:contract(Equal any any)
+  ((Equal any any)))
     
 ;NEEDS TESTING
 (define-metafunction Loo-Machine
