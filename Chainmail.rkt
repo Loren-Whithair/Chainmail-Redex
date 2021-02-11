@@ -6,17 +6,20 @@
  
 (define-extended-language Chainmail Loo-Machine
   (A ::=
-     (< addr access addr >)
-     (< addr internal >)
-     (< addr external >)
-     (< addr calls addr @ m(x ...) >)
-     (< addr : C >)
+     (< addr-α access addr-α >)
+     (< addr-α internal >)
+     (< addr-α external >)
+     (< addr-α calls addr-α @ m(x ...) >)
+     (< addr-α : C >)
      (A ∧ A)
      (A ∨ A)
      (¬ A)
      (A → A)
-     
+     (∀ α A)
+     (∃ α A)
   )
+  (addr-α := addr α)
+  (α := variable-not-otherwise-mentioned)
 )
 
 (current-traced-metafunctions 'all)
@@ -90,11 +93,31 @@
    --------------
    (? M_0 (M_1 (ψ χ))  ⊨ (A_1 → A_2))]
 
-  
+  ;;instance-of
   [(where (C_0 fieldMap) (h-lookup χ_0 addr_0))
    --------------------
    (? M_0 (M_1 (ψ χ_0))  ⊨ (< addr_0 : C_0 >))
    ]
+
+  
+#|  [(? .. empty-heep |= (forall ...)]
+
+  [
+      (? ... |= (substitute x a))
+      (? ... rest-of-heap |= (forall x A))
+      -----------------------------------------
+      (? .... (a _) rest-of-heap |= (forall x A ) )
+
+      [
+      (? ... |= (substitute x a))
+      -----------------------------------------
+      (? .... (a _) rest-of-heap |= (forall x A ) )
+
+            [
+      (? ...rest-of-heap ...  |= (exists x A))
+      -----------------------------------------
+      (? .... (a _) rest-of-heap |= (exist x A ) )|#
+
   )
   
 
