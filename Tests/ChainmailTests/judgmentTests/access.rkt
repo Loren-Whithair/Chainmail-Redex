@@ -1,4 +1,5 @@
 #lang racket
+#lang racket
 (require-redex)
 
 ;;true
@@ -47,7 +48,6 @@
   ⊨
   (< 1 access 2 >)))
 
-(term x)
 (judgment-holds
  (?
   mt
