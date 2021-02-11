@@ -10,6 +10,9 @@
      (< addr internal >)
      (< addr external >)
      (< addr calls addr @ m(x ...) >)
+     (A ∧ A)
+     (A ∨ A)
+     (¬ A)
   )
 )
 
@@ -35,6 +38,49 @@
    --------------------------------------------------------------------------------
    (? M_0 (M_1 (((Continuation_0 η_0) · ψ) χ))  ⊨ (< addr_0 access addr_1 >))]
 
+
+  ;; addr_0 points to an Object of type C_0, and C_0 is defined in the internal module
+  [(where (C_0 fieldMap) (h-lookup χ_0 addr_0))
+   (Equal #t (mf-apply M-match M_1 C_0)) 
+   ----------------------------------------
+  (? M_0 (M_1 (ψ χ_0))  ⊨ (< addr_0 internal >))]
+
+  ;; addr_0 points to an Object of type C_0, and C_0 is defined in the external module
+  [(where (C_0 fieldMap) (h-lookup χ_0 addr_0))
+   (Equal #t (mf-apply M-match M_0 C_0)) 
+   ----------------------------------------
+   (? M_0 (M_1 (ψ χ_0))  ⊨ (< addr_0 external >))]
+
+
+  [(side-condition (term (mf-apply addr-in-lcl η_0 addr_this)))
+   (Equal this (mf-apply lcl-addr-name η_0 addr_this))
+   (side-condition (term (mf-apply addr-in-lcl η_0 addr_1)))
+   -----------------
+   (? M_0 (M_1 (((((x_0 := x_1 @ m_0(x ...)) $ Stmts) η_0) · ψ) χ))  ⊨ (< addr_this calls addr_1 @ m_0(x ...) >))]
+
+
+  ;;and
+  [(? M_0 (M_1 (ψ χ_0))  ⊨ A_0)
+   (? M_0 (M_1 (ψ χ_0))  ⊨ A_1)
+   -----------
+   (? M_0 (M_1 (ψ χ_0))  ⊨ (A_0 ∧ A_1))]
+
+
+  ;;or
+  [(? M_0 (M_1 (ψ χ_0))  ⊨ A_0)
+   -----------
+   (? M_0 (M_1 (ψ χ_0))  ⊨ (A_0 ∨ A_1))]
+
+  [(? M_0 (M_1 (ψ χ_0))  ⊨ A_1)
+   -----------
+   (? M_0 (M_1 (ψ χ_0))  ⊨ (A_0 ∨ A_1))]
+
+
+  ;;not
+  [(Equal #f ,(judgment-holds (? M_0 (M_1 (ψ χ_0))  ⊨ A_0)))
+   -----------
+   (? M_0 (M_1 (ψ χ_0))  ⊨ (¬ A_0))]
+  
   )
   
 
