@@ -36,6 +36,9 @@
 (require "metafunctionTests/new-addr.rkt")
 (require "metafunctionTests/h-max.rkt")
 
+(require "ChainmailTests/metafunctionTests/addr-in-lcl.rkt")
+(require "ChainmailTests/metafunctionTests/lcl-addr-name.rkt")
+(require "ChainmailTests/metafunctionTests/addr-in-fieldMap.rkt")
 
 (require "reductionTests/methCall_OS.rkt")
 (require "reductionTests/varAssgn_OS.rkt")
@@ -43,6 +46,16 @@
 (require "reductionTests/objCreate_OS.rkt")
 (require "reductionTests/return_OS.rkt")
 (require "reductionTests/return_OS-no-args.rkt")
+
+(require "ChainmailTests/judgmentTests/and.rkt")
+(require "ChainmailTests/judgmentTests/or.rkt")
+(require "ChainmailTests/judgmentTests/not.rkt")
+(require "ChainmailTests/judgmentTests/implies.rkt")
+(require "ChainmailTests/judgmentTests/access.rkt")
+(require "ChainmailTests/judgmentTests/x-internal.rkt")
+(require "ChainmailTests/judgmentTests/x-external.rkt")
+(require "ChainmailTests/judgmentTests/x-calls-y-m.rkt")
+(require "ChainmailTests/judgmentTests/type-of.rkt")
 
 ; syntax tests:
 (display "\n--------------------------\n")
@@ -56,7 +69,6 @@
 (test-GhostFields)
 (test-Stmts)
 (test-expressions)
-
 
 ; machine syntax tests:
 (display "\n--------------------------\n")
@@ -73,7 +85,6 @@
 (test-frame)
 (test-object)
 (test-fieldMap)
-
 
 ; random testing:
 (display "\n--------------------------\n")
@@ -102,6 +113,11 @@
 (test-new-addr)
 (test-h-max)
 
+; Chainmail metafunction tests
+(test-addr-in-lcl)
+(test-lcl-addr-name)
+(test-addr-in-fieldMap)
+
 ; reduction tests:
 (display "\n--------------------------\n")
 (display "------ Reduction Tests-----\n")
@@ -113,3 +129,17 @@
 (test-objCreate_OS)
 (test-return_OS)
 (test-return_OS-no-args)
+
+(display "\n--------------------------\n")
+(display "------- Chainmail Tests-----\n")
+(display "--------------------------\n")
+
+(test-chainmail-and)
+(test-chainmail-or)
+(test-chainmail-not)
+(test-chainmail-implies)
+(test-chainmail-access)
+(test-chainmail-x-internal)
+(test-chainmail-x-external)
+(test-chainmail-x-calls-y)
+(test-chainmail-type-of)

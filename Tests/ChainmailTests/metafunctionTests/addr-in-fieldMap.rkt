@@ -1,7 +1,7 @@
 #lang racket
 (require redex)
-(require "../../Loo.rkt")
-(require "../../Chainmail.rkt")
+(require "../../../Loo.rkt")
+(require "../../../Chainmail.rkt")
 
 (provide test-addr-in-fieldMap)
 

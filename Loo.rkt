@@ -3,6 +3,8 @@
 
 (provide (all-defined-out))
 
+; (current-traced-metafunctions 'all) ;; provides metafunction information
+
 #|
 To do list:
  - Do constructors have to have return stmts at the end?
@@ -164,7 +166,7 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
 
   (state := (M σ)) ;; = (M ((Φ · ψ) χ))
    
-  (Continuation ::= ;; 
+  (Continuation ::=
                 Stmts
                 (x := * $ Stmts)) ;; * is a hole, where the frame on top will return the value to fill it
 
@@ -175,8 +177,6 @@ To consider: what does the fieldAssgn and varAssgn reductions do when the variab
 ; -----------------------------------------------------
 ; ---------------- REDUCTION RULES --------------------
 ; -----------------------------------------------------
-
-; (current-traced-metafunctions 'all)
 
 (define expr-reductions
   (reduction-relation
